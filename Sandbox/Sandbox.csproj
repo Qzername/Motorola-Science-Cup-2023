@@ -15,10 +15,4 @@
     <PackageReference Include="SkiaSharp.Views.Gtk3" Version="2.88.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="MainWindow.glade">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
