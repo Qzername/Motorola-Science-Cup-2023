@@ -9,10 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-	<PackageReference Include="Microsoft.Windows.Compatibility" Version="3.0.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.6" />
-    <PackageReference Include="SkiaSharp.Views.Gtk3" Version="2.88.6" />
+	<PackageReference Include="Emotion" Version="1.0.718" />
   </ItemGroup>
 
 </Project>
