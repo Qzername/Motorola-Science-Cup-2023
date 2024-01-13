@@ -1,20 +1,16 @@
-﻿using Emotion.Common;
-using System;
+﻿using System;
+using VGL;
 
 namespace Sandbox
 {
     class Program
     {
+        [STAThread]
         public static void Main(string[] args)
         {
-            var config = new Configurator
-            {
-                HostTitle = "TEST"
-            };
+            GameWindow window = new GameWindow();
 
-            Engine.Setup(config);
-            Engine.SceneManager.SetScene(new GameScene());
-            Engine.Run();
+            window.Open();
         }
     }
 }

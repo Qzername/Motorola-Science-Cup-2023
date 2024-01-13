@@ -2,14 +2,20 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWindowsForms>False</UseWindowsForms>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="Emotion" Version="1.0.718" />
+	<PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VGL\VGL.csproj" />
   </ItemGroup>
 
 </Project>
