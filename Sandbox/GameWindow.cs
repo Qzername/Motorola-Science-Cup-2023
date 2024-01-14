@@ -1,11 +1,23 @@
-﻿using VGL;
+﻿using System.Diagnostics;
+using VGL;
+using VGL.Graphics;
 
 namespace Sandbox
 {
     internal class GameWindow : Window
     {
-        public GameWindow()
+        float x = 0;
+        float speed = 50;
+
+        public override void Update(Canvas canvas)
         {
+            x += speed * time.DeltaTime;
+
+            canvas.DrawLine(new Line(x, 0, 100, 100));
+            canvas.DrawLine(new Line(0, x, 100, 100));
+            canvas.DrawLine(new Line(0, 0, x, 100));
+            canvas.DrawLine(new Line(0, 0, 100, x));
+            canvas.DrawLine(new Line(x, x, 100, 100));
         }
     }
 }

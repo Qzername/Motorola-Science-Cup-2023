@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Emotion" Version="1.0.718" />
 	<PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.7" />
   </ItemGroup>
 

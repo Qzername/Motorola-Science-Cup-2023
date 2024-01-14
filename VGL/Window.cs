@@ -1,11 +1,16 @@
-﻿using VGL.WPF;
+﻿using System.Timers;
+using VGL.Graphics;
+using VGL.WPF;
 
 namespace VGL
 {
     public abstract class Window
     {
         MainWindow mainWindow;
-        Timer frameTimer;
+        System.Timers.Timer frameTimer;
+        
+        Canvas canvas;
+        protected Time time;
 
         const int framerate = 60;
 
@@ -13,29 +18,37 @@ namespace VGL
         { 
             mainWindow = new MainWindow();
 
-            frameTimer = new Timer((e) => FrameUpdate(), null,Timeout.Infinite,1000/framerate);
+            canvas = new Canvas();
+            time = new Time();
+
+            frameTimer = new System.Timers.Timer(1000 / framerate);
+            frameTimer.Elapsed += FrameUpdate;
         }
 
-        void FrameUpdate()
+        private void FrameUpdate(object? sender, ElapsedEventArgs e)
         {
-            Update();
+            time.NextFrame();
+            canvas.Clear();
+
+            Update(canvas);
+
+            mainWindow.SetLines(canvas.GetLines());
+            mainWindow.RefreshCanvas();
         }
 
-        public virtual void Update()
-        {
-
-        }
+        public abstract void Update(Canvas canvas);
 
         public void Open()
         {
+            time.StartCounting();
+            frameTimer.Enabled = true;
             mainWindow.ShowDialog();
-            frameTimer.Change(0, 1000 / framerate);
         }
 
         public void Close()
         {
+            frameTimer.Enabled = false;
             mainWindow.Close();
-            frameTimer.Change(Timeout.Infinite, 1000 / framerate);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using VGL;
 
 namespace Sandbox
@@ -9,7 +10,6 @@ namespace Sandbox
         public static void Main(string[] args)
         {
             GameWindow window = new GameWindow();
-
             window.Open();
         }
     }
