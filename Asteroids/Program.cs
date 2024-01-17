@@ -2,17 +2,12 @@
 using System.Diagnostics;
 using VGL;
 
-namespace Sandbox
+namespace Asteroids
 {
-    /*
-     * Ten projekt służy jedynie do testów biblioteki
-     * Nie chcemy zaśmiecać naszych gier testowym kodem
-     */
-
     class Program
     {
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
             GameWindow window = new GameWindow();
             window.Open();

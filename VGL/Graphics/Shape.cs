@@ -16,6 +16,7 @@ namespace VGL.Graphics
 
         SKPoint[] rawShape;
 
+        /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
         public Shape(float defaultRotation, params SKPoint[] shape)
         {
             rawShape = shape;
@@ -39,14 +40,21 @@ namespace VGL.Graphics
 
                 CompiledShape[i - 1] = new Line(rawShape[i - 1], current);
             }
-
+            
+            //ustawiamy środek kształtu ze względu na to że według środka będziemy mogli obracać kształt
             Center = new SKPoint((maxX - minX) / 2 + minX, (maxY - minY) / 2 + minY);
 
             CompiledShape[CompiledShape.Length - 1] = new Line(rawShape[CompiledShape.Length - 1], rawShape[0]);
         }
 
+        /// <summary>
+        /// Obrót kształtu 
+        /// </summary>
         public void Rotate(float angle)
         {
+            //ten algorytm jest wzięty ze strony:
+            //https://danceswithcode.net/engineeringnotes/rotations_in_2d/rotations_in_2d.html
+
             float angleRad = angle * (MathF.PI / 180);
 
             float cos = MathF.Cos(angleRad);
@@ -67,6 +75,11 @@ namespace VGL.Graphics
             CompileShape();
         }
 
+        /*
+         * Kompilacja kształtu, nie chcemy za każdym razem gdy rysujemy shape
+         * robić te same obliczenia, więc gdy zachodzi zmiana do kształtu
+         * kompilujemy wygląd do liń
+         */
         void CompileShape()
         {
             for (int i = 1; i < rawShape.Length; i++)
