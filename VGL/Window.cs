@@ -1,4 +1,5 @@
 ﻿using System.Timers;
+using System.Windows.Automation;
 using VGL.Graphics;
 using VGL.WPF;
 
@@ -25,7 +26,7 @@ namespace VGL
             frameTimer.Elapsed += FrameUpdate;
         }
 
-        private void FrameUpdate(object? sender, ElapsedEventArgs e)
+        void FrameUpdate(object? sender, ElapsedEventArgs e)
         {
             time.NextFrame();
             canvas.Clear();
@@ -50,5 +51,10 @@ namespace VGL
             frameTimer.Enabled = false;
             mainWindow.Close();
         }
+
+        /// <summary>
+        /// Sprawdza czy dany przycisk jest wciśnięty.
+        /// </summary>
+        protected bool KeyDown(Key key) => mainWindow.GetKey(key);
     }
 }

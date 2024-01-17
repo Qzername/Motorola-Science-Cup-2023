@@ -3,6 +3,8 @@ using SkiaSharp;
 using System.Diagnostics;
 using VGL.Graphics;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace VGL.WPF
 {
@@ -41,5 +43,16 @@ namespace VGL.WPF
 
         public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
         public void SetLines(Line[] lines) => linesToDraw = lines;
+        public bool GetKey(Key key)
+        {
+            bool getKey = false;
+
+            Dispatcher.Invoke(() =>
+            {
+                getKey = Keyboard.IsKeyDown((System.Windows.Input.Key)key);
+            });
+
+            return getKey;
+        }
     }
 }

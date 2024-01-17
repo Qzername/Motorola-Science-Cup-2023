@@ -11,6 +11,10 @@ namespace VGL
     {
         public SKPoint Position;
         public float Rotation;
+        public float RotationRadians
+        {
+            get => Rotation * (MathF.PI / 180);
+        }
 
         public Transform()
         {
