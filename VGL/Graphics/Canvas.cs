@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace VGL.Graphics
         public Canvas() 
         { 
             lines = new List<Line>();
+
+            //z jakiegoś powodu dzięki tym dwóm linijkom nie wyskakuje dziwny błąd z listom
+            //jezeli go powtórzyć lub wywołać wiedz że nie zawsze on wyskakuje
+            lines.Add(new Line(-10,-10,0,0));
+            Clear();
         }
 
         /// <summary>

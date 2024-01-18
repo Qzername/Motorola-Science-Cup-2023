@@ -13,6 +13,10 @@ namespace VGL
     public class VectorObject
     {
         Shape shape;
+        public Shape Shape
+        {
+            get => shape;
+        }
 
         Transform transform;
         public Transform Transform
@@ -33,7 +37,6 @@ namespace VGL
             if (transform.Rotation != 0f)
                 shape.Rotate(transform.Rotation);
         }
-
         public VectorObject(Shape shape, SKPoint position, float rotation)
         {
             this.shape = shape;
@@ -62,7 +65,7 @@ namespace VGL
         public void Rotate(float angle)
         {
             shape.Rotate(angle);
-            transform.Rotation += angle;
+            transform.Rotation = (transform.Rotation + angle) % 360;
         }
     }
 }

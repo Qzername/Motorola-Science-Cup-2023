@@ -22,7 +22,7 @@ namespace VGL.WPF
 
             paint = new SKPaint()
             {
-                StrokeWidth = 5,
+                StrokeWidth = 1,
                 Color = SKColors.White,
             };
 
