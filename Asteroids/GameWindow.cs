@@ -2,13 +2,15 @@
 using System.Diagnostics;
 using VGL;
 using VGL.Graphics;
+using VGL.Physics;
 
 namespace Asteroids
 {
     internal class GameWindow : Window
     {
-        float x = 0;
         float speed = 120, rotationSpeed = 90, bulletSpeed = 10;
+
+        PhysicsEngine physicsEngine;
 
         VectorObject player, obstacle;
         Shape bullet;
@@ -17,9 +19,11 @@ namespace Asteroids
 
         bool lastSpaceState = false;
 
+        int score = 0;
+
         public GameWindow() : base()
         {
-            player = new VectorObject(
+            player = new VectorObject("Player",
                 new Shape(-90f, 
                         new SKPoint(0,0), 
                         new SKPoint(15,40), 
@@ -27,7 +31,7 @@ namespace Asteroids
                         new SKPoint(15,5)), 
                 new SKPoint(150,150), 0f);
 
-            obstacle = new VectorObject(
+            obstacle = new VectorObject("Obstacle",
                 new Shape(0f,
                     new SKPoint(0, 0),
                     new SKPoint(0, 30),
@@ -36,6 +40,26 @@ namespace Asteroids
                 new SKPoint(30,30), 0f);
 
             bullets = new List<VectorObject>();
+
+            physicsEngine = new PhysicsEngine(new PhysicsConfiguration()
+            {
+                LayerConfiguration =  new Dictionary<int, int[]>()
+                {
+                    { 0, new int[] {1} }, //0 -> player
+                    { 1, new int[] {0} }, //1 -> bullets && obstacles
+                }
+            });
+
+            physicsEngine.RegisterObject(0, obstacle);
+            physicsEngine.RegisterObject(1, player);
+
+            physicsEngine.CollisionDetected += PhysicsEngine_CollisionDetected;
+        }
+
+        private void PhysicsEngine_CollisionDetected(VectorObject arg1, VectorObject arg2)
+        {
+            if (arg1.Name == "Obstacle" && arg2.Name == "Bullet")
+                score++;
         }
 
         public override void Update(Canvas canvas)
@@ -55,9 +79,12 @@ namespace Asteroids
 
             if (isSpacePressed && !lastSpaceState)
             {
-                bullets.Add(new VectorObject(new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
-                            player.Transform.Position+player.Shape.CompiledShape[0].EndPosition, //wykorzystuje tutaj shape gracza aby respic w drugim punkcie pocisk (zobacz shape gracza)
-                            player.Transform.Rotation));
+                var bullet = new VectorObject("Bullet", new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
+                            player.Transform.Position + player.Shape.CompiledShape[0].EndPosition, //wykorzystuje tutaj shape gracza aby respic w drugim punkcie pocisk (zobacz shape gracza)
+                            player.Transform.Rotation);
+
+                bullets.Add(bullet);
+                physicsEngine.RegisterObject(1, bullet);
 
                 lastSpaceState = true;
             }
@@ -84,6 +111,8 @@ namespace Asteroids
 
                 bullets[i].Draw(canvas);
             }
+
+            Debug.WriteLine(score);
         }
     }
 }

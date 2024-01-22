@@ -12,6 +12,12 @@ namespace VGL
 {
     public class VectorObject
     {
+        string name;
+        public string Name
+        {
+            get => name;
+        }
+
         Shape shape;
         public Shape Shape
         {
@@ -24,21 +30,24 @@ namespace VGL
             get => transform;
         }
 
-        public VectorObject(Shape shape)
+        public VectorObject(string name, Shape shape)
         {
+            this.name = name;
             this.shape = shape;
             transform = new Transform();
         }
-        public VectorObject(Shape shape, Transform transform)
+        public VectorObject(string name, Shape shape, Transform transform)
         {
+            this.name = name;
             this.shape = shape;
             this.transform = transform;
 
             if (transform.Rotation != 0f)
                 shape.Rotate(transform.Rotation);
         }
-        public VectorObject(Shape shape, SKPoint position, float rotation)
+        public VectorObject(string name, Shape shape, SKPoint position, float rotation)
         {
+            this.name = name;
             this.shape = shape;
             transform = new Transform()
             {
