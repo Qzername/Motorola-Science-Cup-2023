@@ -85,6 +85,9 @@ namespace Asteroids
             float speedDelta = speed * time.DeltaTime;
             float rotationDelta = rotationSpeed * time.DeltaTime;
 
+            if (KeyDown(Key.LeftShift) || KeyDown(Key.RightShift))
+				rotationDelta *= 2;
+
             if (KeyDown(Key.Left) || KeyDown(Key.A))
                 player.Rotate(rotationDelta * -1f);
             else if (KeyDown(Key.Right) || KeyDown(Key.D))
