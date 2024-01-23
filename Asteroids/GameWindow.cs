@@ -8,8 +8,8 @@ namespace Asteroids
 {
     internal class GameWindow : Window
     {
-	    const float minGlideSpeed = 0f, maxGlideSpeed = 2.0f;
-        float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = minGlideSpeed;
+	    const float minSpeed = 0, maxSpeed = 300;
+        float speed = 0, rotationSpeed = 90, bulletSpeed = 10, prevRotation, prevRotationRadias;
         int score, obstacleRotationOffset = 30;
 		// obstacleRotationOffset nie moze byc wiekszy niz 45, poniewaz wtedy przeszkoda moze byc poza ekranem
 
@@ -81,25 +81,22 @@ namespace Asteroids
 
         public override void Update(Canvas canvas)
         {
-			//player
-			float speedDelta = speed * time.DeltaTime;
-            float rotationDelta = rotationSpeed * time.DeltaTime;
+			Debug.WriteLine($"FPS: {1f / time.DeltaTime}");
+			Debug.WriteLine($"Score: {score}");
+			Debug.WriteLine($"Speed: {speed}");
+			Debug.WriteLine($"Rotation: {player.Transform.Rotation}");
+			Debug.WriteLine($"Previous Rotation: {prevRotation}");
 
-            if (KeyDown(Key.LeftShift) || KeyDown(Key.RightShift))
-				rotationDelta *= 2;
-
-            if (KeyDown(Key.Left) || KeyDown(Key.A))
-                player.Rotate(rotationDelta * -1f);
-            else if (KeyDown(Key.Right) || KeyDown(Key.D))
-                player.Rotate(rotationDelta);
-
-            bool isSpacePressed = KeyDown(Key.Space);
+			bool isSpacePressed = KeyDown(Key.Space);
 
             if (isSpacePressed && !lastSpaceState)
             {
-                var bullet = new VectorObject("Bullet", new Shape(0f, new SKPoint(0, 0), new SKPoint(1, 0)),
-                            player.Transform.Position + player.Shape.CompiledShape[0].EndPosition, //wykorzystuje tutaj shape gracza aby respic w drugim punkcie pocisk (zobacz shape gracza)
-                            player.Transform.Rotation);
+                var bullet = new VectorObject("Bullet", 
+	                new Shape(0f, 
+		                new SKPoint(0, 0), 
+		                new SKPoint(1, 0)),
+			player.Transform.Position + player.Shape.CompiledShape[0].EndPosition,
+	                player.Transform.Rotation);
 
                 bullets.Add(bullet);
                 physicsEngine.RegisterObject(1, bullet);
@@ -109,36 +106,75 @@ namespace Asteroids
             else if (!isSpacePressed && lastSpaceState)
                 lastSpaceState = false;
 
-            float sin = MathF.Sin(player.Transform.RotationRadians);
-            float cos = MathF.Cos(player.Transform.RotationRadians);
+            float sin = MathF.Sin(prevRotationRadias);
+            float cos = MathF.Cos(prevRotationRadias);
 
-            if (KeyDown(Key.Up) || KeyDown(Key.W))
+			float speedDelta = speed * time.DeltaTime;
+			float rotationDelta = rotationSpeed * time.DeltaTime;
+
+			if (KeyDown(Key.LeftShift) || KeyDown(Key.RightShift))
+				rotationDelta *= 2;
+
+			if (KeyDown(Key.Left) || KeyDown(Key.A))
+			{
+				player.Rotate(rotationDelta * -1f);
+			}
+			else if (KeyDown(Key.Right) || KeyDown(Key.D))
+			{
+				player.Rotate(rotationDelta);
+			}
+
+			if (KeyDown(Key.Up) || KeyDown(Key.W))
             {
-				player.AddPosition(cos * speedDelta * glideSpeed, sin * speedDelta * glideSpeed);
-                if (glideSpeed < maxGlideSpeed)
-					glideSpeed += 0.05f;
+				// jezeli poprzednia zarejestrowana rotacja jest w tym samym kierunku co aktualna rotacja, to zwiekszaj predkosc
+				if (ShouldSlow())
+	            {
+					if (speed - maxSpeed / 100 > minSpeed)
+			            speed -= maxSpeed / 100;
+					else
+					{
+						prevRotation = player.Transform.Rotation;
+			            prevRotationRadias = player.Transform.RotationRadians;
+						speed = minSpeed;
+					}
+	            }
+	            else
+	            {
+		            prevRotation = player.Transform.Rotation;
+					prevRotationRadias = player.Transform.RotationRadians;
+					if (speed + maxSpeed / 100 < maxSpeed)
+						speed += maxSpeed / 100;
+					else
+						speed = maxSpeed;	            
+	            }
+				
+				player.AddPosition(cos * speedDelta, sin * speedDelta);
             }
             else if (KeyDown(Key.Down) || KeyDown(Key.S))
             {
-	            player.AddPosition(cos * speedDelta * glideSpeed, sin * speedDelta * glideSpeed);
-	            if (glideSpeed - 0.025f > minGlideSpeed)
-		            glideSpeed -= 0.025f;
+	            player.AddPosition(cos * speedDelta, sin * speedDelta);
+	            if (speed - maxSpeed / 500 > minSpeed)
+		            speed -= maxSpeed / 500;
 	            else
-		            glideSpeed = 0f;
+		            speed = minSpeed;
 			}
 			else
             {
-	            player.AddPosition(cos * speedDelta * glideSpeed, sin * speedDelta * glideSpeed);
-	            if (glideSpeed - 0.01f > minGlideSpeed)
-		            glideSpeed -= 0.01f;
+	            player.AddPosition(cos * speedDelta, sin * speedDelta);
+	            if (speed - maxSpeed / 1000 > minSpeed)
+		            speed -= maxSpeed / 1000;
 	            else
-		            glideSpeed = 0f;
-            }
+		            speed = minSpeed;
+			}
             
-            if (player.Transform.Position.X < 0 || player.Transform.Position.X > Width)
-	            player.SetPosition(Width / 2, Height / 2);
-			else if (player.Transform.Position.Y < 0 || player.Transform.Position.Y > Height)
-				player.SetPosition(Width / 2, Height / 2);
+            if (player.Transform.Position.X < 0)
+				player.SetPosition(Width, player.Transform.Position.Y);
+			else if (player.Transform.Position.X > Width)
+				player.SetPosition(0, player.Transform.Position.Y);
+			else if (player.Transform.Position.Y < 0)
+				player.SetPosition(player.Transform.Position.X, Height);
+			else if (player.Transform.Position.Y > Height)
+				player.SetPosition(player.Transform.Position.X, 0);
 
 			player.Draw(canvas);
 
@@ -226,5 +262,21 @@ namespace Asteroids
 		        new SKPoint(x, y), rotation));
 	        physicsEngine.RegisterObjects(0, obstacles);
 		}
+
+        bool ShouldSlow()
+        {
+			float tPrevRotation = prevRotation;
+			float tRotation = player.Transform.Rotation;
+			
+	        if (tPrevRotation < 0)
+		        tPrevRotation = 360 + tPrevRotation;
+			if (tRotation < 0)
+				tRotation = 360 + tRotation;
+
+			if (tRotation - 45 <= tPrevRotation && tPrevRotation <= tRotation + 45)
+				return false;
+
+			return true;
+        }
     }
 }
