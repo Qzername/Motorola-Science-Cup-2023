@@ -10,6 +10,9 @@ namespace Asteroids
     {
 	    const float minGlideSpeed = 0f, maxGlideSpeed = 2.0f;
         float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = minGlideSpeed;
+        int score, width, height;
+
+        bool lastSpaceState;
         
         PhysicsEngine physicsEngine;
 
@@ -19,13 +22,7 @@ namespace Asteroids
         Shape bullet;
         List<VectorObject> bullets;
 
-        bool lastSpaceState = false;
-
-        int score = 0;
-
         Random rand = new();
-
-        int width, height;
 
 		public GameWindow() : base()
         {
