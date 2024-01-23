@@ -10,7 +10,7 @@ namespace Asteroids
     {
 	    const float minGlideSpeed = 0f, maxGlideSpeed = 2.0f;
         float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = minGlideSpeed;
-        int score, obstacleRotationOffset = 45;
+        int score, obstacleRotationOffset = 30;
 		// obstacleRotationOffset nie moze byc wiekszy niz 45, poniewaz wtedy przeszkoda moze byc poza ekranem
 
 		bool lastSpaceState;
