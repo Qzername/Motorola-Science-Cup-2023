@@ -37,14 +37,6 @@ namespace Asteroids
                         new SKPoint(15,5)), 
                 new SKPoint(width / 2, height / 2), 0f);
 
-            obstacles.Add(new VectorObject("Obstacle",
-	            new Shape(0f,
-		            new SKPoint(0, 0),
-		            new SKPoint(0, 30),
-		            new SKPoint(30, 30),
-		            new SKPoint(30, 0)),
-	            new SKPoint(30, 30), 0f));
-
             bullets = new List<VectorObject>();
 
             physicsEngine = new PhysicsEngine(new PhysicsConfiguration()
@@ -56,7 +48,6 @@ namespace Asteroids
                 }
             });
 
-            physicsEngine.RegisterObjects(0, obstacles);
             physicsEngine.RegisterObject(1, player);
 
             physicsEngine.CollisionDetected += PhysicsEngine_CollisionDetected;
@@ -82,19 +73,6 @@ namespace Asteroids
                         bullets.Remove(bullet);
                         physicsEngine.UnRegisterObject(1, bullet);
 					}
-
-                    // Ponizej jest kod do spawnowania nowych przeszkod (test)
-                    int x = rand.Next(0, width);
-                    int y = rand.Next(0, height);
-
-					obstacles.Add(new VectorObject("Obstacle",
-						new Shape(0f,
-							new SKPoint(0, 0),
-							new SKPoint(0, 30),
-							new SKPoint(30, 30),
-							new SKPoint(30, 0)),
-						new SKPoint(x, y), 0f));
-                    physicsEngine.RegisterObjects(0, obstacles);
                 }  
 	        }
         }
@@ -137,7 +115,15 @@ namespace Asteroids
                 if (glideSpeed < maxGlideSpeed)
 					glideSpeed += 0.05f;
             }
-            else
+            else if (KeyDown(Key.Down) || KeyDown(Key.S))
+            {
+	            player.AddPosition(cos * speedDelta * glideSpeed, sin * speedDelta * glideSpeed);
+	            if (glideSpeed - 0.025f > minGlideSpeed)
+		            glideSpeed -= 0.025f;
+	            else
+		            glideSpeed = 0f;
+			}
+			else
             {
 	            player.AddPosition(cos * speedDelta * glideSpeed, sin * speedDelta * glideSpeed);
 	            if (glideSpeed - 0.01f > minGlideSpeed)
@@ -148,14 +134,24 @@ namespace Asteroids
 
             player.Draw(canvas);
 
-            //obstacle
-            foreach (VectorObject obstacle in obstacles)
-            {
-				obstacle.Draw(canvas);
+            // 1% szans, aby stworzyc przeszkode (kazda klatke)
+            int chance = rand.Next(1, 101);
+            if (chance == 100)
+				SpawnObstacle();
+
+			//obstacle
+			for (int i = 0; i < obstacles.Count; i++)
+			{
+				sin = MathF.Sin(obstacles[i].Transform.RotationRadians);
+				cos = MathF.Cos(obstacles[i].Transform.RotationRadians);
+
+				obstacles[i].AddPosition(cos * 0.5f, sin * 0.5f);
+
+				obstacles[i].Draw(canvas);
 			}
-        
-            //bullets
-            for(int i = 0; i < bullets.Count; i++)  
+
+			//bullets
+			for (int i = 0; i < bullets.Count; i++)  
             {
                 sin = MathF.Sin(bullets[i].Transform.RotationRadians);
                 cos = MathF.Cos(bullets[i].Transform.RotationRadians);
@@ -167,5 +163,21 @@ namespace Asteroids
 
             // Debug.WriteLine(score);
         }
+
+        void SpawnObstacle()
+        {
+	        int x = rand.Next(0, width);
+	        int y = rand.Next(0, height);
+	        int rotation = rand.Next(0, 360);
+
+	        obstacles.Add(new VectorObject("Obstacle",
+		        new Shape(0f,
+			        new SKPoint(0, 0),
+			        new SKPoint(0, 30),
+			        new SKPoint(30, 30),
+			        new SKPoint(30, 0)),
+		        new SKPoint(x, y), rotation));
+	        physicsEngine.RegisterObjects(0, obstacles);
+		}
     }
 }
