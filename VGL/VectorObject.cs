@@ -30,11 +30,19 @@ namespace VGL
             get => transform;
         }
 
+        Guid guid;
+        public Guid Guid
+		{
+			get => guid;
+		}
+
         public VectorObject(string name, Shape shape)
         {
             this.name = name;
             this.shape = shape;
             transform = new Transform();
+
+            guid = Guid.NewGuid();
         }
         public VectorObject(string name, Shape shape, Transform transform)
         {
@@ -44,6 +52,8 @@ namespace VGL
 
             if (transform.Rotation != 0f)
                 shape.Rotate(transform.Rotation);
+
+            guid = Guid.NewGuid();
         }
         public VectorObject(string name, Shape shape, SKPoint position, float rotation)
         {
@@ -57,7 +67,9 @@ namespace VGL
 
             if (rotation != 0f)
                 shape.Rotate(transform.Rotation);
-        }
+
+            guid = Guid.NewGuid();
+		}
 
         public void Draw(Canvas canvas)
         {

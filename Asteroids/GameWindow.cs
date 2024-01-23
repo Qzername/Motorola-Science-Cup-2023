@@ -13,9 +13,10 @@ namespace Asteroids
         
         PhysicsEngine physicsEngine;
 
-        VectorObject player, obstacle;
-        Shape bullet;
+        VectorObject player;
+        List<VectorObject> obstacles = new();
 
+        Shape bullet;
         List<VectorObject> bullets;
 
         bool lastSpaceState = false;
@@ -32,13 +33,13 @@ namespace Asteroids
                         new SKPoint(15,5)), 
                 new SKPoint(150,150), 0f);
 
-            obstacle = new VectorObject("Obstacle",
-                new Shape(0f,
-                    new SKPoint(0, 0),
-                    new SKPoint(0, 30),
-                    new SKPoint(30, 30),
-                    new SKPoint(30, 0)),
-                new SKPoint(30,30), 0f);
+            obstacles.Add(new VectorObject("Obstacle",
+	            new Shape(0f,
+		            new SKPoint(0, 0),
+		            new SKPoint(0, 30),
+		            new SKPoint(30, 30),
+		            new SKPoint(30, 0)),
+	            new SKPoint(30, 30), 0f));
 
             bullets = new List<VectorObject>();
 
@@ -51,7 +52,7 @@ namespace Asteroids
                 }
             });
 
-            physicsEngine.RegisterObject(0, obstacle);
+            physicsEngine.RegisterObjects(0, obstacles);
             physicsEngine.RegisterObject(1, player);
 
             physicsEngine.CollisionDetected += PhysicsEngine_CollisionDetected;
@@ -59,8 +60,40 @@ namespace Asteroids
 
         private void PhysicsEngine_CollisionDetected(VectorObject arg1, VectorObject arg2)
         {
-            if (arg1.Name == "Obstacle" && arg2.Name == "Bullet")
-                score++;
+	        if (arg1.Name == "Obstacle" && arg2.Name == "Bullet")
+	        {
+				score++;
+
+                VectorObject? obstacle = obstacles.Where(x => x.Guid == arg1.Guid).FirstOrDefault();
+
+                if (obstacle != null)
+                {
+					obstacles.Remove(obstacle);
+					physicsEngine.UnRegisterObject(0, obstacle);
+
+					VectorObject? bullet = bullets.Where(x => x.Guid == arg2.Guid).FirstOrDefault();
+
+					if (bullet != null)
+					{
+                        bullets.Remove(bullet);
+                        physicsEngine.UnRegisterObject(1, bullet);
+					}
+
+                    // Ponizej jest kod do spawnowania nowych przeszkod (test)
+					Random rand = new Random();
+                    int x = rand.Next(0, 100);
+                    int y = rand.Next(0, 100);
+
+					obstacles.Add(new VectorObject("Obstacle",
+						new Shape(0f,
+							new SKPoint(0, 0),
+							new SKPoint(0, 30),
+							new SKPoint(30, 30),
+							new SKPoint(30, 0)),
+						new SKPoint(x, y), 0f));
+                    physicsEngine.RegisterObjects(0, obstacles);
+                }  
+	        }
         }
 
         public override void Update(Canvas canvas)
@@ -113,7 +146,10 @@ namespace Asteroids
             player.Draw(canvas);
 
             //obstacle
-            obstacle.Draw(canvas);
+            foreach (VectorObject obstacle in obstacles)
+            {
+				obstacle.Draw(canvas);
+			}
         
             //bullets
             for(int i = 0; i < bullets.Count; i++)  
@@ -126,7 +162,7 @@ namespace Asteroids
                 bullets[i].Draw(canvas);
             }
 
-            Debug.WriteLine(score);
+            // Debug.WriteLine(score);
         }
     }
 }
