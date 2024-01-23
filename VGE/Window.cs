@@ -1,6 +1,7 @@
 ﻿using System.Timers;
 using System.Windows.Automation;
 using VGE.Graphics;
+using VGE.Physics;
 using VGE.WPF;
 
 namespace VGE
@@ -15,9 +16,14 @@ namespace VGE
 
         const int framerate = 120;
 
+        List<VectorObject> objects;
+        PhysicsEngine? physicsEngine;
+
         public Window() 
         { 
             mainWindow = new MainWindow();
+
+            objects = new List<VectorObject>();
 
             canvas = new Canvas();
             time = new Time();
@@ -33,18 +39,32 @@ namespace VGE
 		public int Height => (int)mainWindow.ActualHeight;
         public int Width => (int)mainWindow.ActualWidth;
 
-		void FrameUpdate(object? sender, ElapsedEventArgs e)
+        #region Zarządzanie klatkami
+        void FrameUpdate(object? sender, ElapsedEventArgs e)
         {
             time.NextFrame();
             canvas.Clear();
 
             Update(canvas);
 
+            foreach (var obj in objects)
+                obj.Update(time.DeltaTime);
+
+            foreach (var obj in objects)
+                obj.RefreshGraphics(canvas);
+
             mainWindow.SetLines(canvas.GetLines());
             mainWindow.RefreshCanvas();
         }
 
         public abstract void Update(Canvas canvas);
+        #endregion
+
+        #region Zarządzanie oknem
+        public void RegisterPhysicsEngine(PhysicsEngine physicsEngine)
+        {
+            this.physicsEngine = physicsEngine;
+        }
 
         public void Open()
         {
@@ -52,16 +72,36 @@ namespace VGE
             frameTimer.Enabled = true;
             mainWindow.ShowDialog();
         }
-
         public void Close()
         {
             frameTimer.Enabled = false;
             mainWindow.Close();
         }
+        #endregion
+
+        #region Zarządzanie obiektami
+        public void Instantiate(VectorObject prefab, int physicsLayer = -1)
+        {
+            prefab.Initialize(this);
+
+            objects.Add(prefab);
+
+            if (physicsEngine is not null && physicsLayer != -1)
+                physicsEngine.RegisterObject(physicsLayer, prefab);
+        }
+
+        public void Destroy(VectorObject objToDestroy)
+        {
+            VectorObject? obj = objects.Where(x => x.Guid == objToDestroy.Guid).FirstOrDefault();
+
+            objects.Remove(obj);
+            physicsEngine?.UnRegisterObject(0, obj);
+        }
+        #endregion
 
         /// <summary>
         /// Sprawdza czy dany przycisk jest wciśnięty.
         /// </summary>
-        protected bool KeyDown(Key key) => mainWindow.GetKey(key);
+        public bool KeyDown(Key key) => mainWindow.GetKey(key);
     }
 }

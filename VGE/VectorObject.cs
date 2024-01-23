@@ -10,7 +10,7 @@ using VGE.Graphics;
 
 namespace VGE
 {
-    public class VectorObject
+    public abstract class VectorObject
     {
         string name;
         public string Name
@@ -24,7 +24,7 @@ namespace VGE
             get => shape;
         }
 
-        Transform transform;
+        protected Transform transform;
         public Transform Transform
         {
             get => transform;
@@ -35,6 +35,8 @@ namespace VGE
 		{
 			get => guid;
 		}
+
+        protected Window window;
 
         public VectorObject(string name, Shape shape)
         {
@@ -71,22 +73,41 @@ namespace VGE
             guid = Guid.NewGuid();
 		}
 
-        public void Draw(Canvas canvas)
+        public void Initialize(Window window)
+        {
+            this.window = window;
+        }
+
+        //OBSOLETE
+        /*      public void SetPosition(float x, float y) => transform.Position = new SKPoint(x, y);
+                public void SetPosition(SKPoint position) => transform.Position = position;
+
+                public void AddPosition(float x, float y) => transform.Position += new SKPoint(x, y);
+                public void AddPosition(SKPoint position) => transform.Position += position;*/
+
+        /// <summary>
+        /// Wywołuje się przy utworzeniu obiektu, po zarejestrowaniu go w oknie.
+        /// </summary>
+        public abstract void Start();
+        /// <summary>
+        /// Wywołuje się co każdą klatke
+        /// </summary>
+        public abstract void Update(float delta);
+
+        public void RefreshGraphics(Canvas canvas)
         {
             foreach (var l in shape.CompiledShape)
                 canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
         }
 
-        public void SetPosition(float x, float y) => transform.Position = new SKPoint(x, y);
-        public void SetPosition(SKPoint position) => transform.Position = position;
-
-        public void AddPosition(float x, float y) => transform.Position += new SKPoint(x, y);
-        public void AddPosition(SKPoint position) => transform.Position += position;
-
-        public void Rotate(float angle)
+        /// <summary>
+        /// Obrót figury wraz z obrotem kszałtu
+        /// </summary>
+        protected void Rotate(float angle)
         {
             shape.Rotate(angle);
             transform.Rotation = (transform.Rotation + angle) % 360;
         }
+
     }
 }
