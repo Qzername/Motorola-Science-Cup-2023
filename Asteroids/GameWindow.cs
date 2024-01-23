@@ -110,8 +110,6 @@ namespace Asteroids
 		            glideSpeed = 0f;
             }
 
-            Debug.WriteLine(glideSpeed);
-
             player.Draw(canvas);
 
             //obstacle
