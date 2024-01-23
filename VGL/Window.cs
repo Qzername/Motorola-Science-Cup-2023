@@ -26,6 +26,9 @@ namespace VGL
             frameTimer.Elapsed += FrameUpdate;
         }
 
+        public double Height => mainWindow.Height;
+        public double Width => mainWindow.Width;
+
         void FrameUpdate(object? sender, ElapsedEventArgs e)
         {
             time.NextFrame();

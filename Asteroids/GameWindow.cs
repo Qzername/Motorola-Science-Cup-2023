@@ -81,8 +81,8 @@ namespace Asteroids
 
                     // Ponizej jest kod do spawnowania nowych przeszkod (test)
 					Random rand = new Random();
-                    int x = rand.Next(0, 100);
-                    int y = rand.Next(0, 100);
+                    int x = rand.Next(0, (int)Width);
+                    int y = rand.Next(0, (int)Height);
 
 					obstacles.Add(new VectorObject("Obstacle",
 						new Shape(0f,
