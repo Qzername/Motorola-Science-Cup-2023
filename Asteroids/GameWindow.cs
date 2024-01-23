@@ -23,7 +23,9 @@ namespace Asteroids
 
         int score = 0;
 
-        public GameWindow() : base()
+        Random rand = new();
+
+		public GameWindow() : base()
         {
             player = new VectorObject("Player",
                 new Shape(-90f, 
@@ -31,7 +33,7 @@ namespace Asteroids
                         new SKPoint(15,40), 
                         new SKPoint(30,0), 
                         new SKPoint(15,5)), 
-                new SKPoint(150,150), 0f);
+                new SKPoint((int)(Width / 2),(int)(Height / 2)), 0f);
 
             obstacles.Add(new VectorObject("Obstacle",
 	            new Shape(0f,
@@ -80,7 +82,6 @@ namespace Asteroids
 					}
 
                     // Ponizej jest kod do spawnowania nowych przeszkod (test)
-					Random rand = new Random();
                     int x = rand.Next(0, (int)Width);
                     int y = rand.Next(0, (int)Height);
 
