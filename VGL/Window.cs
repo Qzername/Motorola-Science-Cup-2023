@@ -26,10 +26,10 @@ namespace VGL
             frameTimer.Elapsed += FrameUpdate;
         }
 
-        public double Height => mainWindow.Height;
-        public double Width => mainWindow.Width;
+        public int Height => (int)mainWindow.ActualHeight;
+        public int Width => (int)mainWindow.ActualWidth;
 
-        void FrameUpdate(object? sender, ElapsedEventArgs e)
+		void FrameUpdate(object? sender, ElapsedEventArgs e)
         {
             time.NextFrame();
             canvas.Clear();

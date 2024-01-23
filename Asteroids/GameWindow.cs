@@ -10,7 +10,7 @@ namespace Asteroids
     {
 	    const float minGlideSpeed = 0f, maxGlideSpeed = 2.0f;
         float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = minGlideSpeed;
-        int score, width, height;
+        int score;
 
         bool lastSpaceState;
         
@@ -26,16 +26,13 @@ namespace Asteroids
 
 		public GameWindow() : base()
         {
-	        width = (int)Width;
-	        height = (int)Height;
-
 			player = new VectorObject("Player",
                 new Shape(-90f, 
                         new SKPoint(0,0), 
                         new SKPoint(15,40), 
                         new SKPoint(30,0), 
                         new SKPoint(15,5)), 
-                new SKPoint(width / 2, height / 2), 0f);
+                new SKPoint(Width / 2, Height / 2), 0f);
 
             bullets = new List<VectorObject>();
 
@@ -83,10 +80,8 @@ namespace Asteroids
 
         public override void Update(Canvas canvas)
         {
-            //Ten kod jest testowy jkbc więc pozmieniaj wszystko według swoich upodobań
-
-            //player
-            float speedDelta = speed * time.DeltaTime;
+			//player
+			float speedDelta = speed * time.DeltaTime;
             float rotationDelta = rotationSpeed * time.DeltaTime;
 
             if (KeyDown(Key.LeftShift) || KeyDown(Key.RightShift))
@@ -138,8 +133,13 @@ namespace Asteroids
 	            else
 		            glideSpeed = 0f;
             }
+            
+            if (player.Transform.Position.X < 0 || player.Transform.Position.X > Width)
+	            player.SetPosition(Width / 2, Height / 2);
+			else if (player.Transform.Position.Y < 0 || player.Transform.Position.Y > Height)
+				player.SetPosition(Width / 2, Height / 2);
 
-            player.Draw(canvas);
+			player.Draw(canvas);
 
             // 1% szans, aby stworzyc przeszkode (kazda klatke)
             int chance = rand.Next(1, 101);
@@ -173,8 +173,8 @@ namespace Asteroids
 
         void SpawnObstacle()
         {
-	        int x = rand.Next(0, width);
-	        int y = rand.Next(0, height);
+	        int x = rand.Next(0, Width);
+	        int y = rand.Next(0, Height);
 	        int rotation = rand.Next(0, 360);
 
 	        obstacles.Add(new VectorObject("Obstacle",
