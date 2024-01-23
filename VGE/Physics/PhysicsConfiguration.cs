@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VGL.Physics
+namespace VGE.Physics
 {
     public struct PhysicsConfiguration
     {

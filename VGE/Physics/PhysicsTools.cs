@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace VGL.Physics
+namespace VGE.Physics
 {
     public static class PhysicsTools
     {

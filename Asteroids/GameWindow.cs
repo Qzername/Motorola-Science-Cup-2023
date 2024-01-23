@@ -1,8 +1,8 @@
 ﻿using SkiaSharp;
 using System.Diagnostics;
-using VGL;
-using VGL.Graphics;
-using VGL.Physics;
+using VGE;
+using VGE.Graphics;
+using VGE.Physics;
 
 namespace Asteroids
 {
@@ -183,8 +183,8 @@ namespace Asteroids
             if (chance == 100)
 				SpawnObstacle();
 
-			//obstacle
-			for (int i = 0; i < obstacles.Count; i++)
+            //obstacle
+            for (int i = 0; i < obstacles.Count; i++)
 			{
 				sin = MathF.Sin(obstacles[i].Transform.RotationRadians);
 				cos = MathF.Cos(obstacles[i].Transform.RotationRadians);

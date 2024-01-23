@@ -6,9 +6,9 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using VGL.Graphics;
+using VGE.Graphics;
 
-namespace VGL
+namespace VGE
 {
     public class VectorObject
     {

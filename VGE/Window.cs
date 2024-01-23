@@ -1,9 +1,9 @@
 ﻿using System.Timers;
 using System.Windows.Automation;
-using VGL.Graphics;
-using VGL.WPF;
+using VGE.Graphics;
+using VGE.WPF;
 
-namespace VGL
+namespace VGE
 {
     public abstract class Window
     {
@@ -13,7 +13,7 @@ namespace VGL
         Canvas canvas;
         protected Time time;
 
-        const int framerate = 60;
+        const int framerate = 120;
 
         public Window() 
         { 

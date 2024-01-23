@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 
-namespace VGL.Graphics
+namespace VGE.Graphics
 {
     public class Shape
     {

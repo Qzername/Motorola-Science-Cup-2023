@@ -1,8 +1,8 @@
 ﻿using SkiaSharp;
 using System.Diagnostics;
-using VGL;
-using VGL.Graphics;
-using VGL.WPF;
+using VGE;
+using VGE.Graphics;
+using VGE.WPF;
 
 namespace Sandbox
 {

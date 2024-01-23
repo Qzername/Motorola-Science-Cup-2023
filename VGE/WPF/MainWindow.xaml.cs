@@ -1,12 +1,12 @@
 ﻿using SkiaSharp.Views.Desktop;
 using SkiaSharp;
 using System.Diagnostics;
-using VGL.Graphics;
+using VGE.Graphics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace VGL.WPF
+namespace VGE.WPF
 {
     /// <summary>
     /// Logika interakcji dla klasy MainWindow.xaml

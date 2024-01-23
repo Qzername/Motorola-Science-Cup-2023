@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using VGL;
+using VGE;
 
 namespace Sandbox
 {

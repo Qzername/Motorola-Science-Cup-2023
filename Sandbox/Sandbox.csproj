@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VGL\VGL.csproj" />
+    <ProjectReference Include="..\VGE\VGE.csproj" />
   </ItemGroup>
-
 </Project>

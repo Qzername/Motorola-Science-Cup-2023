@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Timers;
 
-namespace VGL.Physics
+namespace VGE.Physics
 {
     public class PhysicsEngine
     {
