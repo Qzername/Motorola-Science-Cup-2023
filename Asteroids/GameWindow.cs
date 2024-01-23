@@ -96,7 +96,7 @@ namespace Asteroids
 
             if (isSpacePressed && !lastSpaceState)
             {
-                var bullet = new VectorObject("Bullet", new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
+                var bullet = new VectorObject("Bullet", new Shape(0f, new SKPoint(0, 0), new SKPoint(1, 0)),
                             player.Transform.Position + player.Shape.CompiledShape[0].EndPosition, //wykorzystuje tutaj shape gracza aby respic w drugim punkcie pocisk (zobacz shape gracza)
                             player.Transform.Rotation);
 
