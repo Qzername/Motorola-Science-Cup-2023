@@ -25,14 +25,14 @@ namespace Asteroids
         Random rand = new();
 
 		public GameWindow() : base()
-        {
+		{
 			player = new VectorObject("Player",
                 new Shape(-90f, 
                         new SKPoint(0,0), 
                         new SKPoint(15,40), 
                         new SKPoint(30,0), 
                         new SKPoint(15,5)), 
-                new SKPoint(Width / 2, Height / 2), 0f);
+                new SKPoint(preLaunchWidth / 2, preLaunchHeight / 2), 0f);
 
             bullets = new List<VectorObject>();
 
@@ -173,9 +173,52 @@ namespace Asteroids
 
         void SpawnObstacle()
         {
-	        int x = rand.Next(0, Width);
-	        int y = rand.Next(0, Height);
-	        int rotation = rand.Next(0, 360);
+			// Strony
+			// 0 -> Lewo
+			// 1 -> Prawo
+			// 2 -> Gora
+			// 3 -> Dol
+			
+			// Rotacja
+			// 0 -> w Prawo
+			// 180 -> w Lewo
+			// 270 -> w Gore
+			// 90 -> w Dol
+
+			// maxValue w rand.Next music byc +1, aby oryginalny maxValue tez byl brany pod uwage
+			
+			int x, y, rotation, side = rand.Next(0, 3 + 1);
+
+	        switch (side)
+	        {
+		        case 0:
+			        x = 0;
+			        y = rand.Next(0, Height);
+			        rotation = rand.Next(-45, 45 + 1);
+					// 0 - 45 = -45, 0 + 45 = 45
+					break;
+		        case 1:
+			        x = Width;
+			        y = rand.Next(0, Height);
+					rotation = rand.Next(135, 225 + 1);
+					// 180 - 45 = 135, 180 + 45 = 225
+					break;
+		        case 2:
+			        x = rand.Next(0, Width);
+			        y = 0;
+			        rotation = rand.Next(90, 135 + 1);
+			        // 90 - 45 = 45, 90 + 45 = 135
+					break;
+		        case 3:
+			        x = rand.Next(0, Width);
+			        y = Height;
+			        rotation = rand.Next(225, 315 + 1);
+			        // 270 - 45 = 225, 270 + 45 = 315
+					break;
+		        default:
+			        x = y = rotation = 0;
+			        break;
+	        }
 
 	        obstacles.Add(new VectorObject("Obstacle",
 		        new Shape(0f,

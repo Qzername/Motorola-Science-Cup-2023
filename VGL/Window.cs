@@ -25,8 +25,12 @@ namespace VGL
             frameTimer = new System.Timers.Timer(1000 / framerate);
             frameTimer.Elapsed += FrameUpdate;
         }
+        
+        // Uzywaj preLaunchHeight i preLaunchWidth zamiast Height i Width TYLKO w konstruktorze
+        public int preLaunchHeight => (int)mainWindow.Height;
+        public int preLaunchWidth => (int)mainWindow.Width;
 
-        public int Height => (int)mainWindow.ActualHeight;
+		public int Height => (int)mainWindow.ActualHeight;
         public int Width => (int)mainWindow.ActualWidth;
 
 		void FrameUpdate(object? sender, ElapsedEventArgs e)
