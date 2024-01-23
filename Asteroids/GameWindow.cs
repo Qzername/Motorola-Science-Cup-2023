@@ -75,6 +75,10 @@ namespace Asteroids
 					}
                 }  
 	        }
+	        else if (arg1.Name == "Obstacle" && arg2.Name == "Player")
+	        {
+				// Game over
+			}
         }
 
         public override void Update(Canvas canvas)
