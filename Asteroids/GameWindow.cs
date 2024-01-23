@@ -7,9 +7,10 @@ using VGL.Physics;
 namespace Asteroids
 {
     internal class GameWindow : Window
-    {
-        float speed = 120, rotationSpeed = 90, bulletSpeed = 10;
-
+    { 
+		const float defaultGlideSpeed = 5;
+        float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = defaultGlideSpeed;
+        
         PhysicsEngine physicsEngine;
 
         VectorObject player, obstacle;
@@ -18,6 +19,7 @@ namespace Asteroids
         List<VectorObject> bullets;
 
         bool lastSpaceState = false;
+        bool lastUpState = false;
 
         int score = 0;
 
@@ -95,8 +97,18 @@ namespace Asteroids
             float cos = MathF.Cos(player.Transform.RotationRadians);
 
             if (KeyDown(Key.Up) || KeyDown(Key.W))
+            {
 				player.AddPosition(cos * speedDelta, sin * speedDelta);
+				glideSpeed = defaultGlideSpeed;
+				lastUpState = true;
+            }
 
+            if (lastUpState)
+				player.AddPosition(cos * glideSpeed, sin * glideSpeed);
+
+            if (glideSpeed > 0.1f)
+	            glideSpeed -= 0.05f;
+            
             player.Draw(canvas);
 
             //obstacle
