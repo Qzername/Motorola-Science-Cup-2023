@@ -70,9 +70,9 @@ namespace Asteroids
             float speedDelta = speed * time.DeltaTime;
             float rotationDelta = rotationSpeed * time.DeltaTime;
 
-            if(KeyDown(Key.Left) || KeyDown(Key.A))
+            if (KeyDown(Key.Left) || KeyDown(Key.A))
                 player.Rotate(rotationDelta * -1f);
-            else if(KeyDown(Key.Right) || KeyDown(Key.D))
+            else if (KeyDown(Key.Right) || KeyDown(Key.D))
                 player.Rotate(rotationDelta);
 
             bool isSpacePressed = KeyDown(Key.Space);
@@ -94,7 +94,8 @@ namespace Asteroids
             float sin = MathF.Sin(player.Transform.RotationRadians);
             float cos = MathF.Cos(player.Transform.RotationRadians);
 
-            player.AddPosition(cos * speedDelta, sin * speedDelta);
+            if (KeyDown(Key.Up) || KeyDown(Key.W))
+				player.AddPosition(cos * speedDelta, sin * speedDelta);
 
             player.Draw(canvas);
 
