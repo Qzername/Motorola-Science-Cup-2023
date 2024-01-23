@@ -33,15 +33,40 @@ namespace VGL.Physics
             physicsTimer.Enabled = true;
         }
 
-        public void RegisterObject(int layer, VectorObject obj)
+        public void RegisterObjects(int layer, List<VectorObject> objs)
+        {
+	        if (!objects.ContainsKey(layer))
+		        objects[layer] = new List<VectorObject>();
+
+	        foreach (VectorObject obj in objs)
+	        {
+	            var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+	            if (foundObject == null)
+		            objects[layer].Add(obj);
+	        }
+		}
+
+		public void RegisterObject(int layer, VectorObject obj)
         {
             if (!objects.ContainsKey(layer))
                 objects[layer] = new List<VectorObject>();
 
-            objects[layer].Add(obj);
+            var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            if (foundObject == null)
+	            objects[layer].Add(obj);
+		}
+
+        public void UnRegisterObject(int layer, VectorObject obj)
+        {
+	        if (!objects.ContainsKey(layer))
+		        objects[layer] = new List<VectorObject>();
+
+	        var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            if (foundObject != null)
+                objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
         }
 
-        void PhysicsUpdate(object? sender, ElapsedEventArgs e)
+		void PhysicsUpdate(object? sender, ElapsedEventArgs e)
         {
             List<int> checkedLayer = new List<int>();
 
@@ -54,14 +79,14 @@ namespace VGL.Physics
             {
                 checkedLayer.Add(layer.Key);
 
-                var objectsInCurrentLayer = objects[layer.Key]; 
+                var objectsInCurrentLayer = objects[layer.Key].ToArray(); 
 
                 foreach (var collidingLayer in layer.Value)
                 {
                     if (checkedLayer.Contains(collidingLayer))
                         continue;
 
-                    var objectsInCollidingLayer = objects[collidingLayer];
+                    var objectsInCollidingLayer = objects[collidingLayer].ToArray();
 
                     //faktycznie sprawdzanie kolizji
                     foreach(var obj1 in objectsInCurrentLayer)
