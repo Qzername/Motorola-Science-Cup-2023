@@ -10,9 +10,10 @@ namespace Asteroids
     {
 	    const float minGlideSpeed = 0f, maxGlideSpeed = 2.0f;
         float speed = 120, rotationSpeed = 90, bulletSpeed = 10, glideSpeed = minGlideSpeed;
-        int score;
+        int score, obstacleRotationOffset = 45;
+		// obstacleRotationOffset nie moze byc wiekszy niz 45, poniewaz wtedy przeszkoda moze byc poza ekranem
 
-        bool lastSpaceState;
+		bool lastSpaceState;
         
         PhysicsEngine physicsEngine;
 
@@ -182,8 +183,8 @@ namespace Asteroids
 			// Rotacja
 			// 0 -> w Prawo
 			// 180 -> w Lewo
+			// 90 -> w Dol			
 			// 270 -> w Gore
-			// 90 -> w Dol
 
 			// maxValue w rand.Next music byc +1, aby oryginalny maxValue tez byl brany pod uwage
 			
@@ -194,26 +195,22 @@ namespace Asteroids
 		        case 0:
 			        x = 0;
 			        y = rand.Next(0, Height);
-			        rotation = rand.Next(-45, 45 + 1);
-					// 0 - 45 = -45, 0 + 45 = 45
+			        rotation = rand.Next(0 - obstacleRotationOffset, 0 + obstacleRotationOffset + 1);
 					break;
 		        case 1:
 			        x = Width;
 			        y = rand.Next(0, Height);
-					rotation = rand.Next(135, 225 + 1);
-					// 180 - 45 = 135, 180 + 45 = 225
+					rotation = rand.Next(180 - obstacleRotationOffset, 180 + obstacleRotationOffset + 1);
 					break;
 		        case 2:
 			        x = rand.Next(0, Width);
 			        y = 0;
-			        rotation = rand.Next(90, 135 + 1);
-			        // 90 - 45 = 45, 90 + 45 = 135
+			        rotation = rand.Next(90 - obstacleRotationOffset, 90 + obstacleRotationOffset + 1);
 					break;
 		        case 3:
 			        x = rand.Next(0, Width);
 			        y = Height;
-			        rotation = rand.Next(225, 315 + 1);
-			        // 270 - 45 = 225, 270 + 45 = 315
+			        rotation = rand.Next(270 - obstacleRotationOffset, 270 + obstacleRotationOffset + 1);
 					break;
 		        default:
 			        x = y = rotation = 0;
