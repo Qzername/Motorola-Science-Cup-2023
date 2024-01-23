@@ -95,8 +95,8 @@ namespace VGE
         {
             VectorObject? obj = objects.Where(x => x.Guid == objToDestroy.Guid).FirstOrDefault();
 
+            physicsEngine?.UnregisterObject(obj);
             objects.Remove(obj);
-            physicsEngine?.UnRegisterObject(0, obj);
         }
         #endregion
 

@@ -38,8 +38,6 @@ namespace Asteroids
 
         private void PhysicsEngine_CollisionDetected(VectorObject arg1, VectorObject arg2)
         {
-            Debug.WriteLine(arg1.Name + " " + arg2.Name);
-
             if (arg1.Name == "Bullet" && arg2.Name == "Obstacle")
 	        {
 				score++;
@@ -55,7 +53,7 @@ namespace Asteroids
 
         public override void Update(Canvas canvas)
         {
-			//Debug.WriteLine($"Score: {score}");
+			Debug.WriteLine($"Score: {score}");
 
             // 1% szans, aby stworzyc przeszkode (kazda klatke)
             int chance = rand.Next(1, 101);

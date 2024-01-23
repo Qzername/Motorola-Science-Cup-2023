@@ -57,13 +57,22 @@ namespace VGE.Physics
 	            objects[layer].Add(obj);
 		}
 
-        public void UnRegisterObject(int layer, VectorObject obj)
+        public void UnregisterObject(VectorObject obj)
         {
-	        if (!objects.ContainsKey(layer))
-		        objects[layer] = new List<VectorObject>();
-
             if (obj is null)
                 return;
+
+            int layer = 0;
+
+            foreach(var kv in objects)
+                if(kv.Value.Any(x=>x.Guid == obj.Guid))
+                {
+                    layer = kv.Key;
+                    break;
+                }
+
+	        if (!objects.ContainsKey(layer))
+		        objects[layer] = new List<VectorObject>();
 
 	        var foundObject = objects[layer].ToArray().Where(x =>  x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject != null)
