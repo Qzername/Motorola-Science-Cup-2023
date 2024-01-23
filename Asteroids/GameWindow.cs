@@ -186,7 +186,7 @@ namespace Asteroids
 			// 90 -> w Dol			
 			// 270 -> w Gore
 
-			// maxValue w rand.Next music byc +1, aby oryginalny maxValue tez byl brany pod uwage
+			// maxValue w rand.Next musi byc +1, aby oryginalny maxValue tez byl brany pod uwage
 			
 			int x, y, rotation, side = rand.Next(0, 3 + 1);
 
