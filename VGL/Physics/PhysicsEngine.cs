@@ -40,7 +40,7 @@ namespace VGL.Physics
 
 	        foreach (VectorObject obj in objs)
 	        {
-	            var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+	            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
 	            if (foundObject == null)
 		            objects[layer].Add(obj);
 	        }
@@ -51,7 +51,7 @@ namespace VGL.Physics
             if (!objects.ContainsKey(layer))
                 objects[layer] = new List<VectorObject>();
 
-            var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject == null)
 	            objects[layer].Add(obj);
 		}
@@ -61,7 +61,7 @@ namespace VGL.Physics
 	        if (!objects.ContainsKey(layer))
 		        objects[layer] = new List<VectorObject>();
 
-	        var foundObject = objects[layer].Where(x => x.Guid == obj.Guid).FirstOrDefault();
+	        var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject != null)
                 objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
         }
@@ -77,7 +77,10 @@ namespace VGL.Physics
 
             foreach (var layer in physicsConfiguration.LayerConfiguration)
             {
-                checkedLayer.Add(layer.Key);
+	            if (!objects.ContainsKey(layer.Key))
+		            objects[layer.Key] = new List<VectorObject>();
+
+				checkedLayer.Add(layer.Key);
 
                 var objectsInCurrentLayer = objects[layer.Key].ToArray(); 
 
