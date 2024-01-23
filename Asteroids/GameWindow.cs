@@ -70,9 +70,9 @@ namespace Asteroids
             float speedDelta = speed * time.DeltaTime;
             float rotationDelta = rotationSpeed * time.DeltaTime;
 
-            if(KeyDown(Key.Left))
+            if(KeyDown(Key.Left) || KeyDown(Key.A))
                 player.Rotate(rotationDelta * -1f);
-            else if(KeyDown(Key.Right))
+            else if(KeyDown(Key.Right) || KeyDown(Key.D))
                 player.Rotate(rotationDelta);
 
             bool isSpacePressed = KeyDown(Key.Space);
