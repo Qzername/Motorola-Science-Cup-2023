@@ -8,7 +8,7 @@ namespace Asteroids.Objects
     {
         const float ObstacleSpeed = 0.5f;
 
-        public Obstacle(string name, Shape shape, SKPoint position, float rotation) : base(name, shape, position, rotation)
+        public Obstacle(Shape shape, SKPoint position, float rotation) : base("Obstacle", shape, position, rotation)
         {
         }
 

@@ -8,7 +8,7 @@ namespace Asteroids.Objects
     {
         const float BulletSpeed = 10f;
 
-        public Bullet(string name, Shape shape, SKPoint position, float rotation) : base(name, shape, position, rotation)
+        public Bullet(Shape shape, SKPoint position, float rotation) : base("Bullet", shape, position, rotation)
         {
         }
 

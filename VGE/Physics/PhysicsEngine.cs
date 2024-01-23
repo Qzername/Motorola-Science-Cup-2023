@@ -1,5 +1,6 @@
 ﻿using SkiaSharp;
 using System.Diagnostics;
+using System.Security.AccessControl;
 using System.Timers;
 
 namespace VGE.Physics
@@ -61,7 +62,10 @@ namespace VGE.Physics
 	        if (!objects.ContainsKey(layer))
 		        objects[layer] = new List<VectorObject>();
 
-	        var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            if (obj is null)
+                return;
+
+	        var foundObject = objects[layer].ToArray().Where(x =>  x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject != null)
                 objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
         }
@@ -77,23 +81,26 @@ namespace VGE.Physics
 
             foreach (var layer in physicsConfiguration.LayerConfiguration)
             {
-	            if (!objects.ContainsKey(layer.Key))
-		            objects[layer.Key] = new List<VectorObject>();
+                if (!objects.ContainsKey(layer.Key))
+                    objects[layer.Key] = new List<VectorObject>();
 
-				checkedLayer.Add(layer.Key);
+                checkedLayer.Add(layer.Key);
 
-                var objectsInCurrentLayer = objects[layer.Key].ToArray(); 
+                var objectsInCurrentLayer = objects[layer.Key].ToArray();
 
                 foreach (var collidingLayer in layer.Value)
                 {
                     if (checkedLayer.Contains(collidingLayer))
                         continue;
 
+                    if (!objects.ContainsKey(collidingLayer)) //jezeli nie ma obiektów na danej warstwie
+                        continue;
+
                     var objectsInCollidingLayer = objects[collidingLayer].ToArray();
 
                     //faktycznie sprawdzanie kolizji
-                    foreach(var obj1 in objectsInCurrentLayer)
-                        foreach(var obj2 in objectsInCollidingLayer)
+                    foreach (var obj1 in objectsInCurrentLayer)
+                        foreach (var obj2 in objectsInCollidingLayer)
                             if (PhysicsTools.CheckCollisionAABB(
                                 obj1.Transform.Position + obj1.Shape.TopLeft,
                                 obj1.Transform.Position + obj1.Shape.BottomRight,
@@ -103,7 +110,6 @@ namespace VGE.Physics
 
                 }
             }
-
         }
     }
 }

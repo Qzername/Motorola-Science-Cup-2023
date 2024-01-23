@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Text.Json.Serialization.Metadata;
+using System.Timers;
 using System.Windows.Automation;
 using VGE.Graphics;
 using VGE.Physics;
@@ -47,11 +48,11 @@ namespace VGE
 
             Update(canvas);
 
-            foreach (var obj in objects)
-                obj.Update(time.DeltaTime);
+            for(int i = 0; i < objects.Count; i++)
+                objects[i].Update(time.DeltaTime);
 
-            foreach (var obj in objects)
-                obj.RefreshGraphics(canvas);
+            for (int i = 0; i < objects.Count; i++)
+                objects[i].RefreshGraphics(canvas);
 
             mainWindow.SetLines(canvas.GetLines());
             mainWindow.RefreshCanvas();

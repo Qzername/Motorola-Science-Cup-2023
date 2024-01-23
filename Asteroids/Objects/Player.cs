@@ -25,12 +25,11 @@ namespace Asteroids.Objects
 
             if (isSpacePressed && !lastSpaceState)
             {
-                var bullet = new Bullet("Bullet",
-                    new Shape(0f, new SKPoint(0, 0), new SKPoint(1, 0)),
+                var bullet = new Bullet(new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
                         transform.Position + Shape.CompiledShape[0].EndPosition,
                         transform.Rotation);
 
-                window.Instantiate(bullet,(int)PhysicsLayers.Other);
+                window.Instantiate(bullet,(int)PhysicsLayers.Player);
                 lastSpaceState = true;
             }
             else if (!isSpacePressed && lastSpaceState)
