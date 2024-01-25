@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -38,57 +39,33 @@ namespace VGE
 
         protected Window window;
 
-        public VectorObject(string name, Shape shape)
+        public VectorObject()
         {
-            this.name = name;
-            this.shape = shape;
-            transform = new Transform();
-
             guid = Guid.NewGuid();
         }
-        public VectorObject(string name, Shape shape, Transform transform)
-        {
-            this.name = name;
-            this.shape = shape;
-            this.transform = transform;
-
-            if (transform.Rotation != 0f)
-                shape.Rotate(transform.Rotation);
-
-            guid = Guid.NewGuid();
-        }
-        public VectorObject(string name, Shape shape, SKPoint position, float rotation)
-        {
-            this.name = name;
-            this.shape = shape;
-            transform = new Transform()
-            {
-                Position = position,
-                Rotation = rotation
-            };
-
-            if (rotation != 0f)
-                shape.Rotate(transform.Rotation);
-
-            guid = Guid.NewGuid();
-		}
 
         public void Initialize(Window window)
         {
             this.window = window;
+
+            var setup = Start();
+
+            name = setup.Name;
+            shape = setup.Shape;
+            transform = new Transform()
+            {
+                Position = setup.Position,
+                Rotation = setup.Rotation,
+            };
+
+            if (transform.Rotation != 0f)
+                shape.Rotate(transform.Rotation);
         }
-
-        //OBSOLETE
-        /*      public void SetPosition(float x, float y) => transform.Position = new SKPoint(x, y);
-                public void SetPosition(SKPoint position) => transform.Position = position;
-
-                public void AddPosition(float x, float y) => transform.Position += new SKPoint(x, y);
-                public void AddPosition(SKPoint position) => transform.Position += position;*/
 
         /// <summary>
         /// Wywołuje się przy utworzeniu obiektu, po zarejestrowaniu go w oknie.
         /// </summary>
-        public abstract void Start();
+        public abstract Setup Start();
         /// <summary>
         /// Wywołuje się co każdą klatke
         /// </summary>
@@ -108,6 +85,21 @@ namespace VGE
             shape.Rotate(angle);
             transform.Rotation = (transform.Rotation + angle) % 360;
         }
+        
+        public struct Setup
+        {
+            public string Name;
+            public Shape Shape;
+            public SKPoint Position; 
+            public float Rotation;
 
+            public Setup(string name, Shape shape, SKPoint position, float rotation)
+            {
+                Name = name;
+                Shape = shape;
+                Position = position;
+                Rotation = rotation;
+            }
+        }
     }
 }

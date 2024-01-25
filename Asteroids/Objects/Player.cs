@@ -11,12 +11,19 @@ namespace Asteroids.Objects
     
         bool lastSpaceState;
 
-        public Player(Shape shape, SKPoint position, float rotation) : base("Player", shape, position,rotation)
+        public override Setup Start()
         {
-        }
-
-        public override void Start()
-        {
+            return new Setup()
+            {
+                Name = "Player",
+                Shape = new Shape(-90f,
+                        new SKPoint(0, 0),
+                        new SKPoint(15, 40),
+                        new SKPoint(30, 0),
+                        new SKPoint(15, 5)),
+                Position = new SKPoint(window.preLaunchWidth / 2, window.preLaunchHeight / 2),
+                Rotation = 0f,
+            };
         }
 
         public override void Update(float deltaTime)
@@ -25,11 +32,10 @@ namespace Asteroids.Objects
 
             if (isSpacePressed && !lastSpaceState)
             {
-                var bullet = new Bullet(new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
-                        transform.Position + Shape.CompiledShape[0].EndPosition,
-                        transform.Rotation);
-
+                var bullet = new Bullet();
                 window.Instantiate(bullet,(int)PhysicsLayers.Player);
+                bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation);
+
                 lastSpaceState = true;
             }
             else if (!isSpacePressed && lastSpaceState)

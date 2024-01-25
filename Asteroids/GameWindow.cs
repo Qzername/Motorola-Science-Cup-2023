@@ -27,13 +27,7 @@ namespace Asteroids
             physicsEngine.CollisionDetected += PhysicsEngine_CollisionDetected;
             RegisterPhysicsEngine(physicsEngine);
 
-            var player = new Player(new Shape(-90f, 
-                        new SKPoint(0,0), 
-                        new SKPoint(15,40), 
-                        new SKPoint(30,0), 
-                        new SKPoint(15,5)), 
-                new SKPoint(preLaunchWidth / 2, preLaunchHeight / 2), 0f);
-			Instantiate(player, (int)PhysicsLayers.Player);
+			Instantiate(new Player(), (int)PhysicsLayers.Player);
         }
 
         private void PhysicsEngine_CollisionDetected(VectorObject arg1, VectorObject arg2)
@@ -106,15 +100,9 @@ namespace Asteroids
 			        break;
 	        }
 
-			var obstacle = new Obstacle(
-				new Shape(0f,
-					new SKPoint(0, 0),
-					new SKPoint(0, 30),
-					new SKPoint(30, 30),
-					new SKPoint(30, 0)),
-				new SKPoint(x, y), rotation);
-
+			var obstacle = new Obstacle();
 			Instantiate(obstacle, (int)PhysicsLayers.Other);
-		}
+            obstacle.Setup(new SKPoint(x, y), rotation);
+        }
     }
 }

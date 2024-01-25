@@ -8,12 +8,25 @@ namespace Asteroids.Objects
     {
         const float ObstacleSpeed = 0.5f;
 
-        public Obstacle(Shape shape, SKPoint position, float rotation) : base("Obstacle", shape, position, rotation)
+        public override Setup Start()
         {
+            return new Setup()
+            {
+                Name = "Obstacle",
+                Shape = new Shape(0f,
+                    new SKPoint(0, 0),
+                    new SKPoint(0, 30),
+                    new SKPoint(30, 30),
+                    new SKPoint(30, 0)),
+                Position = new SKPoint(0, 0),
+                Rotation = 0f
+            };
         }
 
-        public override void Start()
+        public void Setup(SKPoint position, float rotation)
         {
+            transform.Position = position;
+            Rotate(rotation);
         }
 
         public override void Update(float deltaTime)

@@ -8,12 +8,21 @@ namespace Asteroids.Objects
     {
         const float BulletSpeed = 10f;
 
-        public Bullet(Shape shape, SKPoint position, float rotation) : base("Bullet", shape, position, rotation)
+        public override Setup Start()
         {
+            return new Setup()
+            {
+                Name = "Bullet",
+                Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
+                Position = new SKPoint(0,0),
+                Rotation = 0f,
+            };
         }
 
-        public override void Start()
+        public void Setup(SKPoint position, float rotation)
         {
+            transform.Position = position;
+            Rotate(rotation);
         }
 
         public override void Update(float deltaTime)
