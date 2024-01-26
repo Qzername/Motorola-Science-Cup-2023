@@ -123,7 +123,7 @@ namespace Asteroids.Objects
             if (tRotation < 0)
                 tRotation = 360 + tRotation;
 
-            if (tRotation - 45 <= tPrevRotation && tPrevRotation <= tRotation + 45)
+            if (tRotation - 60 <= tPrevRotation && tPrevRotation <= tRotation + 60)
                 return false;
 
             return true;
