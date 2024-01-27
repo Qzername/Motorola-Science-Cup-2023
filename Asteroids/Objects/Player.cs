@@ -8,7 +8,7 @@ namespace Asteroids.Objects
 {
     public class Player : PhysicsObject
     {
-        const float minSpeed = 0, maxSpeed = 300;
+        const float minSpeed = 0, maxSpeed = 500;
         float speed = 0, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
         bool lastSpaceState;
@@ -65,29 +65,29 @@ namespace Asteroids.Objects
 
             if (window.KeyDown(Key.Up) || window.KeyDown(Key.W))
             {
-                // jezeli poprzednia zarejestrowana rotacja jest w tym samym kierunku co aktualna rotacja, to zwiekszaj predkosc
                 if (ShouldSlow())
                 {
-                    if (speed - maxSpeed / 100 > minSpeed)
+                    if (speed - maxSpeed / 100 > 20)
                         speed -= maxSpeed / 100;
                     else
                     {
-                        prevRotation = transform.Rotation;
-                        prevRotationRadias = transform.RotationRadians;
-                        speed = minSpeed;
-                    }
+                        speed = 20;
+						prevRotation = transform.Rotation;
+						prevRotationRadias = transform.RotationRadians;
+					}
                 }
                 else
                 {
-                    prevRotation = transform.Rotation;
-                    prevRotationRadias = transform.RotationRadians;
                     if (speed + maxSpeed / 100 < maxSpeed)
                         speed += maxSpeed / 100;
                     else
                         speed = maxSpeed;
-                }
 
-                transform.Position.X += cos * speedDelta;
+					prevRotation = transform.Rotation;
+					prevRotationRadias = transform.RotationRadians;
+				}
+
+				transform.Position.X += cos * speedDelta;
                 transform.Position.Y += sin * speedDelta;
             }
             else if (window.KeyDown(Key.Down) || window.KeyDown(Key.S))
@@ -123,15 +123,10 @@ namespace Asteroids.Objects
 
         bool ShouldSlow()
         {
-            float tPrevRotation = prevRotation;
-            float tRotation = transform.Rotation;
+            float tPrevRotation = 360 + prevRotation;
+            float tRotation = 360 + transform.Rotation;
 
-            if (tPrevRotation < 0)
-                tPrevRotation = 360 + tPrevRotation;
-            if (tRotation < 0)
-                tRotation = 360 + tRotation;
-
-            if (tRotation - 60 <= tPrevRotation && tPrevRotation <= tRotation + 60)
+            if (tRotation - 45 <= tPrevRotation && tPrevRotation <= tRotation + 45)
                 return false;
 
             return true;
