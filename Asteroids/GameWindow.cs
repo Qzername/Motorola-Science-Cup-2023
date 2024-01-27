@@ -4,6 +4,7 @@ using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Physics;
+using System.Timers;
 
 namespace Asteroids
 {
@@ -27,18 +28,26 @@ namespace Asteroids
             RegisterPhysicsEngine(physicsEngine);
 
 			Instantiate(new Player());
-        }
 
-        public override void Update(Canvas canvas)
+			System.Timers.Timer timer = new System.Timers.Timer();
+			timer.Elapsed += TimerSpawnObstacles;
+			timer.Interval = 5000;
+			timer.Enabled = true;
+		}
+
+        public override void Update(Canvas canvas) { }
+
+        void TimerSpawnObstacles(object? sender, ElapsedEventArgs e)
         {
-            // 1% szans, aby stworzyc przeszkode (kazda klatke)
-            int chance = rand.Next(1, 101);
-            if (chance == 100)
+			// Co 10 puktow, spawnuj o 1 przeszkode wiecej
+	        int spawnTimes = (int)Math.Ceiling((GameManager.Score != 0 ? GameManager.Score : 1) / 10M);
+
+	        for (int i = 0; i < spawnTimes; i++)
 				SpawnObstacle();
         }
 
         void SpawnObstacle()
-        {
+		{
 			// Strony
 			// 0 -> Lewo
 			// 1 -> Prawo
