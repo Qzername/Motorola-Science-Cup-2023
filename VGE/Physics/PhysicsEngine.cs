@@ -34,30 +34,17 @@ namespace VGE.Physics
             physicsTimer.Enabled = true;
         }
 
-        public void RegisterObjects(int layer, List<VectorObject> objs)
-        {
-	        if (!objects.ContainsKey(layer))
-		        objects[layer] = new List<VectorObject>();
-
-	        foreach (VectorObject obj in objs)
-	        {
-	            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
-	            if (foundObject == null)
-		            objects[layer].Add(obj);
-	        }
-		}
-
 		public void RegisterObject(int layer, VectorObject obj)
         {
             if (!objects.ContainsKey(layer))
                 objects[layer] = new List<VectorObject>();
 
-            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            var foundObject = objects[layer].ToArray().SingleOrDefault(x => x.Guid == obj.Guid);
             if (foundObject == null)
 	            objects[layer].Add(obj);
 		}
 
-        public void UnregisterObject(VectorObject obj)
+        public void UnregisterObject(VectorObject? obj)
         {
             if (obj is null)
                 return;
@@ -74,7 +61,7 @@ namespace VGE.Physics
 	        if (!objects.ContainsKey(layer))
 		        objects[layer] = new List<VectorObject>();
 
-	        var foundObject = objects[layer].ToArray().Where(x =>  x.Guid == obj.Guid).FirstOrDefault();
+	        var foundObject = objects[layer].ToArray().SingleOrDefault(x =>  x.Guid == obj.Guid);
             if (foundObject != null)
                 objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
         }
