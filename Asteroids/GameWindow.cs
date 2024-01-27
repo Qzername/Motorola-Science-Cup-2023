@@ -9,7 +9,7 @@ namespace Asteroids
 {
     internal class GameWindow : Window
     {
-        int score, obstacleRotationOffset = 30;
+        int obstacleRotationOffset = 30;
         // obstacleRotationOffset nie moze byc wiekszy niz 45, poniewaz wtedy przeszkoda moze byc poza ekranem
 
         Random rand = new();
@@ -24,30 +24,14 @@ namespace Asteroids
                     { 1, new int[] {0} }, //1 -> bullets && obstacles
                 }
             });
-            physicsEngine.CollisionDetected += PhysicsEngine_CollisionDetected;
             RegisterPhysicsEngine(physicsEngine);
 
-			Instantiate(new Player(), (int)PhysicsLayers.Player);
-        }
-
-        private void PhysicsEngine_CollisionDetected(VectorObject arg1, VectorObject arg2)
-        {
-            if (arg1.Name == "Bullet" && arg2.Name == "Obstacle")
-	        {
-				score++;
-
-				Destroy(arg1);
-				Destroy(arg2);
-			}
-	        else if (arg1.Name == "Obstacle" && arg2.Name == "Player")
-	        {
-				// Game over
-			}
+			Instantiate(new Player());
         }
 
         public override void Update(Canvas canvas)
         {
-			Debug.WriteLine($"Score: {score}");
+			Debug.WriteLine($"Score: {GameManager.Score}");
 
             // 1% szans, aby stworzyc przeszkode (kazda klatke)
             int chance = rand.Next(1, 101);
@@ -101,7 +85,7 @@ namespace Asteroids
 	        }
 
 			var obstacle = new Obstacle();
-			Instantiate(obstacle, (int)PhysicsLayers.Other);
+			Instantiate(obstacle);
             obstacle.Setup(new SKPoint(x, y), rotation);
         }
     }

@@ -20,11 +20,11 @@ namespace VGE.Physics
          * w celu optymalizacji zrobiłem fizyke opartom na warstwach
          * wykorzystujemy to w np. asteroids, w którym asteroidy przelatują przez siebie, ale nie przez gracza
          */
-        Dictionary<int, List<VectorObject>> objects;
+        Dictionary<int, List<PhysicsObject>> objects;
 
         public PhysicsEngine(PhysicsConfiguration configuration)
         {
-            objects = new Dictionary<int, List<VectorObject>>();
+            objects = new Dictionary<int, List<PhysicsObject>>();
 
             physicsConfiguration = configuration;
 
@@ -34,30 +34,17 @@ namespace VGE.Physics
             physicsTimer.Enabled = true;
         }
 
-        public void RegisterObjects(int layer, List<VectorObject> objs)
+		public void RegisterObject(PhysicsObject obj)
         {
-	        if (!objects.ContainsKey(layer))
-		        objects[layer] = new List<VectorObject>();
+            if (!objects.ContainsKey(obj.PhysicsLayer))
+                objects[obj.PhysicsLayer] = new List<PhysicsObject>();
 
-	        foreach (VectorObject obj in objs)
-	        {
-	            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
-	            if (foundObject == null)
-		            objects[layer].Add(obj);
-	        }
-		}
-
-		public void RegisterObject(int layer, VectorObject obj)
-        {
-            if (!objects.ContainsKey(layer))
-                objects[layer] = new List<VectorObject>();
-
-            var foundObject = objects[layer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            var foundObject = objects[obj.PhysicsLayer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject == null)
-	            objects[layer].Add(obj);
+	            objects[obj.PhysicsLayer].Add(obj);
 		}
 
-        public void UnregisterObject(VectorObject obj)
+        public void UnregisterObject(PhysicsObject obj)
         {
             if (obj is null)
                 return;
@@ -72,7 +59,7 @@ namespace VGE.Physics
                 }
 
 	        if (!objects.ContainsKey(layer))
-		        objects[layer] = new List<VectorObject>();
+		        objects[layer] = new List<PhysicsObject>();
 
 	        var foundObject = objects[layer].ToArray().Where(x =>  x.Guid == obj.Guid).FirstOrDefault();
             if (foundObject != null)
@@ -91,7 +78,7 @@ namespace VGE.Physics
             foreach (var layer in physicsConfiguration.LayerConfiguration)
             {
                 if (!objects.ContainsKey(layer.Key))
-                    objects[layer.Key] = new List<VectorObject>();
+                    objects[layer.Key] = new List<PhysicsObject>();
 
                 checkedLayer.Add(layer.Key);
 
@@ -115,7 +102,11 @@ namespace VGE.Physics
                                 obj1.Transform.Position + obj1.Shape.BottomRight,
                                 obj2.Transform.Position + obj2.Shape.TopLeft,
                                 obj2.Transform.Position + obj2.Shape.BottomRight))
+                            {
                                 CollisionDetected?.Invoke(obj1, obj2);
+                                obj1.OnCollisionEnter(obj2);
+                                obj2.OnCollisionEnter(obj1);
+                            }
 
                 }
             }

@@ -81,21 +81,23 @@ namespace VGE
         #endregion
 
         #region Zarządzanie obiektami
-        public void Instantiate(VectorObject prefab, int physicsLayer = -1)
+        public void Instantiate(VectorObject prefab)
         {
             prefab.Initialize(this);
 
             objects.Add(prefab);
 
-            if (physicsEngine is not null && physicsLayer != -1)
-                physicsEngine.RegisterObject(physicsLayer, prefab);
+            if (prefab is PhysicsObject)
+                physicsEngine?.RegisterObject((PhysicsObject)prefab);
         }
 
         public void Destroy(VectorObject objToDestroy)
         {
-            VectorObject? obj = objects.Where(x => x.Guid == objToDestroy.Guid).FirstOrDefault();
+            VectorObject obj = objects.Single(x => x.Guid == objToDestroy.Guid);
 
-            physicsEngine?.UnregisterObject(obj);
+            if (obj is PhysicsObject)
+                physicsEngine?.UnregisterObject((PhysicsObject)obj);
+
             objects.Remove(obj);
         }
         #endregion

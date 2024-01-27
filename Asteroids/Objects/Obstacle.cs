@@ -1,12 +1,16 @@
 ﻿using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Physics;
 
 namespace Asteroids.Objects
 {
-    public class Obstacle : VectorObject
+    public class Obstacle : PhysicsObject
     {
         const float ObstacleSpeed = 0.5f;
+
+        public override int PhysicsLayer =>(int)PhysicsLayers.Other;
 
         public override Setup Start()
         {
@@ -36,6 +40,12 @@ namespace Asteroids.Objects
 
             transform.Position.X += cos * ObstacleSpeed;
             transform.Position.Y += sin * ObstacleSpeed;
+        }
+
+        public override void OnCollisionEnter(PhysicsObject other)
+        {
+            if (other.Name == "Bullet")
+                window.Destroy(this);
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Physics;
 
 namespace Asteroids.Objects
 {
-    public class Bullet : VectorObject
+    public class Bullet : PhysicsObject
     {
         const float BulletSpeed = 10f;
+
+        public override int PhysicsLayer => (int)PhysicsLayers.Player;
 
         public override Setup Start()
         {
@@ -32,6 +36,15 @@ namespace Asteroids.Objects
 
             transform.Position.X += cos * BulletSpeed;
             transform.Position.Y += sin * BulletSpeed;
+        }
+
+        public override void OnCollisionEnter(PhysicsObject other)
+        {
+            if (other.Name == "Obstacle")
+            {
+                GameManager.Score++;
+                window.Destroy(this);
+            }
         }
     }
 }

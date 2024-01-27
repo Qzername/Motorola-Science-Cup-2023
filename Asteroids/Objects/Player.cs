@@ -1,15 +1,23 @@
 ﻿using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Physics;
 
 namespace Asteroids.Objects
 {
-    public class Player : VectorObject
+    public class Player : PhysicsObject
     {
         const float minSpeed = 0, maxSpeed = 300;
         float speed = 0, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
         bool lastSpaceState;
+
+        public override int PhysicsLayer => (int)PhysicsLayers.Player;
+
+        public override void OnCollisionEnter(PhysicsObject other)
+        {
+        }
 
         public override Setup Start()
         {
@@ -33,7 +41,7 @@ namespace Asteroids.Objects
             if (isSpacePressed && !lastSpaceState)
             {
                 var bullet = new Bullet();
-                window.Instantiate(bullet,(int)PhysicsLayers.Player);
+                window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation);
 
                 lastSpaceState = true;
