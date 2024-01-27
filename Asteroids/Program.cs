@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using VGE;
-
-namespace Asteroids
+﻿namespace Asteroids
 {
     class Program
     {

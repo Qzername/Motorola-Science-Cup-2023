@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Asteroids
+﻿namespace Asteroids
 {   public static class GameManager
     {
-        public static int Score;
+        public static int Score = 0;
+        public static int Lives = 3;
     }
 }

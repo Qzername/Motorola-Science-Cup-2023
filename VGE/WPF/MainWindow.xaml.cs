@@ -18,6 +18,10 @@ namespace VGE.WPF
 
         public MainWindow()
         {
+            // Domyslna rozdzielczosc okna to 800x450
+	        MinWidth = 800;
+	        MinHeight = 450;
+            
             InitializeComponent();
 
             paint = new SKPaint()

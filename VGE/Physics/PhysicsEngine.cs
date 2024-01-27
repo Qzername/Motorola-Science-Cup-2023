@@ -39,7 +39,7 @@ namespace VGE.Physics
             if (!objects.ContainsKey(obj.PhysicsLayer))
                 objects[obj.PhysicsLayer] = new List<PhysicsObject>();
 
-            var foundObject = objects[obj.PhysicsLayer].ToArray().Where(x => x.Guid == obj.Guid).FirstOrDefault();
+            var foundObject = objects[obj.PhysicsLayer].ToArray().SingleOrDefault(x => x.Guid == obj.Guid);
             if (foundObject == null)
 	            objects[obj.PhysicsLayer].Add(obj);
 		}
@@ -62,8 +62,12 @@ namespace VGE.Physics
 		        objects[layer] = new List<PhysicsObject>();
 
 	        var foundObject = objects[layer].ToArray().SingleOrDefault(x =>  x.Guid == obj.Guid);
-            if (foundObject != null)
-                objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
+	        if (foundObject != null)
+	        {
+                int foundObjectIndex = objects[layer].IndexOf(foundObject);
+                if (foundObjectIndex != -1)
+					objects[layer].RemoveAt(foundObjectIndex);
+			}
         }
 
 		void PhysicsUpdate(object? sender, ElapsedEventArgs e)

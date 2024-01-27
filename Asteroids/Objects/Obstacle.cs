@@ -40,12 +40,17 @@ namespace Asteroids.Objects
 
             transform.Position.X += cos * ObstacleSpeed;
             transform.Position.Y += sin * ObstacleSpeed;
-        }
+            
+            Resolution res = window.GetResolution();
+
+			if (transform.Position.X < 0 || transform.Position.X > res.Width || transform.Position.Y < 0 || transform.Position.Y > res.Height)
+				window.Destroy(this);
+		}
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            if (other.Name == "Bullet")
-                window.Destroy(this);
+	        if (other.Name == "Bullet")
+				window.Destroy(this);                
         }
     }
 }

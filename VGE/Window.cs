@@ -33,12 +33,13 @@ namespace VGE
             frameTimer.Elapsed += FrameUpdate;
         }
         
-        // Uzywaj preLaunchHeight i preLaunchWidth zamiast Height i Width TYLKO w konstruktorze
-        public int preLaunchHeight => (int)mainWindow.Height;
-        public int preLaunchWidth => (int)mainWindow.Width;
-
-		public int Height => (int)mainWindow.ActualHeight;
-        public int Width => (int)mainWindow.ActualWidth;
+        public Resolution GetResolution()
+        {
+			int width = (int)mainWindow.Dispatcher.Invoke(() => mainWindow.Width);
+			int height = (int)mainWindow.Dispatcher.Invoke(() => mainWindow.Height);
+            
+			return new Resolution(width, height);
+        }
 
         #region Zarządzanie klatkami
         void FrameUpdate(object? sender, ElapsedEventArgs e)
@@ -76,7 +77,7 @@ namespace VGE
         public void Close()
         {
             frameTimer.Enabled = false;
-            mainWindow.Close();
+            mainWindow.Dispatcher.Invoke(() => mainWindow.Close());
         }
         #endregion
 
@@ -93,7 +94,10 @@ namespace VGE
 
         public void Destroy(VectorObject objToDestroy)
         {
-            VectorObject obj = objects.Single(x => x.Guid == objToDestroy.Guid);
+            VectorObject? obj = objects.SingleOrDefault(x => x.Guid == objToDestroy.Guid);
+
+            if (obj == null)
+	            return;
 
             if (obj is PhysicsObject)
                 physicsEngine?.UnregisterObject((PhysicsObject)obj);

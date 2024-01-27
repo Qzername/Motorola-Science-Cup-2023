@@ -31,8 +31,6 @@ namespace Asteroids
 
         public override void Update(Canvas canvas)
         {
-			Debug.WriteLine($"Score: {GameManager.Score}");
-
             // 1% szans, aby stworzyc przeszkode (kazda klatke)
             int chance = rand.Next(1, 101);
             if (chance == 100)
@@ -54,29 +52,30 @@ namespace Asteroids
 			// 270 -> w Gore
 
 			// maxValue w rand.Next musi byc +1, aby oryginalny maxValue tez byl brany pod uwage
-			
 			int x, y, rotation, side = rand.Next(0, 3 + 1);
+			
+			Resolution res = GetResolution();
 
 	        switch (side)
 	        {
 		        case 0:
 			        x = 0;
-			        y = rand.Next(0, Height);
+			        y = rand.Next(0, res.Height);
 			        rotation = rand.Next(0 - obstacleRotationOffset, 0 + obstacleRotationOffset + 1);
 					break;
 		        case 1:
-			        x = Width;
-			        y = rand.Next(0, Height);
+			        x = res.Width;
+			        y = rand.Next(0, res.Height);
 					rotation = rand.Next(180 - obstacleRotationOffset, 180 + obstacleRotationOffset + 1);
 					break;
 		        case 2:
-			        x = rand.Next(0, Width);
+			        x = rand.Next(0, res.Width);
 			        y = 0;
 			        rotation = rand.Next(90 - obstacleRotationOffset, 90 + obstacleRotationOffset + 1);
 					break;
 		        case 3:
-			        x = rand.Next(0, Width);
-			        y = Height;
+			        x = rand.Next(0, res.Width);
+			        y = res.Height;
 			        rotation = rand.Next(270 - obstacleRotationOffset, 270 + obstacleRotationOffset + 1);
 					break;
 		        default:

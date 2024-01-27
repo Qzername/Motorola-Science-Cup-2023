@@ -9,7 +9,7 @@ namespace Asteroids.Objects
     public class Player : PhysicsObject
     {
         const float minSpeed = 0, maxSpeed = 500;
-        float speed = 0, rotationSpeed = 90, prevRotation, prevRotationRadias;
+        float speed, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
         bool lastSpaceState;
 
@@ -17,10 +17,29 @@ namespace Asteroids.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-        }
+	        if (other.Name == "Obstacle")
+	        {
+		        window.Destroy(this);
+                GameManager.Lives--;
+                
+                if (GameManager.Lives == 0)
+                {
+					window.Close();
+					return;
+                }
+                
+                Thread.Sleep(2000);
+                speed = 0;
+                prevRotation = Transform.Rotation;
+                prevRotationRadias = Transform.RotationRadians;
+                window.Instantiate(this);
+			}
+		}
 
         public override Setup Start()
         {
+	        Resolution res = window.GetResolution();
+            
             return new Setup()
             {
                 Name = "Player",
@@ -29,7 +48,7 @@ namespace Asteroids.Objects
                         new SKPoint(15, 40),
                         new SKPoint(30, 0),
                         new SKPoint(15, 5)),
-                Position = new SKPoint(window.preLaunchWidth / 2, window.preLaunchHeight / 2),
+                Position = new SKPoint(res.Width / 2f, res.Height / 2f),
                 Rotation = 0f,
             };
         }
@@ -111,13 +130,15 @@ namespace Asteroids.Objects
                     speed = minSpeed;
             }
 
-            if (transform.Position.X < 0)
-                transform.Position = new SKPoint(window.Width, transform.Position.Y);
-            else if (transform.Position.X > window.Width)
+            Resolution res = window.GetResolution();
+
+			if (transform.Position.X < 0)
+                transform.Position = new SKPoint(res.Width, transform.Position.Y);
+            else if (transform.Position.X > res.Width)
                 transform.Position = new SKPoint(0, transform.Position.Y);
             else if (transform.Position.Y < 0)
-                transform.Position = new SKPoint(transform.Position.X, window.Height);
-            else if (transform.Position.Y > window.Height)
+                transform.Position = new SKPoint(transform.Position.X, res.Height);
+            else if (transform.Position.Y > res.Height)
                 transform.Position = new SKPoint(transform.Position.X,0);
         }
 
