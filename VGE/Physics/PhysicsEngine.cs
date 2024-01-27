@@ -61,7 +61,7 @@ namespace VGE.Physics
 	        if (!objects.ContainsKey(layer))
 		        objects[layer] = new List<PhysicsObject>();
 
-	        var foundObject = objects[layer].ToArray().Where(x =>  x.Guid == obj.Guid).FirstOrDefault();
+	        var foundObject = objects[layer].ToArray().SingleOrDefault(x =>  x.Guid == obj.Guid);
             if (foundObject != null)
                 objects[layer].RemoveAt(objects[layer].IndexOf(foundObject));
         }
