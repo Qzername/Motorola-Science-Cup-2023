@@ -11,7 +11,7 @@ namespace Asteroids.Objects
         const float minSpeed = 0, maxSpeed = 500;
         float speed, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
-        bool lastSpaceState;
+        bool lastSpaceState, respawnShield;
 
         public override int PhysicsLayer => (int)PhysicsLayers.Player;
 
@@ -19,6 +19,12 @@ namespace Asteroids.Objects
         {
 	        if (other.Name == "Obstacle")
 	        {
+		        if (respawnShield)
+		        {
+                    window.Destroy(other);
+					return;                    
+		        }
+                
 		        window.Destroy(this);
                 GameManager.Lives--;
                 
@@ -27,12 +33,23 @@ namespace Asteroids.Objects
 					window.Close();
 					return;
                 }
+
+				respawnShield = true;
                 
-                Thread.Sleep(2000);
-                speed = 0;
+				Thread.Sleep(2000);
+                
+                Resolution res = window.GetResolution();
+				transform.Position = new SKPoint(res.Width / 2f, res.Height / 2f);
+                transform.Rotation = 0f;
                 prevRotation = Transform.Rotation;
-                prevRotationRadias = Transform.RotationRadians;
+                prevRotationRadias = Transform.RotationRadians;      
+                speed = 0;
+                
                 window.Instantiate(this);
+                
+                Thread.Sleep(5000);
+                
+                respawnShield = false;
 			}
 		}
 
