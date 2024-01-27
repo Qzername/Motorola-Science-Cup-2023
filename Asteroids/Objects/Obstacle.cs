@@ -16,7 +16,7 @@ namespace Asteroids.Objects
     public class Obstacle(ObstacleType obstacleType = ObstacleType.Large) : PhysicsObject
     {
         ObstacleType type = obstacleType;
-		float obstacleSpeed = float.Parse($"0.{new Random().Next(3, 10)}");
+		float speed = float.Parse($"0.{new Random().Next(3, 10)}");
         // Wylosuj float'a pomiedzy 0.3 a 0.9
 
 		public override int PhysicsLayer =>(int)PhysicsLayers.Other;
@@ -54,8 +54,8 @@ namespace Asteroids.Objects
             var sin = MathF.Sin(transform.RotationRadians);
             var cos = MathF.Cos(transform.RotationRadians);
 
-            transform.Position.X += cos * obstacleSpeed;
-            transform.Position.Y += sin * obstacleSpeed;
+            transform.Position.X += cos * speed;
+            transform.Position.Y += sin * speed;
             
             Resolution res = window.GetResolution();
 
