@@ -35,9 +35,12 @@ namespace VGE
         
         public Resolution GetResolution()
         {
-			int width = (int)mainWindow.Dispatcher.Invoke(() => mainWindow.Width);
-			int height = (int)mainWindow.Dispatcher.Invoke(() => mainWindow.Height);
-            
+			int actualWidth = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualWidth);
+			int actualHeight = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualHeight);
+
+			int width = (int)(actualWidth == 0 ? mainWindow.Width : actualWidth);
+			int height = (int)(actualHeight == 0 ? mainWindow.Height : actualHeight);
+
 			return new Resolution(width, height);
         }
 
