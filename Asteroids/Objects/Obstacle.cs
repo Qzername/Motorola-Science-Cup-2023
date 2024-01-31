@@ -23,21 +23,29 @@ namespace Asteroids.Objects
 
         public override Setup Start()
         {
-	        int size = 30;
+	        Random rand = new();
+	        List<SKPoint> shapes = new();
 
-	        if (type == ObstacleType.Small)
-				size = 15;
-			else if (type == ObstacleType.Medium)
-				size = 20;
-            
-            return new Setup()
+	        int points = rand.Next(6, 13);
+			float angle = 360f / points;
+
+			for (int i = 1; i <= points; i++)
+			{
+				int length = rand.Next(15, 31);
+
+				float sin = MathF.Sin(angle * i);
+				float cos = MathF.Cos(angle * i);
+
+				float x = sin * length;
+				float y = cos * length;
+
+				shapes.Add(new SKPoint(x, y));
+			}
+
+			return new Setup()
             {
                 Name = "Obstacle",
-                Shape = new Shape(0f,
-                    new SKPoint(0, 0),
-                    new SKPoint(0, size),
-                    new SKPoint(size, size),
-                    new SKPoint(size, 0)),
+                Shape = new Shape(0f, shapes.ToArray()),
                 Position = new SKPoint(0, 0),
                 Rotation = 0f
             };
