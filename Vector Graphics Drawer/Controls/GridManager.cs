@@ -51,7 +51,12 @@ namespace VectorGraphicsDrawer.Controls
 
             for (int x = 1; x < Bounds.Width / GridCellSize.X - 1; x++)
                 for (int y = 1; y < Bounds.Height / GridCellSize.Y; y++)
-                    context.DrawEllipse(Brushes.Orange, null, new Point(x * GridCellSize.X, y * GridCellSize.Y), 1f, 1f);
+                {
+                    if ((x-1) % 5 == 0 && (y-1) % 5 == 0)
+                        context.DrawEllipse(Brushes.Orange, null, new Point(x * GridCellSize.X, y * GridCellSize.Y), 3f, 3f);
+                    else
+                        context.DrawEllipse(Brushes.Orange, null, new Point(x * GridCellSize.X, y * GridCellSize.Y), 1f, 1f);
+                }
 
             foreach(var shape in shapes)
             {
