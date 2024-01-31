@@ -26,18 +26,42 @@ namespace Asteroids.Objects
 	        Random rand = new();
 	        List<SKPoint> shapes = new();
 
+			// Wylosuj liczbe punktow
 	        int points = rand.Next(6, 13);
-			float angle = 360f / points;
 
-			for (int i = 1; i <= points; i++)
+	        int maxLength = 0, minLength = 0;
+
+			// Ustaw min/max dlugosci punktow w zaleznosci od typu
+	        switch (type)
+	        {
+				case ObstacleType.Large:
+					maxLength = 41;
+					minLength = 30;
+					break;
+				case ObstacleType.Medium:
+					maxLength = 31;
+					minLength = 20;
+					break;
+				case ObstacleType.Small:
+					maxLength = 21;
+					minLength = 10;
+					break;
+	        }
+
+	        float radian = MathF.PI / 180;
+
+			for (int i = 0; i < points; i++)
 			{
-				int length = rand.Next(15, 31);
+				// Wylosuj odleglosc punktu od srodka i offset (aby ksztalt byl nieregularny)
+				int length = rand.Next(minLength, maxLength);
+				int offset = rand.Next(-5, 6);
 
-				float sin = MathF.Sin(angle * i);
-				float cos = MathF.Cos(angle * i);
+				// Oblicz sin i cos
+				float sin = MathF.Sin(360f * i / points * radian);
+				float cos = MathF.Cos(360f * i / points * radian);
 
-				float x = sin * length;
-				float y = cos * length;
+				float x = sin * length + offset;
+				float y = cos * length + offset;
 
 				shapes.Add(new SKPoint(x, y));
 			}
