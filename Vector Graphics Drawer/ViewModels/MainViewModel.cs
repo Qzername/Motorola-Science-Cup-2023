@@ -21,6 +21,7 @@ public class MainViewModel : ViewModelBase
     public AvaloniaList<RawSetElement> CurrentElements { get; set; } = new AvaloniaList<RawSetElement>();
     [Reactive] public bool IsTextureSetSelected { get; set; }
     [Reactive] public bool IsUpdateMode { get; set; }
+    public bool HideLastLine { set => GridManager.Instance.SwitchHideLastLine(value); }
 
     #region Add new mode
     [Reactive] public string TextureName { get; set; }
@@ -68,6 +69,9 @@ public class MainViewModel : ViewModelBase
 
     void ChangedLetter()
     {
+        if (CurrentElements.Count == 0)
+            return;
+
         //CurrentElement aktulizuje się później od CurrentElementIndex
         //Wykorzystuje to w zapisie
         SaveCurrent();
@@ -95,6 +99,7 @@ public class MainViewModel : ViewModelBase
     }
     #endregion
 
+    public void Undo() => GridManager.Instance.Undo();
     public void Clear() => GridManager.Instance.Clear();
 
     #region Managing Sets
@@ -163,8 +168,12 @@ public class MainViewModel : ViewModelBase
     public void SwitchMode(object mode) => SwitchMode(Convert.ToBoolean(Convert.ToInt32(mode)));
     void SwitchMode(bool mode)
     {
+        GridManager.Instance.Clear();
+
+        if (mode)
+            LoadNew();
+
         TextureName = string.Empty;
-        CurrentElementIndex = 0;
         IsUpdateMode = mode;
     }
     #endregion

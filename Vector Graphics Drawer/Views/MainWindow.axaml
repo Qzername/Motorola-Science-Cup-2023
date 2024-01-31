@@ -46,13 +46,15 @@
 						<Button Command="{Binding AddNew}" Classes="Normal">Add New</Button>
 					</StackPanel>
 
-					<!--Clear-->
+					<!--Other-->
 					<Button Command="{Binding AddNewShape}" Classes="Normal">Add New Shape</Button>
+					<Button Command="{Binding Undo}" Classes="Normal">Undo</Button>
 					<Button Command="{Binding Clear}" Classes="Normal">Clear</Button>
 				</StackPanel>
 			</StackPanel>
 			
 			<StackPanel Spacing="5" VerticalAlignment="Bottom">
+				<CheckBox IsEnabled="{Binding IsTextureSetSelected}" IsChecked="{Binding HideLastLine}">Hide last lines</CheckBox>
 				<Button IsEnabled="{Binding !IsTextureSetSelected}" Command="{Binding LoadSet}" Classes="Normal">Load set</Button>
 				<Button Command="{Binding SaveSet}" Classes="Normal">Save set</Button>
 				<Button IsEnabled="{Binding !IsTextureSetSelected}" Command="{Binding NewSet}" Classes="Normal">New set</Button>

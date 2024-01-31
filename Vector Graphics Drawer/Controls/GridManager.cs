@@ -15,7 +15,7 @@ namespace VectorGraphicsDrawer.Controls
     {
         public static GridManager Instance;
 
-        bool isDrawingDisabled;
+        bool isDrawingDisabled, hideLastLine;
 
         Point GridCellSize;
         Point GridOffest;
@@ -63,7 +63,7 @@ namespace VectorGraphicsDrawer.Controls
                 for (int i = 1; i < shape.Count; i++)
                     context.DrawLine(linePen, GetRealPosition(shape[i - 1]), GetRealPosition(shape[i]));
 
-                if (shape.Count > 2)
+                if (shape.Count > 2 && !hideLastLine)
                     context.DrawLine(linePen, GetRealPosition(shape[0]), GetRealPosition(shape[^1]));
             }
 
@@ -109,6 +109,27 @@ namespace VectorGraphicsDrawer.Controls
         public void SwitchDrawing(bool isDrawingDisabled) 
         { 
             this.isDrawingDisabled = isDrawingDisabled;
+            InvalidateVisual();
+        }
+
+        public void SwitchHideLastLine(bool hideLastLine)
+        {
+            this.hideLastLine = hideLastLine;
+            InvalidateVisual();
+        }
+
+        public void Undo()
+        {
+            if (shapes.Count == 0)
+                return;
+
+            if (shapes.Count > 1 && shapes[^1].Count == 0)
+            {
+                shapes.RemoveAt(shapes.Count - 1);
+                return;
+            }
+
+            shapes[^1].RemoveAt(shapes[^1].Count - 1);
             InvalidateVisual();
         }
 
