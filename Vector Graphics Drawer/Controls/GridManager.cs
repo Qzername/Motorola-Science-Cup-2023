@@ -1,29 +1,43 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Microsoft.CodeAnalysis.Emit;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using VGE.Graphics;
+using VGE.Resources;
 
 namespace VectorGraphicsDrawer.Controls
 {
-    internal class GridManager : Control
+    public class GridManager : Control
     {
+        public static GridManager Instance;
+
+        bool isDrawingDisabled;
+
         Point GridCellSize;
         Point GridOffest;
 
-        Pen linePen;
+        Pen linePen, circlePen;
+        FormattedText disabledText;
 
         List<List<Point>> shapes;
 
         public GridManager()
         {
+            Instance = this;
+
+            isDrawingDisabled = true;
+
             GridCellSize = new Point(25, 25);
             GridOffest = new Point(0, 0); //debug
 
             linePen = new Pen(Brushes.White);
+            circlePen = new Pen(Brushes.Red, 2);
+
+            disabledText = new FormattedText("Drawing is disabled", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 36, Brushes.SteelBlue);
 
             Clear();
 
@@ -41,12 +55,23 @@ namespace VectorGraphicsDrawer.Controls
 
             foreach(var shape in shapes)
             {
-                for (int i = 1; i < shapes.Count; i++)
+                for (int i = 1; i < shape.Count; i++)
                     context.DrawLine(linePen, GetRealPosition(shape[i - 1]), GetRealPosition(shape[i]));
 
-                if (shapes.Count > 2)
+                if (shape.Count > 2)
                     context.DrawLine(linePen, GetRealPosition(shape[0]), GetRealPosition(shape[^1]));
             }
+
+            var lastShape = shapes[^1];
+
+            if(lastShape.Count>2)
+            {
+                var lastPoint = GetRealPosition(lastShape[^1]);
+                context.DrawEllipse(null, circlePen, new Rect(lastPoint.X - 5, lastPoint.Y - 5, 10, 10));
+            }
+
+            if (isDrawingDisabled)
+                context.DrawText(disabledText, new Point(20, 20));
         }
 
         public void Clear()
@@ -61,10 +86,52 @@ namespace VectorGraphicsDrawer.Controls
             shapes.Add(new List<Point>());
         }
 
+        public void SetShape(RawShape[] rawShapes)
+        {
+            Clear();
+
+            foreach(var shape in rawShapes)
+            {
+                Point[] points = new Point[shape.Points.Length];
+
+                for (int i = 0; i < shape.Points.Length; i++)
+                    points[i] = new Point(shape.Points[i].X, shape.Points[i].Y);
+
+                shapes.Add(points.ToList());
+            }
+        }
+
+        public void SwitchDrawing(bool isDrawingDisabled) 
+        { 
+            this.isDrawingDisabled = isDrawingDisabled;
+            InvalidateVisual();
+        }
+
+        public RawShape[] Build()
+        {
+            List<RawShape> final = new List<RawShape>();
+
+            foreach(var shape in shapes)
+            {
+                RawSKPoint[] skpoints = new RawSKPoint[shape.Count];
+
+                for (int i = 0; i < skpoints.Length; i++)
+                    skpoints[i] = new RawSKPoint(
+                        Convert.ToSingle(shape[i].X), 
+                        Convert.ToSingle(shape[i].Y));
+
+                final.Add(new RawShape(skpoints));
+            }
+
+            return final.ToArray();
+        }
+
         void GridManager_PointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
         {
+            if (isDrawingDisabled)
+                return;
+
             Point mousePosition = e.GetPosition(this);
-            Debug.WriteLine(mousePosition);
 
             shapes[^1].Add(GetGridPosition(mousePosition));
 

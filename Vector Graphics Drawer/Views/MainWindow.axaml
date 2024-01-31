@@ -19,39 +19,43 @@
 	<DockPanel>
 		<Panel>
 			<StackPanel Width="200" Background="#232323" Spacing="5">
-				<TextBox Watermark="Texture set name">
-				</TextBox>
+				<TextBox IsEnabled="{Binding !IsTextureSetSelected}" Watermark="Shape set name" Text="{Binding SetName}"/>
+				
+				<StackPanel IsVisible="{Binding IsTextureSetSelected}">
+					<StackPanel Orientation="Horizontal">
+						<Button Classes="Normal" Command="{Binding SwitchMode}" CommandParameter="0" Width="100">Add new</Button>
+						<Button Classes="Normal" Command="{Binding SwitchMode}" CommandParameter="1" Width="100">Update</Button>
+					</StackPanel>
 
-				<StackPanel Orientation="Horizontal">
-					<Button Classes="Normal" Command="{Binding SwitchMode}" CommandParameter="0" Width="100">Add new</Button>
-					<Button Classes="Normal" Command="{Binding SwitchMode}" CommandParameter="1" Width="100">Update</Button>
+					<!--MODE UPDATE-->
+					<StackPanel IsVisible="{Binding IsUpdateMode}" Spacing="5">
+						<ComboBox ItemsSource="{Binding CurrentElements}" SelectedItem="{Binding CurrentElement}" SelectedIndex="{Binding CurrentElementIndex}" HorizontalAlignment="Stretch">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Name}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>	
+						</ComboBox>
+						<Button Classes="Normal">Update</Button>
+						<Button Command="{Binding Delete}" Classes="Normal">Delete</Button>
+					</StackPanel>
+
+					<!--MODE ADD NEW-->
+					<StackPanel IsVisible="{Binding !IsUpdateMode}" Spacing="5">
+						<TextBox Text="{Binding TextureName}" Watermark="Name of shape"/>
+						<Button Command="{Binding AddNew}" Classes="Normal">Add New</Button>
+					</StackPanel>
+
+					<!--Clear-->
+					<Button Command="{Binding AddNewShape}" Classes="Normal">Add New Shape</Button>
+					<Button Command="{Binding Clear}" Classes="Normal">Clear</Button>
 				</StackPanel>
-
-				<!--MODE ADD NEW-->
-				<StackPanel IsVisible="{Binding IsUpdateMode}" Spacing="5">
-					<ComboBox HorizontalAlignment="Stretch">
-						Textures
-					</ComboBox>
-					<Button Classes="Normal">Update</Button>
-				</StackPanel>
-
-				<!--MODE UPDATE-->
-				<StackPanel IsVisible="{Binding !IsUpdateMode}" Spacing="5">
-					<TextBox Watermark="Name of texture"/>
-					<Button Classes="Normal">Add New</Button>
-				</StackPanel>
-
-				<!--Clear-->
-				<Button Classes="Normal">Clear</Button>
 			</StackPanel>
 			
 			<StackPanel Spacing="5" VerticalAlignment="Bottom">
-				<Button  Classes="Normal">
-					Load set
-				</Button>
-				<Button Classes="Normal">
-					Save set
-				</Button>
+				<Button IsEnabled="{Binding !IsTextureSetSelected}" Command="{Binding LoadSet}" Classes="Normal">Load set</Button>
+				<Button Command="{Binding SaveSet}" Classes="Normal">Save set</Button>
+				<Button IsEnabled="{Binding !IsTextureSetSelected}" Command="{Binding NewSet}" Classes="Normal">New set</Button>
 			</StackPanel>
 		</Panel>
 
