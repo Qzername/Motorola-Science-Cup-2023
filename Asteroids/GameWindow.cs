@@ -5,6 +5,7 @@ using VGE;
 using VGE.Graphics;
 using VGE.Physics;
 using System.Timers;
+using VGE.Objects;
 
 namespace Asteroids
 {
@@ -17,6 +18,8 @@ namespace Asteroids
 
 		public GameWindow() : base()
         {
+			GameManager.Setup(this);
+
             var physicsEngine = new PhysicsEngine(new PhysicsConfiguration()
             {
                 LayerConfiguration = new Dictionary<int, int[]>()

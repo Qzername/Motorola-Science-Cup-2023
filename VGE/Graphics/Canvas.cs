@@ -1,4 +1,7 @@
-﻿namespace VGE.Graphics
+﻿using System.Diagnostics;
+using System.Windows.Shapes;
+
+namespace VGE.Graphics
 {
     public class Canvas
     {
@@ -17,8 +20,11 @@
         /// <summary>
         /// Rysowanie linii na ekranie
         /// </summary>
-        public void DrawLine(Line line) => lines.Add(line);
+        public void DrawLine(Line line)
+        {
+            lines.Add(line);
+        }
         public void Clear() => lines.Clear();
-        public Line[] GetLines() => lines.ToArray(); 
+        public List<Line> GetLines() => lines;
     }
 }

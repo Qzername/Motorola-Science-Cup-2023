@@ -71,7 +71,11 @@ namespace VGE
         /// </summary>
         public abstract void Update(float delta);
 
-        public void RefreshGraphics(Canvas canvas)
+        /// <summary>
+        /// Rysowanie obiektu na canvasie
+        /// Używaj/overrideuj tylko jeżeli wiesz co robisz
+        /// </summary>
+        public virtual void RefreshGraphics(Canvas canvas)
         {
             foreach (var l in shape.CompiledShape)
                 canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));

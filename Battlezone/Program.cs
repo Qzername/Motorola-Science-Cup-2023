@@ -1,2 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿namespace Battlezone;
+
+class Program
+{
+    [STAThread]
+    public static void Main()
+    {
+        GameWindow window = new GameWindow();
+        window.Open();
+    }
+}

@@ -125,7 +125,7 @@ public class MainViewModel : ViewModelBase
 
         string text = File.ReadAllText(result);
 
-        var set = JsonConvert.DeserializeObject<ShapeSet>(text);
+        var set = JsonConvert.DeserializeObject<RawShapeSet>(text);
 
         SetName = set.Name;
 
@@ -147,7 +147,7 @@ public class MainViewModel : ViewModelBase
         foreach (var element in CurrentElements)
             set[element.Name] = element.Shapes;
 
-        string json = JsonConvert.SerializeObject(new ShapeSet()
+        string json = JsonConvert.SerializeObject(new RawShapeSet()
         {
             Name = SetName,
             Set = set,

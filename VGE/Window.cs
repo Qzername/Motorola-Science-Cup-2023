@@ -31,6 +31,8 @@ namespace VGE
 
             frameTimer = new System.Timers.Timer(1000 / framerate);
             frameTimer.Elapsed += FrameUpdate;
+
+            mainWindow.SetLines(canvas.GetLines());
         }
         
         public Resolution GetResolution()
@@ -58,7 +60,6 @@ namespace VGE
             for (int i = 0; i < objects.Count; i++)
                 objects[i].RefreshGraphics(canvas);
 
-            mainWindow.SetLines(canvas.GetLines());
             mainWindow.RefreshCanvas();
         }
 

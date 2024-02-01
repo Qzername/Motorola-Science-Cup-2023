@@ -13,7 +13,7 @@ namespace VGE.WPF
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-        Line[] linesToDraw;
+        List<Line> linesToDraw;
         SKPaint paint;
 
         public MainWindow()
@@ -30,7 +30,7 @@ namespace VGE.WPF
                 Color = SKColors.White,
             };
 
-            linesToDraw = new Line[0];
+            linesToDraw = new List<Line>();
 
             skElement.PaintSurface += OnPaintSurface;
         }
@@ -41,12 +41,15 @@ namespace VGE.WPF
 
             canvas.Clear(SKColors.Black);
 
-            foreach (var line in linesToDraw)
+            for(int i = 0; i <linesToDraw.Count; i++)
+            {
+                var line = linesToDraw[i];
                 canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
+            }
         }
 
         public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
-        public void SetLines(Line[] lines) => linesToDraw = lines;
+        public void SetLines(List<Line> lines) => linesToDraw = lines;
         public bool GetKey(Key key)
         {
             bool getKey = false;
