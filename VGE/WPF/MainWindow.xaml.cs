@@ -3,8 +3,9 @@ using SkiaSharp;
 using System.Diagnostics;
 using VGE.Graphics;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
+using VGE.Windows;
+using System.Windows.Input;
 
 namespace VGE.WPF
 {
@@ -19,9 +20,9 @@ namespace VGE.WPF
         public MainWindow()
         {
             // Domyslna rozdzielczosc okna to 800x450
-	        MinWidth = 800;
-	        MinHeight = 450;
-            
+            MinWidth = 800;
+            MinHeight = 450;
+
             InitializeComponent();
 
             paint = new SKPaint()
@@ -41,7 +42,7 @@ namespace VGE.WPF
 
             canvas.Clear(SKColors.Black);
 
-            for(int i = 0; i <linesToDraw.Count; i++)
+            for (int i = 0; i < linesToDraw.Count; i++)
             {
                 var line = linesToDraw[i];
                 canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
@@ -50,7 +51,7 @@ namespace VGE.WPF
 
         public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
         public void SetLines(List<Line> lines) => linesToDraw = lines;
-        public bool GetKey(Key key)
+        public bool GetKey(Windows.Key key)
         {
             bool getKey = false;
 

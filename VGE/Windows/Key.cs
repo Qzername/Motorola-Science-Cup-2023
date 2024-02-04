@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
 
-namespace VGE
+namespace VGE.Windows
 {
     /*
      * Q: Czemu robię własnego enuma, i nie korzystam z enuma z System.Windows.Input?

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Physics;
+using VGE.Windows;
 
 namespace Asteroids.Objects
 {

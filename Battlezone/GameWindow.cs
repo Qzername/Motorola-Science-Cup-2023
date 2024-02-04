@@ -1,7 +1,7 @@
 ﻿using SkiaSharp;
-using VGE;
 using VGE.Graphics;
 using VGE.Objects;
+using VGE.Windows;
 
 namespace Battlezone
 {

@@ -3,10 +3,11 @@ using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Physics;
+using VGE.Windows;
 
 namespace Asteroids.Objects
 {
-	public enum ObstacleType
+    public enum ObstacleType
 	{
 		Small,
 		Medium,

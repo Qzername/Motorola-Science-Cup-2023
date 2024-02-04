@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VGE
+namespace VGE.Windows
 {
     public class Time
     {

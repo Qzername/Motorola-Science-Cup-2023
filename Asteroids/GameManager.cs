@@ -1,10 +1,11 @@
 ﻿using Asteroids.Objects;
 using SkiaSharp;
-using VGE;
 using VGE.Objects;
+using VGE.Windows;
 
 namespace Asteroids
-{   public static class GameManager
+{
+    public static class GameManager
     {
         static Text scoreText, livesText;
 

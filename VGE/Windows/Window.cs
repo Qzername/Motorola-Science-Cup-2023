@@ -5,13 +5,13 @@ using VGE.Graphics;
 using VGE.Physics;
 using VGE.WPF;
 
-namespace VGE
+namespace VGE.Windows
 {
     public abstract class Window
     {
         MainWindow mainWindow;
         System.Timers.Timer frameTimer;
-        
+
         Canvas canvas;
         protected Time time;
 
@@ -20,8 +20,8 @@ namespace VGE
         List<VectorObject> objects;
         PhysicsEngine? physicsEngine;
 
-        public Window() 
-        { 
+        public Window()
+        {
             mainWindow = new MainWindow();
 
             objects = new List<VectorObject>();
@@ -34,16 +34,16 @@ namespace VGE
 
             mainWindow.SetLines(canvas.GetLines());
         }
-        
+
         public Resolution GetResolution()
         {
-			int actualWidth = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualWidth);
-			int actualHeight = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualHeight);
+            int actualWidth = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualWidth);
+            int actualHeight = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualHeight);
 
-			int width = (int)(actualWidth == 0 ? mainWindow.Width : actualWidth);
-			int height = (int)(actualHeight == 0 ? mainWindow.Height : actualHeight);
+            int width = (int)(actualWidth == 0 ? mainWindow.Width : actualWidth);
+            int height = (int)(actualHeight == 0 ? mainWindow.Height : actualHeight);
 
-			return new Resolution(width, height);
+            return new Resolution(actualWidth, actualHeight);
         }
 
         #region Zarządzanie klatkami
@@ -54,7 +54,7 @@ namespace VGE
 
             Update(canvas);
 
-            for(int i = 0; i < objects.Count; i++)
+            for (int i = 0; i < objects.Count; i++)
                 objects[i].Update(time.DeltaTime);
 
             for (int i = 0; i < objects.Count; i++)
@@ -101,7 +101,7 @@ namespace VGE
             VectorObject? obj = objects.SingleOrDefault(x => x.Guid == objToDestroy.Guid);
 
             if (obj == null)
-	            return;
+                return;
 
             if (obj is PhysicsObject)
                 physicsEngine?.UnregisterObject((PhysicsObject)obj);
