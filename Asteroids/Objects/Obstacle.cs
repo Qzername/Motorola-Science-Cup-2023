@@ -51,7 +51,7 @@ namespace Asteroids.Objects
 					break;
 	        }
 
-	        float radian = MathF.PI / 180;
+	        float angleToRadian = MathF.PI / 180;
 
 			for (int i = 0; i < points; i++)
 			{
@@ -60,8 +60,8 @@ namespace Asteroids.Objects
 				int offset = GameManager.Rand.Next(-5, 6);
 
 				// Oblicz sin i cos
-				float sin = MathF.Sin(360f * i / points * radian);
-				float cos = MathF.Cos(360f * i / points * radian);
+				float sin = MathF.Sin(360f * i / points * angleToRadian);
+				float cos = MathF.Cos(360f * i / points * angleToRadian);
 
 				float x = sin * length + offset;
 				float y = cos * length + offset;
