@@ -52,10 +52,8 @@ namespace Asteroids.Objects
 
 		public void Setup(SKPoint position, float rotation)
 		{
-			float angleToRadian = MathF.PI / 180;
-			
 			transform.Position = position;
-			setRotationRadians = rotation * angleToRadian;
+			setRotationRadians = rotation * MathTools.Deg2rad;
 		}
 
         void TimerShoot(object? sender, ElapsedEventArgs e)
