@@ -16,8 +16,8 @@ namespace Asteroids.Objects
     public class Obstacle(ObstacleType obstacleType = ObstacleType.Large) : PhysicsObject
     {
         ObstacleType type = obstacleType;
-		float speed = float.Parse($"0,{new Random().Next(3, 10)}");
-        // Wylosuj float'a pomiedzy 0.3 a 0.9
+        float speed = new Random().Next(3, 16) / 10f;
+        // Wylosuj float'a pomiedzy 0.3 a 1.5
 
 		public override int PhysicsLayer =>(int)PhysicsLayers.Other;
 
