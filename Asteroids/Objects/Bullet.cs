@@ -8,7 +8,7 @@ namespace Asteroids.Objects
 {
     public class Bullet : PhysicsObject
     {
-        const float BulletSpeed = 10f;
+		public const float Speed = 500f;
 
         public override int PhysicsLayer => (int)PhysicsLayers.Player;
 
@@ -17,7 +17,7 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Bullet",
-                Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(10, 0)),
+                Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(5, 0)),
                 Position = new SKPoint(0,0),
                 Rotation = 0f,
             };
@@ -31,16 +31,18 @@ namespace Asteroids.Objects
 
         public override void Update(float deltaTime)
         {
-            var sin = MathF.Sin(transform.RotationRadians);
-            var cos = MathF.Cos(transform.RotationRadians);
+            float sin = MathF.Sin(transform.RotationRadians);
+            float cos = MathF.Cos(transform.RotationRadians);
+            
+            float speedDelta = Speed * deltaTime;
 
-            transform.Position.X += cos * BulletSpeed;
-            transform.Position.Y += sin * BulletSpeed;
+            transform.Position.X += cos * speedDelta;
+            transform.Position.Y += sin * speedDelta;
         }
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            if (other.Name == "Obstacle")
+            if (other.Name == "Obstacle" || other.Name == "UFO")
             {
                 GameManager.Score++;
                 window.Destroy(this);

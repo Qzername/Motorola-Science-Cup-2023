@@ -32,24 +32,44 @@ namespace Asteroids
 
 			Instantiate(new Player());
 
-			System.Timers.Timer timer = new System.Timers.Timer();
-			timer.Elapsed += TimerSpawnObstacles;
-			timer.Interval = 5000;
-			timer.Enabled = true;
+			System.Timers.Timer obstacleTimer = new System.Timers.Timer();
+			obstacleTimer.Elapsed += TimerSpawnObstacle;
+			obstacleTimer.Interval = 5000; // Spawnuj Obstacle co 5 sekund
+			obstacleTimer.Enabled = true;
+
+			System.Timers.Timer ufoTimer = new System.Timers.Timer();
+			ufoTimer.Elapsed += TimerSpawnUfo;
+			ufoTimer.Interval = 5000; // Spawnuj UFO co 30 sekund
+			ufoTimer.Enabled = true;
 		}
 
         public override void Update(Canvas canvas) { }
 
-        void TimerSpawnObstacles(object? sender, ElapsedEventArgs e)
+        void TimerSpawnObstacle(object? sender, ElapsedEventArgs e)
         {
 			// Co 10 puktow, spawnuj o 1 przeszkode wiecej
 	        int spawnTimes = (int)Math.Ceiling((GameManager.Score != 0 ? GameManager.Score : 1) / 10M);
 
 	        for (int i = 0; i < spawnTimes; i++)
-				SpawnObstacle();
+	        {
+		        int[] pos = GetRandomPosition();
+				var obstacle = new Obstacle();
+				Instantiate(obstacle);
+				obstacle.Setup(new SKPoint(pos[0], pos[1]), pos[2]);
+				// 0 -> x, 1 -> y, 2 -> rotation
+			}
         }
 
-        void SpawnObstacle()
+		void TimerSpawnUfo(object? sender, ElapsedEventArgs e)
+		{
+			int[] pos = GetRandomPosition();
+			var ufo = new UFO();
+			Instantiate(ufo);
+			ufo.Setup(new SKPoint(pos[0], pos[1]), pos[2]);
+			// 0 -> x, 1 -> y, 2 -> rotation
+		}
+
+		int[] GetRandomPosition()
 		{
 			// Strony
 			// 0 -> Lewo
@@ -95,9 +115,7 @@ namespace Asteroids
 			        break;
 	        }
 
-			var obstacle = new Obstacle();
-			Instantiate(obstacle);
-            obstacle.Setup(new SKPoint(x, y), rotation);
-        }
+            return [x, y, rotation];
+		}
     }
 }

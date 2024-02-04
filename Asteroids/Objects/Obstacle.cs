@@ -10,26 +10,29 @@ namespace Asteroids.Objects
 	{
 		Small,
 		Medium,
-		Large
+		Large,
+		Random
 	}
     
-    public class Obstacle(ObstacleType obstacleType = ObstacleType.Large) : PhysicsObject
+    public class Obstacle(ObstacleType obstacleType = ObstacleType.Random) : PhysicsObject
     {
         ObstacleType type = obstacleType;
-        float speed = new Random().Next(3, 16) / 10f;
-        // Wylosuj float'a pomiedzy 0.3 a 1.5
+        float speed = GameManager.Rand.Next(50, 201);
+        // Wylosuj predkosc pomiedzy 50 a 200
 
 		public override int PhysicsLayer =>(int)PhysicsLayers.Other;
 
         public override Setup Start()
         {
-	        Random rand = new();
 	        List<SKPoint> shapes = new();
 
 			// Wylosuj liczbe punktow
-	        int points = rand.Next(6, 13);
+	        int points = GameManager.Rand.Next(6, 13);
 
 	        int maxLength = 0, minLength = 0;
+
+	        if (type == ObstacleType.Random)
+		        type = (ObstacleType)GameManager.Rand.Next(0, 3);
 
 			// Ustaw min/max dlugosci punktow w zaleznosci od typu
 	        switch (type)
@@ -53,8 +56,8 @@ namespace Asteroids.Objects
 			for (int i = 0; i < points; i++)
 			{
 				// Wylosuj odleglosc punktu od srodka i offset (aby ksztalt byl nieregularny)
-				int length = rand.Next(minLength, maxLength);
-				int offset = rand.Next(-5, 6);
+				int length = GameManager.Rand.Next(minLength, maxLength);
+				int offset = GameManager.Rand.Next(-5, 6);
 
 				// Oblicz sin i cos
 				float sin = MathF.Sin(360f * i / points * radian);
@@ -75,6 +78,7 @@ namespace Asteroids.Objects
             };
         }
 
+		// Ustaw pozycje i rotacje Obstacle
         public void Setup(SKPoint position, float rotation)
         {
             transform.Position = position;
@@ -83,19 +87,24 @@ namespace Asteroids.Objects
 
         public override void Update(float deltaTime)
         {
-            var sin = MathF.Sin(transform.RotationRadians);
-            var cos = MathF.Cos(transform.RotationRadians);
+            float sin = MathF.Sin(transform.RotationRadians);
+            float cos = MathF.Cos(transform.RotationRadians);
+            // Oblicz sin i cos uzywajac obecnej rotacji
 
-            transform.Position.X += cos * speed;
-            transform.Position.Y += sin * speed;
-            
-            Resolution res = window.GetResolution();
+			float speedDelta = speed * deltaTime;
+
+			transform.Position.X += cos * speedDelta;
+            transform.Position.Y += sin * speedDelta;
+            // Zaktualizuj pozycje
+
+			Resolution res = window.GetResolution();
 
 			if (transform.Position.X < 0 || transform.Position.X > res.Width || transform.Position.Y < 0 || transform.Position.Y > res.Height)
 				window.Destroy(this);
+			// Jezeli Obstacle wyleci poza ekran, usun je
 		}
 
-        public override void OnCollisionEnter(PhysicsObject other)
+		public override void OnCollisionEnter(PhysicsObject other)
         {
 	        if (other.Name == "Bullet")
 	        {
@@ -104,7 +113,6 @@ namespace Asteroids.Objects
 				if (type == ObstacleType.Small)
 					return;
 
-                Random rand = new Random();
 				ObstacleType newType = ObstacleType.Large;
 
 				if (type == ObstacleType.Medium)
@@ -114,12 +122,13 @@ namespace Asteroids.Objects
 
 				Obstacle obstacle = new Obstacle(newType);
 				window.Instantiate(obstacle);
-				obstacle.Setup(Transform.Position, Transform.Rotation + rand.Next(30, 151));
+				obstacle.Setup(Transform.Position, Transform.Rotation + GameManager.Rand.Next(30, 151));
 
 				obstacle = new Obstacle(newType);
 				window.Instantiate(obstacle);
-				obstacle.Setup(Transform.Position, Transform.Rotation - rand.Next(30, 151));
-	        }
-        }
+				obstacle.Setup(Transform.Position, Transform.Rotation - GameManager.Rand.Next(30, 151));
+				// Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
+			}
+		}
     }
 }

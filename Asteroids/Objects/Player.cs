@@ -8,7 +8,7 @@ namespace Asteroids.Objects
 {
     public class Player : PhysicsObject
     {
-        const float minSpeed = 0, maxSpeed = 500;
+        const float minSpeed = 0, maxSpeed = 350f;
         float speed, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
         bool lastSpaceState, respawnShield;
@@ -17,8 +17,13 @@ namespace Asteroids.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-	        if (other.Name == "Obstacle")
+            /*
+				Jesli gracz jest w kolizji z Obstacle, UFO lub pociskiem UFO, traci jedno zycie
+                Jesli gracz nie ma juz zyc, okno sie zamyka
+            */
+	        if (other.Name == "Obstacle" || other.Name == "UFO" || other.Name == "BulletUFO")
 	        {
+                // Jesli 5-sekundowa tarcza jest aktywna, zniszcz obiekt zamiast gracza
 		        if (respawnShield)
 		        {
                     window.Destroy(other);
@@ -38,6 +43,7 @@ namespace Asteroids.Objects
                 
 				Thread.Sleep(2000);
                 
+                // Zresetuj pozycje (itp. itd.) gracza
                 Resolution res = window.GetResolution();
 				transform.Position = new SKPoint(res.Width / 2f, res.Height / 2f);
                 transform.Rotation = 0f;
@@ -74,6 +80,7 @@ namespace Asteroids.Objects
         {
             bool isSpacePressed = window.KeyDown(Key.Space);
 
+            // Wystrzel pocisk jesli spacja jest wcisnieta (przytrzymanie spacji wystrzeli pocisk tylko raz)
             if (isSpacePressed && !lastSpaceState)
             {
                 var bullet = new Bullet();
@@ -91,31 +98,34 @@ namespace Asteroids.Objects
             float speedDelta = speed * deltaTime;
             float rotationDelta = rotationSpeed * deltaTime;
 
+            // Jesli shift (lewy lub prawy) jest wcisniety, przyspiesz rotacje
             if (window.KeyDown(Key.LeftShift) || window.KeyDown(Key.RightShift))
                 rotationDelta *= 2;
 
+            // Skrecanie w lewo/prawo
             if (window.KeyDown(Key.Left) || window.KeyDown(Key.A))
                 Rotate(rotationDelta * -1f);
             else if (window.KeyDown(Key.Right) || window.KeyDown(Key.D))
                 Rotate(rotationDelta);
 
+            // Poruszanie do przodu/Hamowanie (jesli gracz nie porusza sie do przodu ORAZ nie hamuje, zwolnij - 2x wolniej niz manualne hamowanie)
             if (window.KeyDown(Key.Up) || window.KeyDown(Key.W))
             {
                 if (ShouldSlow())
                 {
-                    if (speed - maxSpeed / 100 > 20)
-                        speed -= maxSpeed / 100;
+                    if (speed - maxSpeed / 150 > 35)
+                        speed -= maxSpeed / 150;
                     else
                     {
-                        speed = 20;
+                        speed = 35;
 						prevRotation = transform.Rotation;
 						prevRotationRadias = transform.RotationRadians;
 					}
                 }
                 else
                 {
-                    if (speed + maxSpeed / 100 < maxSpeed)
-                        speed += maxSpeed / 100;
+                    if (speed + maxSpeed / 150 < maxSpeed)
+                        speed += maxSpeed / 150;
                     else
                         speed = maxSpeed;
 
@@ -157,10 +167,21 @@ namespace Asteroids.Objects
                 transform.Position = new SKPoint(transform.Position.X, res.Height);
             else if (transform.Position.Y > res.Height)
                 transform.Position = new SKPoint(transform.Position.X,0);
-        }
+			// Jesli gracz wyleci poza ekran, przenies go na przeciwna krawedz
+            
+            GameManager.Player = transform;
+            // Zaktualizuj pozycje gracza, ktora jest globalnie dostepna
+		}
 
-        bool ShouldSlow()
+        /*
+			Jesli poprzednia zarejestrowana rotacja jest "daleko" od obecnej rotacji, zwroc true
+			Jesli nie, zwroc false
+			ShoudSlow dziala gdy np. Lecimy w lewą stronę, obracamy sie w prawą i chcemy przyspieszyc
+			Wtedy statek zwalnia, bo nie jest skierowani w ta sama strone, w ktora przed chwila lecial 
+        */
+		bool ShouldSlow()
         {
+            // "fix" dla negatywnych wartosci
             float tPrevRotation = 360 + prevRotation;
             float tRotation = 360 + transform.Rotation;
 

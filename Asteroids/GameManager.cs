@@ -40,5 +40,14 @@ namespace Asteroids
                 livesText.SetText("Lives: "+ value);
             }
         }
-    }
+
+		static Transform _player;
+		public static Transform Player
+		{
+			get => _player;
+			set => _player = value;
+		}
+
+		public static Random Rand = new Random();
+	}
 }
