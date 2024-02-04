@@ -8,11 +8,13 @@ namespace Asteroids.Objects
 {
     public class BulletUFO : Bullet
     {
-        public override int PhysicsLayer => (int)PhysicsLayers.Other;
+		public override int PhysicsLayer => (int)PhysicsLayers.Other;
 
         public override Setup Start()
         {
-            return new Setup()
+			Speed = 350f;
+            
+			return new Setup()
             {
                 Name = "BulletUFO",
                 Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(5, 0)),

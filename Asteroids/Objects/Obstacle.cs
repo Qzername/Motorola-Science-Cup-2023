@@ -51,9 +51,7 @@ namespace Asteroids.Objects
 					minLength = 10;
 					break;
 	        }
-
-	        float angleToRadian = MathF.PI / 180;
-
+			
 			for (int i = 0; i < points; i++)
 			{
 				// Wylosuj odleglosc punktu od srodka i offset (aby ksztalt byl nieregularny)
@@ -61,8 +59,8 @@ namespace Asteroids.Objects
 				int offset = GameManager.Rand.Next(-5, 6);
 
 				// Oblicz sin i cos
-				float sin = MathF.Sin(360f * i / points * angleToRadian);
-				float cos = MathF.Cos(360f * i / points * angleToRadian);
+				float sin = MathF.Sin(360f * i / points * MathTools.Deg2rad);
+				float cos = MathF.Cos(360f * i / points * MathTools.Deg2rad);
 
 				float x = sin * length + offset;
 				float y = cos * length + offset;

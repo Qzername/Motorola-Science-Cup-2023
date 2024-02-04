@@ -12,18 +12,21 @@ namespace Asteroids.Objects
     {
         const float speed = 50f;
         float setRotationRadians;
+        System.Timers.Timer bulletTimer = new System.Timers.Timer();
 
 		public override int PhysicsLayer => (int)PhysicsLayers.Other;
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
 	        if (other.Name == "Bullet")
-				window.Destroy(this);
+	        {
+		        bulletTimer.Enabled = false;
+				window.Destroy(this);             
+	        }
 		}
 
         public override Setup Start()
         {
-	        System.Timers.Timer bulletTimer = new System.Timers.Timer();
 	        bulletTimer.Elapsed += TimerShoot;
 	        bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
 	        bulletTimer.Enabled = true;
@@ -53,10 +56,8 @@ namespace Asteroids.Objects
 
 		public void Setup(SKPoint position, float rotation)
 		{
-			float angleToRadian = MathF.PI / 180;
-			
 			transform.Position = position;
-			setRotationRadians = rotation * angleToRadian;
+			setRotationRadians = rotation * MathTools.Deg2rad;
 		}
 
         void TimerShoot(object? sender, ElapsedEventArgs e)

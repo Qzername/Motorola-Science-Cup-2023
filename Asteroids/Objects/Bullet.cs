@@ -8,7 +8,7 @@ namespace Asteroids.Objects
 {
     public class Bullet : PhysicsObject
     {
-		public const float Speed = 500f;
+		public float Speed = 500f;
 
         public override int PhysicsLayer => (int)PhysicsLayers.Player;
 

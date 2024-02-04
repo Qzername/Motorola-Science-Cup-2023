@@ -39,7 +39,7 @@ namespace Asteroids
 
 			System.Timers.Timer ufoTimer = new System.Timers.Timer();
 			ufoTimer.Elapsed += TimerSpawnUfo;
-			ufoTimer.Interval = 5000; // Spawnuj UFO co 30 sekund
+			ufoTimer.Interval = 30000; // Spawnuj UFO co 30 sekund
 			ufoTimer.Enabled = true;
 		}
 
