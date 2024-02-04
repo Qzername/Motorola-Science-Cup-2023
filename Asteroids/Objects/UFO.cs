@@ -58,16 +58,22 @@ namespace Asteroids.Objects
 			setRotationRadians = rotation * angleToRadian;
 		}
 
-		void TimerShoot(object? sender, ElapsedEventArgs e)
-		{
-			float rotation = 0f;
+        void TimerShoot(object? sender, ElapsedEventArgs e)
+        {
+            SKPoint playerCenter = new SKPoint(GameManager.Player.Transform.Position.X + GameManager.Player.Shape.Center.X,
+                GameManager.Player.Transform.Position.Y + GameManager.Player.Shape.Center.Y);
 
-			var bullet = new BulletUFO();
-			window.Instantiate(bullet);
-			bullet.Setup(transform.Position, rotation);
-		}
+            float rotation = MathF.Atan2(
+                (playerCenter.Y - transform.Position.Y),
+                (playerCenter.X - transform.Position.X))
+                * MathTools.Rad2deg;
 
-		public override void Update(float deltaTime)
+            var bullet = new BulletUFO();
+            window.Instantiate(bullet);
+            bullet.Setup(transform.Position, rotation);
+        }
+
+        public override void Update(float deltaTime)
         {
 			float sin = MathF.Sin(setRotationRadians);
 			float cos = MathF.Cos(setRotationRadians);

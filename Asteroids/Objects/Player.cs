@@ -21,6 +21,7 @@ namespace Asteroids.Objects
 				Jesli gracz jest w kolizji z Obstacle, UFO lub pociskiem UFO, traci jedno zycie
                 Jesli gracz nie ma juz zyc, okno sie zamyka
             */
+
 	        if (other.Name == "Obstacle" || other.Name == "UFO" || other.Name == "BulletUFO")
 	        {
                 // Jesli 5-sekundowa tarcza jest aktywna, zniszcz obiekt zamiast gracza
@@ -169,7 +170,7 @@ namespace Asteroids.Objects
                 transform.Position = new SKPoint(transform.Position.X,0);
 			// Jesli gracz wyleci poza ekran, przenies go na przeciwna krawedz
             
-            GameManager.Player = transform;
+            GameManager.Player = this;
             // Zaktualizuj pozycje gracza, ktora jest globalnie dostepna
 		}
 

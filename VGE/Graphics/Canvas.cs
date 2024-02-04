@@ -22,7 +22,14 @@ namespace VGE.Graphics
         /// </summary>
         public void DrawLine(Line line)
         {
-            lines.Add(line);
+            try
+            {
+                lines.Add(line);
+            }
+            catch(Exception)
+            {
+
+            }
         }
         public void Clear() => lines.Clear();
         public List<Line> GetLines() => lines;

@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Asteroids.Objects;
+using SkiaSharp;
 using VGE;
 using VGE.Objects;
 
@@ -41,8 +42,8 @@ namespace Asteroids
             }
         }
 
-		static Transform _player;
-		public static Transform Player
+		static Player _player;
+		public static Player Player
 		{
 			get => _player;
 			set => _player = value;
