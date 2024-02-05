@@ -12,7 +12,6 @@ namespace Tempest.Objects
         
         SKPoint centerOfScreen { get => new SKPoint(baseResolution.Width / 2f, baseResolution.Height / 2f); }
 
-        float z = 150f;
         const float zSpeed = 50f;
 
         public override Setup Start()
@@ -24,51 +23,40 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "Map",
-                Position = centerOfScreen,
-                Shape = new Shape(0, new SKPoint(-50,-50), 
-                                    new SKPoint(50, -50),
-                                    new SKPoint(50, 50),
-                                    new SKPoint(-50, 50)),
+                Position = new Point(centerOfScreen.X, centerOfScreen.Y+10, 50),
+                Shape = new Shape(0, new Point(10, 0, 0),
+                                    new Point(60, 0, 0)),
                 Rotation = 0f,
+                PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 1000f)
             };
+        }
+
+        public override void RefreshGraphics(Canvas canvas)
+        {
+            base.RefreshGraphics(canvas);
+
+            foreach (var l in Shape.CompiledShape)
+                canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
         }
 
         public override void Update(float delta)
         {
             baseResolution = window.GetResolution();
-            transform.Position = centerOfScreen;
+
+            if (window.KeyDown(Key.W))
+                transform.Position.Z -= zSpeed * delta;
+            else if(window.KeyDown(Key.S))
+                transform.Position.Z += zSpeed * delta;
+
+            if (window.KeyDown(Key.Left))
+                transform.Position.X -= zSpeed * delta;
+            else if (window.KeyDown(Key.Right))
+                transform.Position.X += zSpeed * delta;
 
             if (window.KeyDown(Key.Up))
-                z -= zSpeed * delta;
-            else if(window.KeyDown(Key.Down))
-                z += zSpeed * delta;
-        }
-
-        public override void RefreshGraphics(Canvas canvas)
-        {
-            foreach(var l in Shape.CompiledShape)
-            {
-                Line finalLine = new Line() 
-                {
-                    StartPosition = CalculatePerspective(transform.Position + l.StartPosition),
-                    EndPosition = CalculatePerspective(transform.Position + l.EndPosition)
-                };
-
-                canvas.DrawLine(finalLine);
-            }
-        }
-
-        SKPoint CalculatePerspective(SKPoint p)
-        {
-            SKPoint perspectivePoint = centerOfScreen;
-
-            float alpha = MathF.Atan2(p.X - perspectivePoint.X, p.Y - perspectivePoint.Y);
-            float beta = MathF.PI - alpha; //180 stopni - alpha
-
-            float x = MathF.Sin(beta) * z;
-            float y = MathF.Cos(beta) * z;
-
-            return new SKPoint(perspectivePoint.X + x, perspectivePoint.Y + y);
+                transform.Position.Y -= zSpeed * delta;
+            else if (window.KeyDown(Key.Down))
+                transform.Position.Y += zSpeed * delta;
         }
     }
 }

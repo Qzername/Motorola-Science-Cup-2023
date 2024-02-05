@@ -44,10 +44,10 @@ namespace VGE.Resources
 
                 for(int i = 0; i < shapeArray.Value.Length; i++)
                 {
-                    List<SKPoint> points = new List<SKPoint>();
+                    List<Point> points = new List<Point>();
 
                     foreach(var point in shapeArray.Value[i].Points)
-                        points.Add(new SKPoint(point.X, point.Y));
+                        points.Add(new Point(point.X, point.Y));
 
                     if (points.Count == 0)
                         continue;

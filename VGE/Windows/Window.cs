@@ -35,6 +35,9 @@ namespace VGE.Windows
             mainWindow.SetLines(canvas.GetLines());
         }
 
+        //windows do swojego okna dodaje niewidzialne obiekty, tutaj jest kompensacja za nie
+        int widthOffset= -16, heightOffset = -40;  
+
         public Resolution GetResolution()
         {
             int actualWidth = mainWindow.Dispatcher.Invoke(() => (int)mainWindow.ActualWidth);
@@ -43,7 +46,7 @@ namespace VGE.Windows
             int width = (int)(actualWidth == 0 ? mainWindow.Width : actualWidth);
             int height = (int)(actualHeight == 0 ? mainWindow.Height : actualHeight);
 
-            return new Resolution(actualWidth, actualHeight);
+            return new Resolution(width+ widthOffset, height + heightOffset);
         }
 
         #region Zarządzanie klatkami

@@ -25,7 +25,7 @@ namespace Asteroids.Objects
 
         public override Setup Start()
         {
-	        List<SKPoint> shapes = new();
+	        List<Point> shapes = new();
 
 			// Wylosuj liczbe punktow
 	        int points = GameManager.Rand.Next(6, 13);
@@ -65,7 +65,7 @@ namespace Asteroids.Objects
 				float x = sin * length + offset;
 				float y = cos * length + offset;
 
-				shapes.Add(new SKPoint(x, y));
+				shapes.Add(new Point(x, y));
 			}
 
 			return new Setup()

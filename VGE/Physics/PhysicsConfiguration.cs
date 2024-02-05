@@ -10,7 +10,7 @@ namespace VGE.Physics
     public struct PhysicsConfiguration
     {
         public Dictionary<int, int[]> LayerConfiguration;
-        public SKPoint CollisonTopLeftOffset;
-        public SKPoint CollisonBottomRightOffset;
+        public Point CollisonTopLeftOffset;
+        public Point CollisonBottomRightOffset;
     }
 }

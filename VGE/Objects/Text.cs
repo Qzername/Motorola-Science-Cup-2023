@@ -18,12 +18,12 @@ namespace VGE.Objects
             {
                 Name = "Text",
                 Shape = null,
-                Position = new SKPoint(0, 0),
+                Position = new Point(0, 0),
                 Rotation = 0f,
             };
         }
 
-        public void Setup(string text, float fontSize, SKPoint position)
+        public void Setup(string text, float fontSize, Point position)
         {
             SetText(text);
             this.fontSize = fontSize;
@@ -60,8 +60,8 @@ namespace VGE.Objects
 
                     foreach (var l in shape.CompiledShape)
                     {
-                        var start = new SKPoint(l.StartPosition.X * fontSize + offset, l.StartPosition.Y * fontSize);
-                        var end = new SKPoint(l.EndPosition.X * fontSize + offset, l.EndPosition.Y * fontSize);
+                        var start = new Point(l.StartPosition.X * fontSize + offset, l.StartPosition.Y * fontSize);
+                        var end = new Point(l.EndPosition.X * fontSize + offset, l.EndPosition.Y * fontSize);
 
                         canvas.DrawLine(new Line(start + transform.Position, end + transform.Position));
                     }

@@ -4,7 +4,7 @@ namespace VGE.Physics
 {
     public static class PhysicsTools
     {
-        public static bool CheckCollisionAABB(SKPoint topLeft1, SKPoint bottomRight1, SKPoint topLeft2, SKPoint bottomRight2)
+        public static bool CheckCollisionAABB(Point topLeft1, Point bottomRight1, Point topLeft2, Point bottomRight2)
         {
             return 
                 topLeft1.X <= bottomRight2.X && 

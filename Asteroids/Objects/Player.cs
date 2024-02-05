@@ -64,7 +64,10 @@ namespace Asteroids.Objects
         public override Setup Start()
         {
 	        Resolution res = window.GetResolution();
-            
+
+            Debug.WriteLine(res.Width);
+            Debug.WriteLine(res.Height);
+
             return new Setup()
             {
                 Name = "Player",

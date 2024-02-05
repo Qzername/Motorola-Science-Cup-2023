@@ -9,10 +9,10 @@ namespace VGE.Graphics
 {
     public struct Line
     {
-        public SKPoint StartPosition;
-        public SKPoint EndPosition;
+        public Point StartPosition;
+        public Point EndPosition;
 
-        public Line(SKPoint startPosition, SKPoint endPoint)
+        public Line(Point startPosition, Point endPoint)
         {
             StartPosition = startPosition;
             EndPosition = endPoint;
@@ -20,8 +20,8 @@ namespace VGE.Graphics
 
         public Line(float x1, float y1, float x2, float y2)
         {
-            StartPosition = new SKPoint(x1, y1);
-            EndPosition = new SKPoint(x2, y2);
+            StartPosition = new Point(x1, y1);
+            EndPosition = new Point(x2, y2);
         }
     }
 }

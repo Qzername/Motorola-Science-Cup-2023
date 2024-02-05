@@ -57,6 +57,7 @@ namespace VGE
             {
                 Position = setup.Position,
                 Rotation = setup.Rotation,
+                PerspectiveCenter = setup.PerspectiveCenter,
             };
 
             if (transform.Rotation != 0f)
@@ -78,8 +79,49 @@ namespace VGE
         /// </summary>
         public virtual void RefreshGraphics(Canvas canvas)
         {
-            foreach (var l in shape.CompiledShape)
-                canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
+            if(transform.Is3D)
+                foreach (var l in Shape.CompiledShape)
+                {
+                    //Długość Z jest inna dla każdego punktu, tutaj obliczenia na nowy:
+                    var startPosition = transform.Position + l.StartPosition;
+                    var endPosition = transform.Position + l.EndPosition;
+
+/*
+
+                    startPosition.Y = CalculatePointZ(startPosition);
+                    endPosition.Y = CalculatePointZ(endPosition);*/
+
+                    Line finalLine = new Line()
+                    {
+                        StartPosition = CalculatePerspective2(startPosition),
+                        EndPosition = CalculatePerspective2(endPosition)
+                    };
+
+                    canvas.DrawLine(finalLine);
+                }
+            else
+                foreach (var l in shape.CompiledShape)
+                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
+        }
+
+        Point CalculatePerspective2(Point p)
+        {
+            var centerInSpace = transform.Position + shape.Center;
+            float y = centerInSpace.Y - transform.PerspectiveCenter!.Value.Y;
+            float x = centerInSpace.X + p.X;
+
+            return new Point(x, y);
+        }
+
+        Point CalculatePerspective(Point p)
+        {
+            float alpha = MathF.Atan2(p.X - transform.PerspectiveCenter!.Value.X, p.Y - transform.PerspectiveCenter!.Value.Y);
+            float beta = MathF.PI - alpha; //180 stopni - alpha
+
+            float x = MathF.Sin(beta) * transform.Position.Z;
+            float y = MathF.Cos(beta) * transform.Position.Z;
+
+            return new Point(transform.PerspectiveCenter!.Value.X + x, transform.PerspectiveCenter!.Value.Y + y, p.Z);
         }
 
         /// <summary>
@@ -95,15 +137,17 @@ namespace VGE
         {
             public string Name;
             public Shape Shape;
-            public SKPoint Position; 
+            public Point Position; 
             public float Rotation;
+            public Point? PerspectiveCenter;
 
-            public Setup(string name, Shape shape, SKPoint position, float rotation)
+            public Setup(string name, Shape shape, Point position, float rotation, Point? perspectiveCenter = null)
             {
                 Name = name;
                 Shape = shape;
                 Position = position;
                 Rotation = rotation;
+                PerspectiveCenter = perspectiveCenter;
             }
         }
     }

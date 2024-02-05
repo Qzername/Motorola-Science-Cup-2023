@@ -1,7 +1,7 @@
 ﻿namespace VGE.Resources
 {
-    public struct RawShape(RawSKPoint[] points)
+    public struct RawShape(RawPoint[] points)
     {
-        public RawSKPoint[] Points { get; set; } = points;
+        public RawPoint[] Points { get; set; } = points;
     }
 }

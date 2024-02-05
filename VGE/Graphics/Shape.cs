@@ -12,25 +12,25 @@ namespace VGE.Graphics
     public class Shape
     {
         public Line[] CompiledShape;
-        public SKPoint Center;
+        public Point Center;
 
-        public SKPoint TopLeft, BottomRight;
+        public Point TopLeft, BottomRight;
 
-        SKPoint[] rawShape;
+        Point[] rawShape;
 
         /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
-        public Shape(float defaultRotation, params SKPoint[] shape)
+        public Shape(float defaultRotation, params Point[] shape)
         {
             rawShape = shape;
             CompiledShape = new Line[rawShape.Length];
 
-            if(defaultRotation != 0)
-               Rotate(defaultRotation);
+            if(defaultRotation == 0)
+                CompileShape();
+            else 
+                Rotate(defaultRotation);
 
-            CompileShape();
-            
             //ustawiamy środek kształtu ze względu na to że według środka będziemy mogli obracać kształt
-            Center = new SKPoint((BottomRight.X - TopLeft.X) / 2 + TopLeft.X, (BottomRight.Y - TopLeft.Y) / 2 + TopLeft.Y);
+            Center = new Point((BottomRight.X - TopLeft.X) / 2 + TopLeft.X, (BottomRight.Y - TopLeft.Y) / 2 + TopLeft.Y);
         }
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace VGE.Graphics
             if (minY == maxY)//0 == 0
                 maxY = 1;
 
-            TopLeft = new SKPoint(minX, minY);
-            BottomRight = new SKPoint(maxX, maxY);
+            TopLeft = new Point(minX, minY);
+            BottomRight = new Point(maxX, maxY);
 
             CompiledShape[CompiledShape.Length - 1] = new Line(rawShape[CompiledShape.Length - 1], rawShape[0]);
         }

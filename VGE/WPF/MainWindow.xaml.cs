@@ -1,10 +1,7 @@
 ﻿using SkiaSharp.Views.Desktop;
 using SkiaSharp;
-using System.Diagnostics;
 using VGE.Graphics;
-using System.Windows;
 using System.Windows.Threading;
-using VGE.Windows;
 using System.Windows.Input;
 
 namespace VGE.WPF

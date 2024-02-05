@@ -139,10 +139,10 @@ namespace VectorGraphicsDrawer.Controls
 
             foreach(var shape in shapes)
             {
-                RawSKPoint[] skpoints = new RawSKPoint[shape.Count];
+                RawPoint[] skpoints = new RawPoint[shape.Count];
 
                 for (int i = 0; i < skpoints.Length; i++)
-                    skpoints[i] = new RawSKPoint(
+                    skpoints[i] = new RawPoint(
                         Convert.ToSingle(shape[i].X), 
                         Convert.ToSingle(shape[i].Y));
 
