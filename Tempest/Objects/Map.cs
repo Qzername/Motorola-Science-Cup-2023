@@ -18,25 +18,17 @@ namespace Tempest.Objects
         {
             baseResolution = window.GetResolution();
 
-            Debug.WriteLine(baseResolution.Width);
-
             return new Setup()
             {
                 Name = "Map",
-                Position = new Point(centerOfScreen.X, centerOfScreen.Y+10, 50),
-                Shape = new Shape(0, new Point(10, 0, 0),
-                                    new Point(60, 0, 0)),
+                Position = new Point(0, 50, 200),
+                Shape = new Shape(0, new Point(-50, 0, 0),
+                                    new Point(50, 0, 0),
+                                    new Point(50, 0, -150),
+                                    new Point(-50, 0, -150)),
                 Rotation = 0f,
-                PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 1000f)
+                PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 100f)
             };
-        }
-
-        public override void RefreshGraphics(Canvas canvas)
-        {
-            base.RefreshGraphics(canvas);
-
-            foreach (var l in Shape.CompiledShape)
-                canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
         }
 
         public override void Update(float delta)
