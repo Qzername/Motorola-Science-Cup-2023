@@ -12,7 +12,7 @@ namespace VGE.WPF
     public partial class MainWindow : System.Windows.Window
     {
         List<Line> linesToDraw;
-        SKPaint paint;
+        SKPaint paint, customPaint;
 
         public MainWindow()
         {
@@ -26,6 +26,12 @@ namespace VGE.WPF
             {
                 StrokeWidth = 1,
                 Color = SKColors.White,
+            };
+
+            customPaint = new SKPaint()
+            {
+                StrokeWidth = 1,
+                Color = SKColors.White
             };
 
             linesToDraw = new List<Line>();
@@ -42,7 +48,14 @@ namespace VGE.WPF
             for (int i = 0; i < linesToDraw.Count; i++)
             {
                 var line = linesToDraw[i];
-                canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
+
+                if(line.LineColor is null)
+                    canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
+                else
+                {
+                    customPaint.Color = line.LineColor.Value;
+                    canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
+                }
             }
         }
 

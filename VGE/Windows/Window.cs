@@ -15,7 +15,7 @@ namespace VGE.Windows
         Canvas canvas;
         protected Time time;
 
-        const int framerate = 120;
+        const int framerate = 60;
 
         List<VectorObject> objects;
         PhysicsEngine? physicsEngine;

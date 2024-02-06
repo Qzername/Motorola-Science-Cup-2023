@@ -11,17 +11,13 @@ namespace VGE.Graphics
     {
         public Point StartPosition;
         public Point EndPosition;
+        public SKColor? LineColor;
 
-        public Line(Point startPosition, Point endPoint)
+        public Line(Point startPosition, Point endPoint, SKColor? lineColor = null)
         {
             StartPosition = startPosition;
             EndPosition = endPoint;
-        }
-
-        public Line(float x1, float y1, float x2, float y2)
-        {
-            StartPosition = new Point(x1, y1);
-            EndPosition = new Point(x2, y2);
+            LineColor = lineColor;
         }
     }
 }

@@ -93,15 +93,16 @@ namespace VGE
 
                     Line finalLine = new Line()
                     {
-                        StartPosition = new Point(startPosition.X * deltaSP, startPosition.Y * deltaSP) + transform.PerspectiveCenter.Value,
-                        EndPosition = new Point(endPosition.X * deltaEP, endPosition.Y * deltaEP) + transform.PerspectiveCenter.Value
+                        StartPosition = new Point(startPosition.X * deltaSP, startPosition.Y * deltaSP) + perspectivePoint,
+                        EndPosition = new Point(endPosition.X * deltaEP, endPosition.Y * deltaEP) + perspectivePoint,
+                        LineColor = shape.customColor
                     };
 
                     canvas.DrawLine(finalLine);
                 }
             else
                 foreach (var l in shape.CompiledShape)
-                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position));
+                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.customColor));
         }
 
         /// <summary>

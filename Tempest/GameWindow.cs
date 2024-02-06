@@ -8,7 +8,8 @@ namespace Tempest
     {
         public GameWindow() 
         {
-            Instantiate(new Map());
+            Instantiate(new MapManager());
+            Instantiate(new Player());
         }
 
         public override void Update(Canvas canvas)

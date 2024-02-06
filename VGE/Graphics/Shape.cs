@@ -16,17 +16,32 @@ namespace VGE.Graphics
 
         public Point TopLeft, BottomRight;
 
+        public SKColor? customColor;
+
         Point[] rawShape;
 
         /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
         public Shape(float defaultRotation, params Point[] shape)
         {
+            customColor = null;
+            ConfigureShape(defaultRotation, shape); 
+        }
+        
+        /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
+        public Shape(float defaultRotation, SKColor customColor, params Point[] shape)
+        {
+            this.customColor = customColor;
+            ConfigureShape(defaultRotation, shape);
+        }
+
+        void ConfigureShape(float defaultRotation, params Point[] shape)
+        {
             rawShape = shape;
             CompiledShape = new Line[rawShape.Length];
 
-            if(defaultRotation == 0)
+            if (defaultRotation == 0)
                 CompileShape();
-            else 
+            else
                 Rotate(defaultRotation);
 
             //ustawiamy środek kształtu ze względu na to że według środka będziemy mogli obracać kształt
