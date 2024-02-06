@@ -186,7 +186,7 @@ namespace Asteroids.Objects
 			Jesli poprzednia zarejestrowana rotacja jest "daleko" od obecnej rotacji, zwroc true
 			Jesli nie, zwroc false
 			ShoudSlow dziala gdy np. Lecimy w lewą stronę, obracamy sie w prawą i chcemy przyspieszyc
-			Wtedy statek zwalnia, bo nie jest skierowani w ta sama strone, w ktora przed chwila lecial 
+			Wtedy statek zwalnia, bo nie jest skierowany w ta sama strone, w ktora przed chwila lecial 
         */
 		bool ShouldSlow()
         {
