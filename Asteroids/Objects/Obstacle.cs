@@ -17,7 +17,7 @@ namespace Asteroids.Objects
     
     public class Obstacle(ObstacleType obstacleType = ObstacleType.Random) : PhysicsObject
     {
-        ObstacleType type = obstacleType;
+        public ObstacleType Type = obstacleType;
         float speed = GameManager.Rand.Next(50, 201);
         // Wylosuj predkosc pomiedzy 50 a 200
 
@@ -32,11 +32,11 @@ namespace Asteroids.Objects
 
 	        int maxLength = 0, minLength = 0;
 
-	        if (type == ObstacleType.Random)
-		        type = (ObstacleType)GameManager.Rand.Next(0, 3);
+	        if (Type == ObstacleType.Random)
+		        Type = (ObstacleType)GameManager.Rand.Next(0, 3);
 
 			// Ustaw min/max dlugosci punktow w zaleznosci od typu
-	        switch (type)
+	        switch (Type)
 	        {
 				case ObstacleType.Large:
 					maxLength = 41;
@@ -94,13 +94,19 @@ namespace Asteroids.Objects
 
 			transform.Position.X += cos * speedDelta;
             transform.Position.Y += sin * speedDelta;
-            // Zaktualizuj pozycje
+			// Zaktualizuj pozycje
 
 			Resolution res = window.GetResolution();
 
-			if (transform.Position.X < 0 || transform.Position.X > res.Width || transform.Position.Y < 0 || transform.Position.Y > res.Height)
-				window.Destroy(this);
-			// Jezeli Obstacle wyleci poza ekran, usun je
+			if (transform.Position.X < 0)
+				transform.Position = new SKPoint(res.Width, transform.Position.Y);
+			else if (transform.Position.X > res.Width)
+				transform.Position = new SKPoint(0, transform.Position.Y);
+			else if (transform.Position.Y < 0)
+				transform.Position = new SKPoint(transform.Position.X, res.Height);
+			else if (transform.Position.Y > res.Height)
+				transform.Position = new SKPoint(transform.Position.X, 0);
+			// Jesli Obstacle wyleci poza ekran, przenies je na przeciwna krawedz
 		}
 
 		public override void OnCollisionEnter(PhysicsObject other)
@@ -109,14 +115,14 @@ namespace Asteroids.Objects
 	        {
 				window.Destroy(this);
 
-				if (type == ObstacleType.Small)
+				if (Type == ObstacleType.Small)
 					return;
 
 				ObstacleType newType = ObstacleType.Large;
 
-				if (type == ObstacleType.Medium)
+				if (Type == ObstacleType.Medium)
 					newType = ObstacleType.Small;
-				else if (type == ObstacleType.Large)
+				else if (Type == ObstacleType.Large)
 					newType = ObstacleType.Medium;
 
 				Obstacle obstacle = new Obstacle(newType);

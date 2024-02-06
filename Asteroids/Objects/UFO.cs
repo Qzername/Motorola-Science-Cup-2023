@@ -8,11 +8,19 @@ using VGE.Windows;
 
 namespace Asteroids.Objects
 {
-    public class UFO : PhysicsObject
+	public enum UFOType
+	{
+		Small,
+		Large,
+		Random
+	}
+	
+	public class UFO(UFOType ufoType = UFOType.Large) : PhysicsObject
     {
-        const float speed = 50f;
+	    public UFOType Type = ufoType;
+		const float speed = 150f;
         float setRotationRadians;
-        System.Timers.Timer bulletTimer = new System.Timers.Timer();
+        System.Timers.Timer bulletTimer = new();
 
 		public override int PhysicsLayer => (int)PhysicsLayers.Other;
 

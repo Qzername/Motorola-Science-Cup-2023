@@ -47,8 +47,8 @@ namespace Asteroids
 
         void TimerSpawnObstacle(object? sender, ElapsedEventArgs e)
         {
-			// Co 10 puktow, spawnuj o 1 przeszkode wiecej
-	        int spawnTimes = (int)Math.Ceiling((GameManager.Score != 0 ? GameManager.Score : 1) / 10M);
+			// Co 5000 puktow, spawnuj o 1 przeszkode wiecej
+	        int spawnTimes = (int)Math.Ceiling((GameManager.Score != 0 ? GameManager.Score : 1) / 5000M);
 
 	        for (int i = 0; i < spawnTimes; i++)
 	        {

@@ -9,7 +9,7 @@ namespace Asteroids.Objects
 {
     public class Player : PhysicsObject
     {
-        const float minSpeed = 0, maxSpeed = 350f;
+        const float minSpeed = 0, maxSpeed = 400f;
         float speed, rotationSpeed = 90, prevRotation, prevRotationRadias;
     
         bool lastSpaceState, respawnShield;
@@ -85,9 +85,13 @@ namespace Asteroids.Objects
         {
             bool isSpacePressed = window.KeyDown(Key.Space);
 
-            // Wystrzel pocisk jesli spacja jest wcisnieta (przytrzymanie spacji wystrzeli pocisk tylko raz)
-            if (isSpacePressed && !lastSpaceState)
+			/*
+				Wystrzel pocisk jesli spacja jest wcisnieta (przytrzymanie spacji wystrzeli pocisk tylko raz) oraz jesli na ekranie jest mniej niz 4 pociskow
+				https://www.classicgaming.cc/classics/asteroids/play-guide
+            */
+			if (isSpacePressed && !lastSpaceState && GameManager.BulletsOnScreen < 4)
             {
+                GameManager.BulletsOnScreen++;
                 var bullet = new Bullet();
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation);
@@ -118,8 +122,8 @@ namespace Asteroids.Objects
             {
                 if (ShouldSlow())
                 {
-                    if (speed - maxSpeed / 150 > 35)
-                        speed -= maxSpeed / 150;
+                    if (speed - maxSpeed / 100 > 35)
+                        speed -= maxSpeed / 100;
                     else
                     {
                         speed = 35;
@@ -129,8 +133,8 @@ namespace Asteroids.Objects
                 }
                 else
                 {
-                    if (speed + maxSpeed / 150 < maxSpeed)
-                        speed += maxSpeed / 150;
+                    if (speed + maxSpeed / 100 < maxSpeed)
+                        speed += maxSpeed / 100;
                     else
                         speed = maxSpeed;
 

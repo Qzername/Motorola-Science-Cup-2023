@@ -50,6 +50,20 @@ namespace Asteroids
 			set => _player = value;
 		}
 
-		public static Random Rand = new Random();
+		private static int _scoreToGet = 10000;
+		public static int ScoreToGet
+		{
+			get => _scoreToGet;
+			set => _scoreToGet = value;
+		}
+
+		private static int _bulletsOnScreen = 0;
+		public static int BulletsOnScreen
+		{
+			get => _bulletsOnScreen;
+			set => _bulletsOnScreen = value;
+		}
+
+		public static Random Rand = new();
 	}
 }
