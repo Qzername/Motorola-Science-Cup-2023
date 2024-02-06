@@ -79,9 +79,10 @@ namespace VGE
         /// </summary>
         public virtual void RefreshGraphics(Canvas canvas)
         {
-            var perspectivePoint = transform.PerspectiveCenter!.Value;
-
             if (transform.Is3D)
+            {
+                var perspectivePoint = transform.PerspectiveCenter!.Value;
+
                 foreach (var l in Shape.CompiledShape)
                 {
                     //Długość Z jest inna dla każdego punktu, tutaj obliczenia na nowy:
@@ -100,6 +101,7 @@ namespace VGE
 
                     canvas.DrawLine(finalLine);
                 }
+            }
             else
                 foreach (var l in shape.CompiledShape)
                     canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.customColor));
