@@ -11,7 +11,7 @@ namespace VGE.Physics
 
         const int physicsFramerate = 50;
 
-        PhysicsConfiguration physicsConfiguration;
+        protected PhysicsConfiguration physicsConfiguration;
 
         public event Action<VectorObject, VectorObject> CollisionDetected;
 
@@ -34,7 +34,7 @@ namespace VGE.Physics
             physicsTimer.Enabled = true;
         }
 
-		public void RegisterObject(PhysicsObject obj)
+		public virtual void RegisterObject(PhysicsObject obj)
         {
             if (!objects.ContainsKey(obj.PhysicsLayer))
                 objects[obj.PhysicsLayer] = new List<PhysicsObject>();
@@ -44,7 +44,7 @@ namespace VGE.Physics
 	            objects[obj.PhysicsLayer].Add(obj);
 		}
 
-        public void UnregisterObject(PhysicsObject obj)
+        public virtual void UnregisterObject(PhysicsObject obj)
         {
             if (obj is null)
                 return;
@@ -70,7 +70,7 @@ namespace VGE.Physics
 			}
         }
 
-		void PhysicsUpdate(object? sender, ElapsedEventArgs e)
+		protected virtual void PhysicsUpdate(object? sender, ElapsedEventArgs e)
         {
             List<int> checkedLayer = new List<int>();
 

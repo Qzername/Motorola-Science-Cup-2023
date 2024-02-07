@@ -1,5 +1,6 @@
 ﻿using SkiaSharp;
 using System.Diagnostics;
+using System.Printing;
 using VGE;
 using VGE.Graphics;
 using VGE.Windows;
@@ -10,14 +11,29 @@ namespace Tempest.Objects
     {
         public static MapManager Instance;
 
-        List<MapElement> elements = new List<MapElement>();
+        Resolution baseResolution;
+        Point centerOfScreen { get => new Point(baseResolution.Width / 2f, baseResolution.Height / 2f); }
+
+        List<MapElement> elements;
         public List<MapElement> Elements { get => elements; }
 
-        Point perspectiveOffset = new Point(0, 0, 500f);
+        Point perspectiveOffset;
         public Point PerspectiveOffset { get => perspectiveOffset; }
+
+        /// <summary>
+        /// Pełny obliczony punkt perspektywiczny
+        /// </summary>
+        public Point PerspectivePoint => centerOfScreen + PerspectiveOffset;
+
+        public event Action<Point> ResolutionChanged;
 
         public override Setup Start()
         {
+            baseResolution = window.GetResolution();
+
+            elements = new List<MapElement>();
+            perspectiveOffset = new Point(0, 0, 500f);
+
             Instance = this;
 
             LoadMap();
@@ -45,11 +61,27 @@ namespace Tempest.Objects
 
         public override void Update(float delta)
         {
+            var currentWindowResolution = window.GetResolution();
+
+            if(baseResolution != currentWindowResolution)
+            {
+                ResolutionChanged?.Invoke(PerspectivePoint);
+                baseResolution = window.GetResolution();
+            }
         }
 
         public override void RefreshGraphics(Canvas canvas)
         {
             //dont draw anything
+        }
+
+        public Point GetPosition(int mapPosition, float Z)
+        {
+            Point p = Elements[mapPosition].GetCenterPosition();
+
+            p.Z = Z;
+
+            return p;
         }
     }
 }

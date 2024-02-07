@@ -42,7 +42,7 @@ namespace VGE
 
         public static Point operator +(Point p1, Point p2)
         {
-            if(p1.Is3D && p2.Is3D)
+            if(p1.Is3D || p2.Is3D)
                 return new Point(p1.X+p2.X, p1.Y+p2.Y, p1.Z + p2.Z);
             else
                 return new Point(p1.X + p2.X, p1.Y + p2.Y);
@@ -50,7 +50,7 @@ namespace VGE
 
         public static Point operator -(Point p1, Point p2)
         {
-            if (p1.Is3D && p2.Is3D)
+            if (p1.Is3D || p2.Is3D)
                 return new Point(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p1.Z);
             else
                 return new Point(p1.X - p2.X, p1.Y - p2.Y);

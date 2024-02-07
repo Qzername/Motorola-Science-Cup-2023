@@ -10,9 +10,7 @@ namespace Tempest.Objects
     public class MapElement : VectorObject
     {
         Resolution baseResolution;
-        SKPoint centerOfScreen { get => new SKPoint(baseResolution.Width / 2f, baseResolution.Height / 2f); }
-
-        const float zSpeed = 250f;
+        Point centerOfScreen { get => new Point(baseResolution.Width / 2f, baseResolution.Height / 2f); }
 
         Point perspectiveOffset;
 
@@ -21,7 +19,7 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "MapElement",
-                Position = new Point(0,0),
+                Position = new Point(0,0,0),
                 Shape = new Shape(0, SKColors.Blue,
                                     new Point(-50, 0,950),
                                     new Point(50, 0, 950),
@@ -56,7 +54,7 @@ namespace Tempest.Objects
                 return;
 
             baseResolution = window.GetResolution();
-            transform.PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 0) + perspectiveOffset;
+            transform.PerspectiveCenter = centerOfScreen + perspectiveOffset;
         }
     }
 }

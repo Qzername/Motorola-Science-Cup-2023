@@ -2,31 +2,40 @@
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Physics;
 using VGE.Windows;
 
 namespace Tempest.Objects
 {
-    public class Player : VectorObject
+    public class Player : PhysicsObject
     {
-        Resolution baseResolution;
-        Point centerOfScreen { get => new Point(baseResolution.Width / 2f, baseResolution.Height / 2f); }
+        public override int PhysicsLayer => mapPosition;
+        int mapPosition = 0; //prostokąt na którym jest gracz
 
-        int mapPosition = 0;
+        const float zSpeed = 250f;
+
+        public override void OnCollisionEnter(PhysicsObject other)
+        {
+            Debug.WriteLine("PLAYER COLLISION: " + other.Name);
+        }
 
         public override Setup Start()
         {
-            baseResolution = window.GetResolution();
+            MapManager.Instance.ResolutionChanged += (p) =>
+            {
+                transform.PerspectiveCenter = p;
+            };
 
             return new Setup()
             {
                 Name = "Player",
                 Shape = new Shape(0,SKColors.Red,
-                                new Point(20, 20),
-                                new Point(20, -20),
-                                new Point(-20, -20),
-                                new Point(-20, 20)),
-                Position = GetPosition(),
-                PerspectiveCenter = MapManager.Instance.PerspectiveOffset,
+                                new Point(20, 20,0),
+                                new Point(20, -20,0),
+                                new Point(-20, -20,0),
+                                new Point(-20, 20,0)),
+                Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0,0,400),
+                PerspectiveCenter =  MapManager.Instance.PerspectivePoint,
                 Rotation = 0f
             };
         }
@@ -35,6 +44,13 @@ namespace Tempest.Objects
 
         public override void Update(float delta)
         {
+            //Tego W i S sterowania nie powinno być, robie to dla testów fizyki
+            if (window.KeyDown(Key.W))
+                transform.Position.Z += zSpeed * delta;
+
+            if (window.KeyDown(Key.S))
+                transform.Position.Z -= zSpeed * delta;
+
             if (window.KeyDown(Key.A) && !wasApressed)
                 wasApressed = true;
             else if (!window.KeyDown(Key.A) && wasApressed)
@@ -44,7 +60,7 @@ namespace Tempest.Objects
                 if (mapPosition != 0)
                 {
                     mapPosition--;
-                    transform.Position = GetPosition();
+                    transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
                 }
             }
 
@@ -57,17 +73,9 @@ namespace Tempest.Objects
                 if(mapPosition != MapManager.Instance.Elements.Count - 1)
                 {
                     mapPosition++;
-                    transform.Position = GetPosition();
+                    transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
                 }
             }
-        }
-
-        Point GetPosition()
-        {
-            Point p = centerOfScreen + MapManager.Instance.PerspectiveOffset + MapManager.Instance.Elements[mapPosition].GetCenterPosition();
-
-            Debug.WriteLine(p);
-            return p;
         }
     }
 }

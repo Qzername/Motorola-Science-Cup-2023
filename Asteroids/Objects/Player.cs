@@ -72,11 +72,11 @@ namespace Asteroids.Objects
             {
                 Name = "Player",
                 Shape = new Shape(-90f,
-                        new SKPoint(0, 0),
-                        new SKPoint(15, 40),
-                        new SKPoint(30, 0),
-                        new SKPoint(15, 5)),
-                Position = new SKPoint(res.Width / 2f, res.Height / 2f),
+                        new Point(0, 0),
+                        new Point(15, 40),
+                        new Point(30, 0),
+                        new Point(15, 5)),
+                Position = new Point(res.Width / 2f, res.Height / 2f),
                 Rotation = 0f,
             };
         }
