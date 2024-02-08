@@ -15,7 +15,7 @@ namespace Asteroids.Objects
 		Random
 	}
 	
-	public class UFO(UFOType ufoType = UFOType.Large) : PhysicsObject
+	public class UFO(UFOType ufoType = UFOType.Random) : PhysicsObject
     {
 	    public UFOType Type = ufoType;
 		const float speed = 150f;
@@ -39,24 +39,51 @@ namespace Asteroids.Objects
 	        bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
 	        bulletTimer.Enabled = true;
 
+	        List<Point> shapes = new();
+			
+			if (Type == UFOType.Random)
+				Type = (UFOType)GameManager.Rand.Next(0, 2);
+
+			switch (Type)
+			{
+				case UFOType.Large:
+					shapes.Add(new SKPoint(32.5f, 0));
+					shapes.Add(new SKPoint(40, 10));
+					shapes.Add(new SKPoint(50, 15));
+					shapes.Add(new SKPoint(40, 20));
+					shapes.Add(new SKPoint(10, 20));
+					shapes.Add(new SKPoint(0, 15));
+					shapes.Add(new SKPoint(10, 10));
+					shapes.Add(new SKPoint(17.5f, 0));
+					shapes.Add(new SKPoint(32.5f, 0));
+					shapes.Add(new SKPoint(40, 10));
+					shapes.Add(new SKPoint(50, 15));
+					shapes.Add(new SKPoint(0, 15));
+					shapes.Add(new SKPoint(10, 10));
+					shapes.Add(new SKPoint(40, 10));
+					break;
+				case UFOType.Small:
+					shapes.Add(new SKPoint(16.25f, 0));
+					shapes.Add(new SKPoint(20, 5));
+					shapes.Add(new SKPoint(25, 7.5f));
+					shapes.Add(new SKPoint(20, 10));
+					shapes.Add(new SKPoint(5, 10));
+					shapes.Add(new SKPoint(0, 7.5f));
+					shapes.Add(new SKPoint(5, 5));
+					shapes.Add(new SKPoint(8.75f, 0));
+					shapes.Add(new SKPoint(16.25f, 0));
+					shapes.Add(new SKPoint(20, 5));
+					shapes.Add(new SKPoint(25, 7.5f));
+					shapes.Add(new SKPoint(0, 7.5f));
+					shapes.Add(new SKPoint(5, 5));
+					shapes.Add(new SKPoint(20, 5));
+					break;
+			}
+
 			return new Setup()
             {
                 Name = "UFO",
-                Shape = new Shape(0f,
-						new SKPoint(32.5f, 0),
-						new SKPoint(40, 10),
-                        new SKPoint(50, 15),
-                        new SKPoint(40, 20),
-                        new SKPoint(10, 20),
-                        new SKPoint(0, 15),
-                        new SKPoint(10, 10),
-                        new SKPoint(17.5f, 0),
-                        new SKPoint(32.5f, 0),
-                        new SKPoint(40, 10),
-                        new SKPoint(50, 15),
-						new SKPoint(0, 15),
-						new SKPoint(10, 10),
-						new SKPoint(40, 10)),
+                Shape = new Shape(0f, shapes.ToArray()),
                 Position = new SKPoint(0, 0),
                 Rotation = 0f,
             };
