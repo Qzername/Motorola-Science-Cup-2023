@@ -47,7 +47,7 @@ namespace Asteroids.Objects
                 
                 // Zresetuj pozycje (itp. itd.) gracza
                 Resolution res = window.GetResolution();
-				transform.Position = new SKPoint(res.Width / 2f, res.Height / 2f);
+				transform.Position = new Point(res.Width / 2f, res.Height / 2f);
                 transform.Rotation = 0f;
                 prevRotation = Transform.Rotation;
                 prevRotationRadias = Transform.RotationRadians;      
@@ -169,13 +169,13 @@ namespace Asteroids.Objects
             Resolution res = window.GetResolution();
 
 			if (transform.Position.X < 0)
-                transform.Position = new SKPoint(res.Width, transform.Position.Y);
+                transform.Position = new Point(res.Width, transform.Position.Y);
             else if (transform.Position.X > res.Width)
-                transform.Position = new SKPoint(0, transform.Position.Y);
+                transform.Position = new Point(0, transform.Position.Y);
             else if (transform.Position.Y < 0)
-                transform.Position = new SKPoint(transform.Position.X, res.Height);
+                transform.Position = new Point(transform.Position.X, res.Height);
             else if (transform.Position.Y > res.Height)
-                transform.Position = new SKPoint(transform.Position.X,0);
+                transform.Position = new Point(transform.Position.X,0);
 			// Jesli gracz wyleci poza ekran, przenies go na przeciwna krawedz
             
             GameManager.Player = this;

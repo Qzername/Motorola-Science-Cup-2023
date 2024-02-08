@@ -19,13 +19,13 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Bullet",
-                Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(5, 0)),
-                Position = new SKPoint(0,0),
+                Shape = new Shape(0f, new Point(0, 0), new Point(5, 0)),
+                Position = new Point(0,0),
                 Rotation = 0f,
             };
         }
 
-        public void Setup(SKPoint position, float rotation)
+        public void Setup(Point position, float rotation)
         {
             transform.Position = position;
             Rotate(rotation);
@@ -44,13 +44,13 @@ namespace Asteroids.Objects
             Resolution res = window.GetResolution();
 
 			if (transform.Position.X < 0)
-				transform.Position = new SKPoint(res.Width, transform.Position.Y);
+				transform.Position = new Point(res.Width, transform.Position.Y);
 			else if (transform.Position.X > res.Width)
-				transform.Position = new SKPoint(0, transform.Position.Y);
+				transform.Position = new Point(0, transform.Position.Y);
 			else if (transform.Position.Y < 0)
-				transform.Position = new SKPoint(transform.Position.X, res.Height);
+				transform.Position = new Point(transform.Position.X, res.Height);
 			else if (transform.Position.Y > res.Height)
-				transform.Position = new SKPoint(transform.Position.X, 0);
+				transform.Position = new Point(transform.Position.X, 0);
 			// Jesli pocisk wyleci poza ekran, przenies go na przeciwna krawedz
 
 			length++;

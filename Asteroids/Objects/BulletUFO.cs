@@ -17,8 +17,8 @@ namespace Asteroids.Objects
 			return new Setup()
             {
                 Name = "BulletUFO",
-                Shape = new Shape(0f, new SKPoint(0, 0), new SKPoint(5, 0)),
-                Position = new SKPoint(0,0),
+                Shape = new Shape(0f, new Point(0, 0), new Point(5, 0)),
+                Position = new Point(0,0),
                 Rotation = 0f,
             };
         }

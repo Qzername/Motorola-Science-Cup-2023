@@ -47,36 +47,36 @@ namespace Asteroids.Objects
 			switch (Type)
 			{
 				case UFOType.Large:
-					shapes.Add(new SKPoint(32.5f, 0));
-					shapes.Add(new SKPoint(40, 10));
-					shapes.Add(new SKPoint(50, 15));
-					shapes.Add(new SKPoint(40, 20));
-					shapes.Add(new SKPoint(10, 20));
-					shapes.Add(new SKPoint(0, 15));
-					shapes.Add(new SKPoint(10, 10));
-					shapes.Add(new SKPoint(17.5f, 0));
-					shapes.Add(new SKPoint(32.5f, 0));
-					shapes.Add(new SKPoint(40, 10));
-					shapes.Add(new SKPoint(50, 15));
-					shapes.Add(new SKPoint(0, 15));
-					shapes.Add(new SKPoint(10, 10));
-					shapes.Add(new SKPoint(40, 10));
+					shapes.Add(new Point(32.5f, 0));
+					shapes.Add(new Point(40, 10));
+					shapes.Add(new Point(50, 15));
+					shapes.Add(new Point(40, 20));
+					shapes.Add(new Point(10, 20));
+					shapes.Add(new Point(0, 15));
+					shapes.Add(new Point(10, 10));
+					shapes.Add(new Point(17.5f, 0));
+					shapes.Add(new Point(32.5f, 0));
+					shapes.Add(new Point(40, 10));
+					shapes.Add(new Point(50, 15));
+					shapes.Add(new Point(0, 15));
+					shapes.Add(new Point(10, 10));
+					shapes.Add(new Point(40, 10));
 					break;
 				case UFOType.Small:
-					shapes.Add(new SKPoint(16.25f, 0));
-					shapes.Add(new SKPoint(20, 5));
-					shapes.Add(new SKPoint(25, 7.5f));
-					shapes.Add(new SKPoint(20, 10));
-					shapes.Add(new SKPoint(5, 10));
-					shapes.Add(new SKPoint(0, 7.5f));
-					shapes.Add(new SKPoint(5, 5));
-					shapes.Add(new SKPoint(8.75f, 0));
-					shapes.Add(new SKPoint(16.25f, 0));
-					shapes.Add(new SKPoint(20, 5));
-					shapes.Add(new SKPoint(25, 7.5f));
-					shapes.Add(new SKPoint(0, 7.5f));
-					shapes.Add(new SKPoint(5, 5));
-					shapes.Add(new SKPoint(20, 5));
+					shapes.Add(new Point(16.25f, 0));
+					shapes.Add(new Point(20, 5));
+					shapes.Add(new Point(25, 7.5f));
+					shapes.Add(new Point(20, 10));
+					shapes.Add(new Point(5, 10));
+					shapes.Add(new Point(0, 7.5f));
+					shapes.Add(new Point(5, 5));
+					shapes.Add(new Point(8.75f, 0));
+					shapes.Add(new Point(16.25f, 0));
+					shapes.Add(new Point(20, 5));
+					shapes.Add(new Point(25, 7.5f));
+					shapes.Add(new Point(0, 7.5f));
+					shapes.Add(new Point(5, 5));
+					shapes.Add(new Point(20, 5));
 					break;
 			}
 
@@ -84,12 +84,12 @@ namespace Asteroids.Objects
             {
                 Name = "UFO",
                 Shape = new Shape(0f, shapes.ToArray()),
-                Position = new SKPoint(0, 0),
+                Position = new Point(0, 0),
                 Rotation = 0f,
             };
         }
 
-		public void Setup(SKPoint position, float rotation)
+		public void Setup(Point position, float rotation)
 		{
 			transform.Position = position;
 			setRotationRadians = rotation * MathTools.Deg2rad;
@@ -97,7 +97,7 @@ namespace Asteroids.Objects
 
         void TimerShoot(object? sender, ElapsedEventArgs e)
         {
-            SKPoint playerCenter = new SKPoint(GameManager.Player.Transform.Position.X + GameManager.Player.Shape.Center.X,
+            Point playerCenter = new Point(GameManager.Player.Transform.Position.X + GameManager.Player.Shape.Center.X,
                 GameManager.Player.Transform.Position.Y + GameManager.Player.Shape.Center.Y);
 
             float rotation = MathF.Atan2(
@@ -125,13 +125,13 @@ namespace Asteroids.Objects
 			Resolution res = window.GetResolution();
 
 			if (transform.Position.X < 0)
-				transform.Position = new SKPoint(res.Width, transform.Position.Y);
+				transform.Position = new Point(res.Width, transform.Position.Y);
 			else if (transform.Position.X > res.Width)
-				transform.Position = new SKPoint(0, transform.Position.Y);
+				transform.Position = new Point(0, transform.Position.Y);
 			else if (transform.Position.Y < 0)
-				transform.Position = new SKPoint(transform.Position.X, res.Height);
+				transform.Position = new Point(transform.Position.X, res.Height);
 			else if (transform.Position.Y > res.Height)
-				transform.Position = new SKPoint(transform.Position.X, 0);
+				transform.Position = new Point(transform.Position.X, 0);
 			// Jesli UFO wyleci poza ekran, przenies je na przeciwna krawedz
 		}
     }
