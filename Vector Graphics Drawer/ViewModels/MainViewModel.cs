@@ -78,7 +78,7 @@ public class MainViewModel : ViewModelBase
         LoadNew();
     }
 
-    void SaveCurrent()
+    public void SaveCurrent()
     {
         var oldIndex = CurrentElements.IndexOf(CurrentElement);
 
@@ -146,6 +146,8 @@ public class MainViewModel : ViewModelBase
 
         foreach (var element in CurrentElements)
             set[element.Name] = element.Shapes;
+
+        Debug.WriteLine(set["S"].Length);
 
         string json = JsonConvert.SerializeObject(new RawShapeSet()
         {

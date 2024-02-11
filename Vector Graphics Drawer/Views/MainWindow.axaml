@@ -36,7 +36,7 @@
 								</DataTemplate>
 							</ComboBox.ItemTemplate>	
 						</ComboBox>
-						<Button Classes="Normal">Update</Button>
+						<Button Command="{Binding SaveCurrent}" Classes="Normal">Update</Button>
 						<Button Command="{Binding Delete}" Classes="Normal">Delete</Button>
 					</StackPanel>
 
@@ -54,6 +54,7 @@
 			</StackPanel>
 			
 			<StackPanel Spacing="5" VerticalAlignment="Bottom">
+				<TextBlock Text="Version: 3" Margin="0,0,0,-5"/>
 				<CheckBox IsEnabled="{Binding IsTextureSetSelected}" IsChecked="{Binding HideLastLine}">Hide last lines</CheckBox>
 				<Button IsEnabled="{Binding !IsTextureSetSelected}" Command="{Binding LoadSet}" Classes="Normal">Load set</Button>
 				<Button Command="{Binding SaveSet}" Classes="Normal">Save set</Button>
