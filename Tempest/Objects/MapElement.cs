@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Printing;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Windows;
 
 namespace Tempest.Objects
@@ -20,7 +21,7 @@ namespace Tempest.Objects
             {
                 Name = "MapElement",
                 Position = new Point(0,0,0),
-                Shape = new Shape(0, SKColors.Blue,
+                Shape = new PointShape(0, SKColors.Blue,
                                     new Point(-50, 0,950),
                                     new Point(50, 0, 950),
                                     new Point(50, 0, -350),

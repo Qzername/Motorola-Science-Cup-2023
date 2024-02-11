@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Physics;
 using VGE.Windows;
 
@@ -31,7 +32,7 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "DebugObstacle",
-                Shape = new Shape(0, SKColors.Red,
+                Shape = new PointShape(0, SKColors.Red,
                                 new Point(-20, 0, 0),
                                 new Point(0, -20, 0),
                                 new Point(20, 0, 0)),

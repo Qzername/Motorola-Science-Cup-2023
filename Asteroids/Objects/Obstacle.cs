@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Physics;
 using VGE.Windows;
 
@@ -71,7 +72,7 @@ namespace Asteroids.Objects
 			return new Setup()
             {
                 Name = "Obstacle",
-                Shape = new Shape(0f, shapes.ToArray()),
+                Shape = new PointShape(0f, shapes.ToArray()),
                 Position = new Point(0, 0),
                 Rotation = 0f
             };

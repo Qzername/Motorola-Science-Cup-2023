@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Physics;
 using VGE.Windows;
 
@@ -71,7 +72,7 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Player",
-                Shape = new Shape(-90f,
+                Shape = new PointShape(-90f,
                         new Point(0, 0),
                         new Point(15, 40),
                         new Point(30, 0),

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Windows;
 
 namespace VGE
@@ -20,8 +21,8 @@ namespace VGE
             get => name;
         }
 
-        Shape shape;
-        public Shape Shape
+        IShape shape;
+        public IShape Shape
         {
             get => shape;
         }
@@ -60,6 +61,9 @@ namespace VGE
                 PerspectiveCenter = setup.PerspectiveCenter,
             };
 
+            if (transform.Position.Is3D && transform.PerspectiveCenter is null)
+                throw new Exception("Object is 3D, but it does not have perspective point set");
+
             if (transform.Rotation != 0f)
                 shape.Rotate(transform.Rotation);
         }
@@ -96,7 +100,7 @@ namespace VGE
                     {
                         StartPosition = new Point(startPosition.X * deltaSP, startPosition.Y * deltaSP) + perspectivePoint,
                         EndPosition = new Point(endPosition.X * deltaEP, endPosition.Y * deltaEP) + perspectivePoint,
-                        LineColor = shape.customColor
+                        LineColor = shape.CustomColor
                     };
 
                     canvas.DrawLine(finalLine);
@@ -104,7 +108,7 @@ namespace VGE
             }
             else
                 foreach (var l in shape.CompiledShape)
-                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.customColor));
+                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.CustomColor));
         }
 
         /// <summary>
@@ -119,12 +123,12 @@ namespace VGE
         public struct Setup
         {
             public string Name;
-            public Shape Shape;
+            public IShape Shape;
             public Point Position; 
             public float Rotation;
             public Point? PerspectiveCenter;
 
-            public Setup(string name, Shape shape, Point position, float rotation, Point? perspectiveCenter = null)
+            public Setup(string name, IShape shape, Point position, float rotation, Point? perspectiveCenter = null)
             {
                 Name = name;
                 Shape = shape;

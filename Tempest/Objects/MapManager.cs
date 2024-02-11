@@ -72,9 +72,12 @@ namespace Tempest.Objects
 
         public override void RefreshGraphics(Canvas canvas)
         {
-            //dont draw anything
+            //nie rysuj nic
         }
 
+        /// <summary>
+        /// Przeliczenie pozycji na której powinien znajdować się obiekt na podanym prostokącie i koordynacie Z
+        /// </summary>
         public Point GetPosition(int mapPosition, float Z)
         {
             Point p = Elements[mapPosition].GetCenterPosition();

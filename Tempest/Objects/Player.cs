@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Physics;
 using VGE.Windows;
 
@@ -29,7 +30,7 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "Player",
-                Shape = new Shape(0,SKColors.Red,
+                Shape = new PointShape(0,SKColors.Red,
                                 new Point(20, 20,0),
                                 new Point(20, -20,0),
                                 new Point(-20, -20,0),

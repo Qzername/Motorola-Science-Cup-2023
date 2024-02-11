@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Shapes;
 using VGE.Physics;
 using VGE.Windows;
 
@@ -19,7 +20,7 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Bullet",
-                Shape = new Shape(0f, new Point(0, 0), new Point(5, 0)),
+                Shape = new PointShape(0f, new Point(0, 0), new Point(5, 0)),
                 Position = new Point(0,0),
                 Rotation = 0f,
             };

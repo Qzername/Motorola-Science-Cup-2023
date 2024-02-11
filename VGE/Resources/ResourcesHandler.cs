@@ -2,7 +2,7 @@
 using SkiaSharp;
 using System.Diagnostics;
 using System.IO;
-using VGE.Graphics;
+using VGE.Graphics.Shapes;
 
 namespace VGE.Resources
 {
@@ -23,7 +23,7 @@ namespace VGE.Resources
             return database[name];
         }
 
-        public static Shape GetShape(string shapeSetName, string shapeName)
+        public static IShape GetShape(string shapeSetName, string shapeName)
         {
             if (!database.ContainsKey(shapeSetName))
                 LoadSet(shapeSetName);
@@ -36,11 +36,11 @@ namespace VGE.Resources
             string setJson = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{setName}.json");
             var rawSet = JsonConvert.DeserializeObject<RawShapeSet>(setJson);
 
-            Dictionary<string, Shape[]> set = new Dictionary<string, Shape[]>();
+            Dictionary<string, IShape[]> set = new Dictionary<string, IShape[]>();
 
             foreach(var shapeArray in rawSet.Set)
             {
-                set[shapeArray.Key] = new Shape[shapeArray.Value.Length];
+                set[shapeArray.Key] = new IShape[shapeArray.Value.Length];
 
                 for(int i = 0; i < shapeArray.Value.Length; i++)
                 {
