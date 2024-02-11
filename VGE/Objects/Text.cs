@@ -19,7 +19,7 @@ namespace VGE.Objects
                 Name = "Text",
                 Shape = null,
                 Position = new Point(0, 0),
-                Rotation = 0f,
+                Rotation = Point.Zero3D,
             };
         }
 

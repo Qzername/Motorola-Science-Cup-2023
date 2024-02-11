@@ -32,13 +32,13 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "DebugObstacle",
-                Shape = new PointShape(0, SKColors.Red,
+                Shape = new PointShape(SKColors.Red,
                                 new Point(-20, 0, 0),
                                 new Point(0, -20, 0),
                                 new Point(20, 0, 0)),
                 Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0, 0, 400),
                 PerspectiveCenter = MapManager.Instance.PerspectivePoint,
-                Rotation = 0f
+                Rotation = Point.Zero3D
             };
         }
 

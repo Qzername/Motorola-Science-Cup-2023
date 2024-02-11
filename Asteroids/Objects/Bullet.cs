@@ -20,22 +20,24 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Bullet",
-                Shape = new PointShape(0f, new Point(0, 0), new Point(5, 0)),
+                Shape = new PointShape(Point.Zero2D, new Point(0,0), new Point(5, 0)),
                 Position = new Point(0,0),
-                Rotation = 0f,
+                Rotation = Point.Zero3D,
             };
         }
 
         public void Setup(Point position, float rotation)
         {
+			position.Is3D = false; //z jakiegoś powodu jak przepisałem system shape to przesyłana tutaj pozycja to pozycja 3D więc musze to zmienić
+
             transform.Position = position;
-            Rotate(rotation);
+            Rotate(new Point(0, 0, rotation));
         }
 
         public override void Update(float deltaTime)
         {
-            float sin = MathF.Sin(transform.RotationRadians);
-            float cos = MathF.Cos(transform.RotationRadians);
+            float sin = MathF.Sin(-transform.RotationRadians.Z);
+            float cos = MathF.Cos(-transform.RotationRadians.Z);
             
             float speedDelta = Speed * deltaTime;
 

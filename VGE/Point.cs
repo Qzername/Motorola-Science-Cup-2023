@@ -14,6 +14,9 @@ namespace VGE
         public float Z;
         public bool Is3D;
 
+        public static Point Zero3D = new Point(0,0,0);
+        public static Point Zero2D = new Point(0,0  );
+
         public Point(float x, float y, float z)
         {
             X = x;

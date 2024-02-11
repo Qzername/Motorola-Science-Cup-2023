@@ -10,10 +10,12 @@ namespace VGE
     public struct Transform
     {
         public Point Position;
-        public float Rotation;
-        public float RotationRadians
+        public Point Rotation;
+        public Point RotationRadians
         {
-            get => Rotation * (MathF.PI / 180);
+            get => new Point(Rotation.X * MathTools.Deg2rad, 
+                             Rotation.Y * MathTools.Deg2rad, 
+                             Rotation.Z * MathTools.Deg2rad);
         }
 
         //3D options
@@ -23,7 +25,7 @@ namespace VGE
         public Transform()
         {
             Position = new Point();
-            Rotation = 0f;
+            Rotation = Point.Zero3D;
         }
     }
 }

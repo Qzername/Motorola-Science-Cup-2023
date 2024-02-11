@@ -10,14 +10,17 @@ namespace VGE.Graphics.Shapes
 {
     public class PredefinedShape : IShape
     {
-        public Line[] CompiledShape => throw new NotImplementedException();
+        public Line[] compiledShape;
+        public Line[] CompiledShape => compiledShape;
 
         Point center;
-        public Point Center => throw new NotImplementedException();
+        public Point Center => center;
 
-        public Point TopLeft => throw new NotImplementedException();
+        public Point topLeft;
+        public Point TopLeft => topLeft;
 
-        public Point BottomRight => throw new NotImplementedException();
+        public Point bottomRight;
+        public Point BottomRight => bottomRight;
 
         public SKColor? customColor;
         public SKColor? CustomColor => customColor;
@@ -52,34 +55,50 @@ namespace VGE.Graphics.Shapes
             CompileShape();
         }
 
-        public void Rotate(float angle)
+        public void Rotate(Point rotation)
         {
-            //ten algorytm jest wzięty ze strony:
-            //https://danceswithcode.net/engineeringnotes/rotations_in_2d/rotations_in_2d.html
-
-            float angleRad = angle * (MathF.PI / 180);
-
-            float cos = MathF.Cos(angleRad);
-            float sin = MathF.Sin(angleRad);
-
-            float cx = center.X, cy = center.Y;
-
-            float temp;
-            for (int n = 0; n < rawShape.Length; n++)
-            {
-                var current = rawShape[n];
-
-                temp = (current.X - cx) * cos - (current.Y - cy) * sin + cx;
-                rawShape[n].Y = (current.X - cx) * sin + (current.Y - cy) * cos + cy;
-                rawShape[n].X = temp;
-            }
+            points = PointManipulationTools.Rotate(rotation, points);
 
             CompileShape();
         }
 
+        /*
+         * Kompilacja kształtu, nie chcemy za każdym razem gdy rysujemy shape
+         * robić te same obliczenia, więc gdy zachodzi zmiana do kształtu
+         * kompilujemy wygląd do liń
+         */
         void CompileShape()
         {
+            //wyliczenia elementów potrzebnych do poźniejszych kalkulacji
+            float minX = points[0].X, maxX = points[0].X,
+                  minY = points[0].Y, maxY = points[0].Y;
 
+            foreach (var current in points)
+            {
+                if (current.X < minX) minX = current.X;
+                else if (current.X > maxX) maxX = current.X;
+
+                if (current.Y < minY) minY = current.Y;
+                else if (current.Y > maxY) maxY = current.Y;
+            }
+
+            topLeft = new Point(minX, minY);
+            bottomRight = new Point(maxX, maxY);
+
+            center = new Point((bottomRight.X - topLeft.X) / 2 + topLeft.X, (bottomRight.Y - topLeft.Y) / 2 + topLeft.Y);
+
+            //kompilowanie kształtu
+            compiledShape = new Line[connections.Length];
+
+            for(int i = 0; i < connections.Length; i++)
+            {
+                var currentConnection = connections[i];
+
+                //tak to może powodować błąd ale to najszybszy sposób aby to zrobić
+                //dlatego wybrałem Point do zapisywania połączeń między punktami
+                compiledShape[i] = new Line(points[Convert.ToInt32(currentConnection.X)], 
+                                            points[Convert.ToInt32(currentConnection.Y)]);
+            }
         }
     }
 }

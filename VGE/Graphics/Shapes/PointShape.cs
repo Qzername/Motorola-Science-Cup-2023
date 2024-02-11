@@ -25,29 +25,26 @@ namespace VGE.Graphics.Shapes
         Point[] rawShape;
 
         /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
-        public PointShape(float defaultRotation, params Point[] shape)
+        public PointShape(params Point[] shape)
         {
             customColor = null;
-            ConfigureShape(defaultRotation, shape);
+            ConfigureShape(shape);
         }
 
         /// <param name="defaultRotation">Obrócenie kształtu na start, dzięki temu można poprawić kszałt tak aby był skierowny na wprost</param>
-        public PointShape(float defaultRotation, SKColor customColor, params Point[] shape)
+        public PointShape(SKColor customColor, params Point[] shape)
         {
             this.customColor = customColor;
-            ConfigureShape(defaultRotation, shape);
+            ConfigureShape(shape);
         }
 
-        void ConfigureShape(float defaultRotation, params Point[] shape)
+        void ConfigureShape(params Point[] shape)
         {
             rawShape = shape;
             compiledShape = new Line[rawShape.Length];
 
-            if (defaultRotation == 0)
-                CompileShape();
-            else
-                Rotate(defaultRotation);
-
+            CompileShape();
+            
             //ustawiamy środek kształtu ze względu na to że według środka będziemy mogli obracać kształt
             center = new Point((bottomRight.X - topLeft.X) / 2 + topLeft.X, (bottomRight.Y - topLeft.Y) / 2 + topLeft.Y);
         }
@@ -55,27 +52,9 @@ namespace VGE.Graphics.Shapes
         /// <summary>
         /// Obrót kształtu 
         /// </summary>
-        public void Rotate(float angle)
+        public void Rotate(Point rotation)
         {
-            //ten algorytm jest wzięty ze strony:
-            //https://danceswithcode.net/engineeringnotes/rotations_in_2d/rotations_in_2d.html
-
-            float angleRad = angle * (MathF.PI / 180);
-
-            float cos = MathF.Cos(angleRad);
-            float sin = MathF.Sin(angleRad);
-
-            float cx = center.X, cy = center.Y;
-
-            float temp;
-            for (int n = 0; n < rawShape.Length; n++)
-            {
-                var current = rawShape[n];
-
-                temp = (current.X - cx) * cos - (current.Y - cy) * sin + cx;
-                rawShape[n].Y = (current.X - cx) * sin + (current.Y - cy) * cos + cy;
-                rawShape[n].X = temp;
-            }
+            rawShape = PointManipulationTools.Rotate(rotation, rawShape);
 
             CompileShape();
         }

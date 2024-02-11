@@ -52,7 +52,7 @@ namespace VGE.Resources
                     if (points.Count == 0)
                         continue;
 
-                    set[shapeArray.Key][i] = new Shape(0, points.ToArray());
+                    set[shapeArray.Key][i] = new PointShape(points.ToArray());
                 }
             }
 

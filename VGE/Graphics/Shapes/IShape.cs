@@ -19,6 +19,6 @@ namespace VGE.Graphics.Shapes
 
         public abstract SKColor? CustomColor { get; }
 
-        public abstract void Rotate(float angle);
+        public abstract void Rotate(Point rotation);
     }
 }

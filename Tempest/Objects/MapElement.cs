@@ -21,12 +21,12 @@ namespace Tempest.Objects
             {
                 Name = "MapElement",
                 Position = new Point(0,0,0),
-                Shape = new PointShape(0, SKColors.Blue,
+                Shape = new PointShape(SKColors.Blue,
                                     new Point(-50, 0,950),
                                     new Point(50, 0, 950),
                                     new Point(50, 0, -350),
                                     new Point(-50, 0, -350)),
-                Rotation = 0,
+                Rotation = Point.Zero3D,
                 PerspectiveCenter = new Point(0, 0),
             };
         }

@@ -11,7 +11,7 @@ namespace Asteroids.Objects
     public class Player : PhysicsObject
     {
         const float minSpeed = 0, maxSpeed = 400f;
-        float speed, rotationSpeed = 90, prevRotation, prevRotationRadias;
+        float speed, rotationSpeed = 90, prevZRotation, prevZRotationRadias;
     
         bool lastSpaceState, respawnShield;
 
@@ -49,9 +49,9 @@ namespace Asteroids.Objects
                 // Zresetuj pozycje (itp. itd.) gracza
                 Resolution res = window.GetResolution();
 				transform.Position = new Point(res.Width / 2f, res.Height / 2f);
-                transform.Rotation = 0f;
-                prevRotation = Transform.Rotation;
-                prevRotationRadias = Transform.RotationRadians;      
+                transform.Rotation = Point.Zero3D;
+                prevZRotation = Transform.Rotation.Z;
+                prevZRotationRadias = Transform.RotationRadians.Z;      
                 speed = 0;
                 
                 window.Instantiate(this);
@@ -66,19 +66,15 @@ namespace Asteroids.Objects
         {
 	        Resolution res = window.GetResolution();
 
-            Debug.WriteLine(res.Width);
-            Debug.WriteLine(res.Height);
-
             return new Setup()
             {
                 Name = "Player",
-                Shape = new PointShape(-90f,
-                        new Point(0, 0),
-                        new Point(15, 40),
-                        new Point(30, 0),
-                        new Point(15, 5)),
+                Shape = new PointShape(new Point(-10, -10),
+                                       new Point(0, 0),
+                                       new Point(-10, 10),
+                                       new Point(20, 0)),
                 Position = new Point(res.Width / 2f, res.Height / 2f),
-                Rotation = 0f,
+                Rotation = Point.Zero3D,
             };
         }
 
@@ -95,15 +91,15 @@ namespace Asteroids.Objects
                 GameManager.BulletsOnScreen++;
                 var bullet = new Bullet();
                 window.Instantiate(bullet);
-                bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation);
+                bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
 
                 lastSpaceState = true;
             }
             else if (!isSpacePressed && lastSpaceState)
                 lastSpaceState = false;
 
-            float sin = MathF.Sin(prevRotationRadias);
-            float cos = MathF.Cos(prevRotationRadias);
+            float sin = MathF.Sin(-prevZRotationRadias);
+            float cos = MathF.Cos(-prevZRotationRadias);
 
             float speedDelta = speed * deltaTime;
             float rotationDelta = rotationSpeed * deltaTime;
@@ -114,9 +110,9 @@ namespace Asteroids.Objects
 
             // Skrecanie w lewo/prawo
             if (window.KeyDown(Key.Left) || window.KeyDown(Key.A))
-                Rotate(rotationDelta * -1f);
+                Rotate(new Point(0,0,rotationDelta));
             else if (window.KeyDown(Key.Right) || window.KeyDown(Key.D))
-                Rotate(rotationDelta);
+                Rotate(new Point(0,0, rotationDelta * -1f));
 
             // Poruszanie do przodu/Hamowanie (jesli gracz nie porusza sie do przodu ORAZ nie hamuje, zwolnij - 2x wolniej niz manualne hamowanie)
             if (window.KeyDown(Key.Up) || window.KeyDown(Key.W))
@@ -128,8 +124,8 @@ namespace Asteroids.Objects
                     else
                     {
                         speed = 35;
-						prevRotation = transform.Rotation;
-						prevRotationRadias = transform.RotationRadians;
+						prevZRotation = transform.Rotation.Z;
+						prevZRotationRadias = transform.RotationRadians.Z;
 					}
                 }
                 else
@@ -139,8 +135,8 @@ namespace Asteroids.Objects
                     else
                         speed = maxSpeed;
 
-					prevRotation = transform.Rotation;
-					prevRotationRadias = transform.RotationRadians;
+					prevZRotation = transform.Rotation.Z;
+					prevZRotationRadias = transform.RotationRadians.Z;
 				}
 
 				transform.Position.X += cos * speedDelta;
@@ -192,8 +188,8 @@ namespace Asteroids.Objects
 		bool ShouldSlow()
         {
             // "fix" dla negatywnych wartosci
-            float tPrevRotation = 360 + prevRotation;
-            float tRotation = 360 + transform.Rotation;
+            float tPrevRotation = 360 + prevZRotation;
+            float tRotation = 360 + transform.Rotation.Z;
 
             if (tRotation - 45 <= tPrevRotation && tPrevRotation <= tRotation + 45)
                 return false;

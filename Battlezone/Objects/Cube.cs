@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using System.Data;
+using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Windows;
@@ -7,42 +8,88 @@ namespace Battlezone.Objects
 {
     public class Cube : VectorObject
     {
-        const float speed = 40;
+        const float speed = 40, rotationSpeed = 5f;
 
         public override Setup Start()
         {
             Resolution currentResolution = window.GetResolution();
-            Point centerOfScreen = new Point(currentResolution.Width/2 , currentResolution.Height/2);
+            Point centerOfScreen = new Point(currentResolution.Width / 2, currentResolution.Height / 2);
+
+            var pointsDefinition = new Point[]
+            {
+                new Point(10,10,10),
+                new Point(-10,10,10),
+                new Point(-10,-10,10),
+                new Point(10,-10,10),
+                new Point(10,10,-10),
+                new Point(-10,10,-10),
+                new Point(-10,-10,-10),
+                new Point(10,-10,-10),
+            };
+
+            var linesDefinition = new Point[]
+            {
+                //pierwszy kwadrat
+                new Point(0,1),
+                new Point(1,2),
+                new Point(2,3),
+                new Point(3,0),
+                //drugi kwadrat
+                new Point(4,5),
+                new Point(5,6),
+                new Point(6,7),
+                new Point(7,4),
+                //połaczenie między kwadratami
+                new Point(0,4),
+                new Point(1,5),
+                new Point(2,6),
+                new Point(3,7),
+            };
 
             return new Setup()
             {
                 Name = "Cube",
                 Position = new Point(0, 0, 100),
-                Rotation = 0f,
-                Shape = new PointShape(0f, new Point(-10,10,0), 
-                                      new Point(10, 10,0),
-                                      new Point(10, -10,0),
-                                      new Point(-10, -10,0)),
+                Rotation = Point.Zero3D,
+                Shape = new PredefinedShape(pointsDefinition, linesDefinition),
                 PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 500f)
             };
         }
 
         public override void Update(float delta)
         { 
+            //axis position
             if (window.KeyDown(Key.Left))
-                transform.Position.X += speed* delta;
+                transform.Position.X -= speed* delta;
             else if(window.KeyDown(Key.Right))
-                transform.Position.X -= speed* delta;  
+                transform.Position.X += speed* delta;  
 
             if (window.KeyDown(Key.Up))
                 transform.Position.Y -= speed* delta;
             else if(window.KeyDown(Key.Down))
                 transform.Position.Y += speed* delta;  
 
-            if (window.KeyDown(Key.W))
+            if (window.KeyDown(Key.U))
+                transform.Position.Z += speed * delta;
+            else if(window.KeyDown(Key.J))
                 transform.Position.Z -= speed * delta;
-            else if(window.KeyDown(Key.S))
-                transform.Position.Z += speed * delta;  
+            
+            //axis rotation
+            if (window.KeyDown(Key.A))
+                Rotate(new Point(-speed * delta, 0,0));
+            else if (window.KeyDown(Key.D))
+                Rotate(new Point(speed * delta, 0,0));
+            
+            if (window.KeyDown(Key.W))
+                Rotate(new Point(0,-speed * delta,0));
+            else if (window.KeyDown(Key.S))
+                Rotate(new Point(0,speed * delta, 0));
+            
+            if (window.KeyDown(Key.Q))
+                Rotate(new Point(0, 0, -speed * delta));
+            else if (window.KeyDown(Key.E))
+                Rotate(new Point(0, 0, speed * delta));
+
         }
     }
 }

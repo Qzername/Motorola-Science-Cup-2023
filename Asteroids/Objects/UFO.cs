@@ -84,9 +84,9 @@ namespace Asteroids.Objects
 			return new Setup()
             {
                 Name = "UFO",
-                Shape = new PointShape(0f, shapes.ToArray()),
+                Shape = new PointShape(shapes.ToArray()),
                 Position = new Point(0, 0),
-                Rotation = 0f,
+                Rotation = Point.Zero3D,
             };
         }
 
@@ -108,7 +108,7 @@ namespace Asteroids.Objects
 
             var bullet = new BulletUFO();
             window.Instantiate(bullet);
-            bullet.Setup(transform.Position, rotation);
+            bullet.Setup(transform.Position, -rotation);
         }
 
         public override void Update(float deltaTime)

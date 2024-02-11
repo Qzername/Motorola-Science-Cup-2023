@@ -64,7 +64,7 @@ namespace VGE
             if (transform.Position.Is3D && transform.PerspectiveCenter is null)
                 throw new Exception("Object is 3D, but it does not have perspective point set");
 
-            if (transform.Rotation != 0f)
+            if (transform.Rotation.X + transform.Rotation.Y + transform.Rotation.Z != 0)
                 shape.Rotate(transform.Rotation);
         }
 
@@ -114,10 +114,15 @@ namespace VGE
         /// <summary>
         /// Obrót figury wraz z obrotem kszałtu
         /// </summary>
-        protected void Rotate(float angle)
+        protected void Rotate(Point rotation)
         {
-            shape.Rotate(angle);
-            transform.Rotation = (transform.Rotation + angle) % 360;
+            shape.Rotate(rotation);
+            transform.Rotation = transform.Rotation + rotation;
+
+            //robie to aby angle nie wyszło poza 360 stopni
+            transform.Rotation.X %= 360;
+            transform.Rotation.Y %= 360;
+            transform.Rotation.Z %= 360;
         }
         
         public struct Setup
@@ -125,10 +130,10 @@ namespace VGE
             public string Name;
             public IShape Shape;
             public Point Position; 
-            public float Rotation;
+            public Point Rotation;
             public Point? PerspectiveCenter;
 
-            public Setup(string name, IShape shape, Point position, float rotation, Point? perspectiveCenter = null)
+            public Setup(string name, IShape shape, Point position, Point rotation, Point? perspectiveCenter = null)
             {
                 Name = name;
                 Shape = shape;

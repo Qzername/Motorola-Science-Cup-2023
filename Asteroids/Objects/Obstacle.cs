@@ -72,9 +72,9 @@ namespace Asteroids.Objects
 			return new Setup()
             {
                 Name = "Obstacle",
-                Shape = new PointShape(0f, shapes.ToArray()),
+                Shape = new PointShape(shapes.ToArray()),
                 Position = new Point(0, 0),
-                Rotation = 0f
+                Rotation = Point.Zero3D
             };
         }
 
@@ -82,13 +82,13 @@ namespace Asteroids.Objects
         public void Setup(Point position, float rotation)
         {
             transform.Position = position;
-            Rotate(rotation);
+            Rotate(new Point(0,0,rotation));
         }
 
         public override void Update(float deltaTime)
         {
-            float sin = MathF.Sin(transform.RotationRadians);
-            float cos = MathF.Cos(transform.RotationRadians);
+            float sin = MathF.Sin(transform.RotationRadians.Z);
+            float cos = MathF.Cos(transform.RotationRadians.Z);
             // Oblicz sin i cos uzywajac obecnej rotacji
 
 			float speedDelta = speed * deltaTime;
@@ -128,11 +128,11 @@ namespace Asteroids.Objects
 
 				Obstacle obstacle = new Obstacle(newType);
 				window.Instantiate(obstacle);
-				obstacle.Setup(Transform.Position, Transform.Rotation + GameManager.Rand.Next(30, 151));
+				obstacle.Setup(Transform.Position, Transform.Rotation.Z + GameManager.Rand.Next(30, 151));
 
 				obstacle = new Obstacle(newType);
 				window.Instantiate(obstacle);
-				obstacle.Setup(Transform.Position, Transform.Rotation - GameManager.Rand.Next(30, 151));
+				obstacle.Setup(Transform.Position, Transform.Rotation.Z - GameManager.Rand.Next(30, 151));
 				// Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
 			}
 		}
