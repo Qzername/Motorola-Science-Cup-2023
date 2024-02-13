@@ -13,15 +13,15 @@ namespace Tempest
             Instantiate(new MapManager());
             Instantiate(new Player());
 
-            var obstacle1 = new DebugObstacle();
+            var obstacle1 = new Obstacle();
             Instantiate(obstacle1);
             obstacle1.Setup(0, 650f);
 
-            var obstacle2 = new DebugObstacle();
+            var obstacle2 = new Obstacle();
             Instantiate(obstacle2);
             obstacle2.Setup(2, 750f);
 
-            var obstacle3 = new DebugObstacle();
+            var obstacle3 = new Obstacle();
             Instantiate(obstacle3);
             obstacle3.Setup(4, 850f);
         }

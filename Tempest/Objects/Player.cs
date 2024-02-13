@@ -17,7 +17,7 @@ namespace Tempest.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            Debug.WriteLine("PLAYER COLLISION: " + other.Name);
+
         }
 
         public override Setup Start()
@@ -41,22 +41,15 @@ namespace Tempest.Objects
             };
         }
 
-        bool wasApressed = false, wasDpressed = false;
+        bool wasLeftPressed = false, wasRightPressed = false, wasSpacePressed;
 
         public override void Update(float delta)
         {
-            //Tego W i S sterowania nie powinno być, robie to dla testów fizyki
-            if (window.KeyDown(Key.W))
-                transform.Position.Z += zSpeed * delta;
-
-            if (window.KeyDown(Key.S))
-                transform.Position.Z -= zSpeed * delta;
-
-            if (window.KeyDown(Key.A) && !wasApressed)
-                wasApressed = true;
-            else if (!window.KeyDown(Key.A) && wasApressed)
+            if ((window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && !wasLeftPressed)
+				wasLeftPressed = true;
+            else if (!(window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && wasLeftPressed)
             {
-                wasApressed = false;
+				wasLeftPressed = false;
 
                 if (mapPosition != 0)
                 {
@@ -65,11 +58,11 @@ namespace Tempest.Objects
                 }
             }
 
-            if (window.KeyDown(Key.D) && !wasDpressed)
-                wasDpressed = true;
-            else if (!window.KeyDown(Key.D) && wasDpressed )
+            if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !wasRightPressed)
+				wasRightPressed = true;
+            else if (!(window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && wasRightPressed)
             {
-                wasDpressed = false;
+				wasRightPressed = false;
 
                 if(mapPosition != MapManager.Instance.Elements.Count - 1)
                 {
@@ -77,6 +70,17 @@ namespace Tempest.Objects
                     transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
                 }
             }
+
+            if (window.KeyDown(Key.Space) && !wasSpacePressed)
+                wasSpacePressed = true;
+            else if (!window.KeyDown(Key.Space) && wasSpacePressed)
+            {
+                wasSpacePressed = false;
+
+                Bullet bullet = new Bullet();
+                window.Instantiate(bullet);
+                bullet.Setup(mapPosition, transform.Position.Z);
+			}
         }
     }
 }
