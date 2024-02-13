@@ -16,7 +16,7 @@ namespace Battlezone.Objects
         Transform camera = new Transform()
         {
             Position = new Point(0, 0, 0),
-            Rotation = new Point(0,45,0)
+            Rotation = new Point(0,0,0)
         };
 
         Point[] linesDefinition;
@@ -104,14 +104,12 @@ namespace Battlezone.Objects
             for (int i = 0; i < pointsRaw.Length; i++)
                 points[i] = transform.Position + pointsRaw[i] - camera.Position;
 
-            Debug.WriteLine(centerOfScreen.X);
-
             points = PointManipulationTools.Rotate(camera.Rotation, points);
 
             for (int i = 0; i < pointsRaw.Length; i++)
             {
                 var curr = points[i];
-                points[i] = new Point(centerOfScreen.X * curr.X / curr.Z, centerOfScreen.Y * curr.Y / curr.Z) + centerOfScreen;
+                points[i] = new Point(400 * curr.X / curr.Z, 400 * curr.Y / curr.Z) + centerOfScreen;
             }
 
             foreach (var ld in linesDefinition)
