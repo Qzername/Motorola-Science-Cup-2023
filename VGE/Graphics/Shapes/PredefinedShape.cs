@@ -26,6 +26,9 @@ namespace VGE.Graphics.Shapes
         public SKColor? CustomColor => customColor;
 
         Point[] points;
+
+        public Point[] Points => points;
+
         Point[] connections;
 
         /// <summary>
