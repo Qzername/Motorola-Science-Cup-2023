@@ -1,4 +1,7 @@
-﻿using System.Data;
+﻿using Microsoft.VisualBasic.FileIO;
+using System.Data;
+using System.Diagnostics;
+using System.Net;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
@@ -9,6 +12,14 @@ namespace Battlezone.Objects
     public class Cube : VectorObject
     {
         const float speed = 40, rotationSpeed = 5f;
+
+        Transform camera = new Transform()
+        {
+            Position = new Point(0, 0, 0),
+            Rotation = new Point(0,45,0)
+        };
+
+        Point[] linesDefinition;
 
         public override Setup Start()
         {
@@ -27,7 +38,7 @@ namespace Battlezone.Objects
                 new Point(10,-10,-10),
             };
 
-            var linesDefinition = new Point[]
+            linesDefinition = new Point[]
             {
                 //pierwszy kwadrat
                 new Point(0,1),
@@ -73,23 +84,48 @@ namespace Battlezone.Objects
                 transform.Position.Z += speed * delta;
             else if(window.KeyDown(Key.J))
                 transform.Position.Z -= speed * delta;
-            
+
             //axis rotation
             if (window.KeyDown(Key.A))
-                Rotate(new Point(-speed * delta, 0,0));
+                camera.Rotation += new Point(0, -speed * delta, 0);
             else if (window.KeyDown(Key.D))
-                Rotate(new Point(speed * delta, 0,0));
-            
-            if (window.KeyDown(Key.W))
-                Rotate(new Point(0,-speed * delta,0));
-            else if (window.KeyDown(Key.S))
-                Rotate(new Point(0,speed * delta, 0));
-            
-            if (window.KeyDown(Key.Q))
-                Rotate(new Point(0, 0, -speed * delta));
-            else if (window.KeyDown(Key.E))
-                Rotate(new Point(0, 0, speed * delta));
+                camera.Rotation += new Point(0, speed * delta, 0);
 
+        }
+
+        public override void RefreshGraphics(Canvas canvas)
+        {
+            var resolution = window.GetResolution();
+            Point centerOfScreen = new Point(resolution.Width / 2, resolution.Height / 2);
+
+            var pointsRaw = ((PredefinedShape)Shape).Points;
+            Point[] points = new Point[pointsRaw.Length];
+
+            for (int i = 0; i < pointsRaw.Length; i++)
+                points[i] = transform.Position + pointsRaw[i] - camera.Position;
+
+            Debug.WriteLine(centerOfScreen.X);
+
+            points = PointManipulationTools.Rotate(camera.Rotation, points);
+
+            for (int i = 0; i < pointsRaw.Length; i++)
+            {
+                var curr = points[i];
+                points[i] = new Point(centerOfScreen.X * curr.X / curr.Z, centerOfScreen.Y * curr.Y / curr.Z) + centerOfScreen;
+            }
+
+            foreach (var ld in linesDefinition)
+                canvas.DrawLine(new Line(points[Convert.ToInt32(ld.X)], points[Convert.ToInt32(ld.Y)]));
+
+            /*var shape = new PredefinedShape(points, linesDefinition);
+
+            foreach (var line in shape.compiledShape)
+            {
+                var rawStartPoint = line.StartPosition + transform.Position;
+                var rawEndPoint = line.EndPosition + transform.Position;
+
+                canvas.DrawLine(new Line(startPoint, endPoint));
+            }*/
         }
     }
 }
