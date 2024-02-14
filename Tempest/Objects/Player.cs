@@ -25,7 +25,7 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "Player",
-                Shape = new PointShape(SKColors.Red,
+                Shape = new PointShape(GameManager.Configuration.Player,
                                 new Point(20, 20,0),
                                 new Point(20, -20,0),
                                 new Point(-20, -20,0),

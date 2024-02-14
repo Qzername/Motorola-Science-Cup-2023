@@ -16,7 +16,7 @@ namespace Tempest.Objects
             {
                 Name = "MapElement",
                 Position = new Point(0,0,0),
-                Shape = new PointShape(SKColors.Blue,
+                Shape = new PointShape(GameManager.Configuration.Tunnel,
                                     new Point(-50, 0,950),
                                     new Point(50, 0, 950),
                                     new Point(50, 0, -350),

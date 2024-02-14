@@ -8,20 +8,21 @@ namespace Tempest
     {
         public GameWindow() : base(new TempestScene())
         {
+            GameManager.Configuration = new();
             RegisterPhysicsEngine(new TempestPhysicsEngine());
 
             Instantiate(new MapManager());
             Instantiate(new Player());
 
-            var obstacle1 = new Obstacle();
+            var obstacle1 = new Spike();
             Instantiate(obstacle1);
             obstacle1.Setup(0, 650f);
 
-            var obstacle2 = new Obstacle();
+            var obstacle2 = new Spike();
             Instantiate(obstacle2);
             obstacle2.Setup(2, 750f);
 
-            var obstacle3 = new Obstacle();
+            var obstacle3 = new Spike();
             Instantiate(obstacle3);
             obstacle3.Setup(4, 850f);
         }

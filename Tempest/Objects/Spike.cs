@@ -9,7 +9,7 @@ using VGE.Windows;
 
 namespace Tempest.Objects
 {
-    public class Obstacle : PhysicsObject
+    public class Spike : PhysicsObject
     {
         public override int PhysicsLayer => mapPosition;
         int mapPosition;
@@ -25,7 +25,7 @@ namespace Tempest.Objects
             return new Setup()
             {
                 Name = "Obstacle",
-                Shape = new PointShape(SKColors.Red,
+                Shape = new PointShape(GameManager.Configuration.Spike,
                                 new Point(-20, 0, 0),
                                 new Point(0, -20, 0),
                                 new Point(20, 0, 0)),
