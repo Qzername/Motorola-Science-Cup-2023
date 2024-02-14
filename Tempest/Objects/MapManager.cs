@@ -27,10 +27,10 @@ namespace Tempest.Objects
 
         public override Setup Start()
         {
-            elements = new List<MapElement>();
+			elements = new List<MapElement>();
             perspectiveOffset = new Point(0, 0, 500f);
 
-            Instance = this;
+			Instance = this;
 
             LoadMap();
 
@@ -45,10 +45,12 @@ namespace Tempest.Objects
             for (int i = 0; i < Levels.Circle.Length; i++)
             {
                 Point nextPoint = i + 1 < Levels.Circle.Length ? Levels.Circle[i + 1] : Levels.Circle[0];
-                
+
+				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - Levels.Circle[i].X), 2) + MathF.Pow((nextPoint.Y - Levels.Circle[i].Y), 2));
+
 				MapElement element = new MapElement();
+ 				element.Setup(Levels.Circle[i], distance, Levels.CircleRotations[i]);               
                 window.Instantiate(element);
-                element.Setup(Levels.Circle[i], Levels.CircleRotations[i]);
                 elements.Add(element);
             }
         }
@@ -59,7 +61,7 @@ namespace Tempest.Objects
 
             if(baseResolution.Height != currentWindowResolution.Height || baseResolution.Width != currentWindowResolution.Width)
             {
-                baseResolution = window.GetResolution();                
+                baseResolution = window.GetResolution();
                 TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
             }
         }
