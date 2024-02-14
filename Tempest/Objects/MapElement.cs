@@ -17,10 +17,10 @@ namespace Tempest.Objects
                 Name = "MapElement",
                 Position = new Point(0,0,0),
                 Shape = new PointShape(GameManager.Configuration.Tunnel,
-                                    new Point(-50, 0,950),
-                                    new Point(50, 0, 950),
-                                    new Point(50, 0, -350),
-                                    new Point(-50, 0, -350)),
+                                    new Point(0, 0,950),
+                                    new Point(25, 0, 950),
+                                    new Point(25, 0, -350),
+                                    new Point(0, 0, -350)),
                 Rotation = Point.Zero,
             };
         }
@@ -28,9 +28,11 @@ namespace Tempest.Objects
         {
         }
 
-        public void Setup(Point position)
+        public void Setup(Point position, float rotation)
         {
             transform.Position = position;
+            
+            Rotate(new Point(0, 0, rotation));
         }
 
         public Point GetCenterPosition()

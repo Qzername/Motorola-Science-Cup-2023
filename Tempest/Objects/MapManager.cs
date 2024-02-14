@@ -42,15 +42,13 @@ namespace Tempest.Objects
 
         void LoadMap()
         {
-            //TODO: Map loader
-            int mapLength = 5;
-            int offset = mapLength/2 * -100;
-
-            for (int i = 0; i < mapLength; i++)
+            for (int i = 0; i < Levels.Circle.Length; i++)
             {
-                MapElement element = new MapElement();
+                Point nextPoint = i + 1 < Levels.Circle.Length ? Levels.Circle[i + 1] : Levels.Circle[0];
+                
+				MapElement element = new MapElement();
                 window.Instantiate(element);
-                element.Setup(new Point(i * 100 + offset, 150, 750));
+                element.Setup(Levels.Circle[i], Levels.CircleRotations[i]);
                 elements.Add(element);
             }
         }
