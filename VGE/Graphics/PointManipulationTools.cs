@@ -1,7 +1,10 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using VGE.Resources;
@@ -9,35 +12,7 @@ using VGE.Resources;
 namespace VGE.Graphics
 {
     public static class PointManipulationTools
-    {
-        //public static Point Rotate(float angle, Point point, Point rotationCenter) => RotateMultiple(angle, [point], rotationCenter)[0];
-
-        public static Point[] RotateMultiple(float angle, Point[] points, Point rotationCenter)
-        {
-            //ten algorytm jest wzięty ze strony:
-            //https://danceswithcode.net/engineeringnotes/rotations_in_2d/rotations_in_2d.html
-
-            float angleRad = angle * (MathF.PI / 180);
-
-            float cos = MathF.Cos(angleRad);
-            float sin = MathF.Sin(angleRad);
-
-            float cx = rotationCenter.X, cy = rotationCenter.Y;
-
-            float temp;
-            for (int n = 0; n < points.Length; n++)
-            {
-                var current = points[n];
-
-                temp = (current.X - cx) * cos - (current.Y - cy) * sin + cx;
-                points[n].Y = (current.X - cx) * sin + (current.Y - cy) * cos + cy;
-                points[n].X = temp;
-            }
-
-            return points;
-        }
-
-
+    {   
         //https://math.libretexts.org/Bookshelves/Applied_Mathematics/Mathematics_for_Game_Developers_(Burzynski)/04%3A_Matrices/4.06%3A_Rotation_Matrices_in_3-Dimensions
         public static Point[] Rotate(Point rotation, Point[] points)
         {
@@ -89,6 +64,27 @@ namespace VGE.Graphics
             }
 
             return rotatedPoints;
+        }
+
+        //https://stackoverflow.com/questions/45664697/calculating-forward-vector-given-rotation-in-3d
+        public static Point MovePointForward(Transform transform, float distance)
+        {
+            float cosZ = MathF.Cos(transform.RotationRadians.Z);
+            float cosY = MathF.Cos(transform.RotationRadians.Y);
+            float sinY = MathF.Sin(transform.RotationRadians.Y);
+            float sinZ = MathF.Sin(transform.RotationRadians.Z);
+
+            var forwardVector = new Point(cosZ * cosY, sinZ, cosZ * sinY);
+
+            return transform.Position + new Point(distance * forwardVector.Z, distance * forwardVector.Y, distance * forwardVector.X);
+        }
+
+        public static float Dot(Transform a, Transform b)
+        {
+            var Avec3 = new Vector3(a.Position.X, a.Position.Y, a.Position.Z);
+            var Bvec3 = new Vector3(b.Position.X, b.Position.Y, b.Position.Z);
+
+            return Vector3.Dot(Vector3.Normalize(Avec3), Vector3.Normalize(Bvec3));
         }
     }
 }

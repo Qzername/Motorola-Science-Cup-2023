@@ -12,13 +12,15 @@ namespace Battlezone.Objects
 {
     public class Cube : VectorObject
     {
-        const float speed = 40, rotationSpeed = 5f;
+        Point startPosition;
+
+        public Cube(Point startPosition)
+        {
+            this.startPosition = startPosition;
+        }
 
         public override Setup Start()
         {
-            Resolution currentResolution = window.GetResolution();
-            Point centerOfScreen = new Point(currentResolution.Width / 2, currentResolution.Height / 2);
-
             Point[] pointsDefinition = 
             [
                 new Point(10,10,10),
@@ -53,36 +55,14 @@ namespace Battlezone.Objects
             return new Setup()
             {
                 Name = "Cube",
-                Position = new Point(0, 0, 100),
+                Position = startPosition,
                 Rotation = Point.Zero,
                 Shape = new PredefinedShape(pointsDefinition, linesDefinition),
             };
         }
-        //hubert gej
+
         public override void Update(float delta)
         { 
-            //axis position
-            if (window.KeyDown(Key.Left))
-                transform.Position.X -= speed* delta;
-            else if(window.KeyDown(Key.Right))
-                transform.Position.X += speed* delta;  
-
-            if (window.KeyDown(Key.Up))
-                transform.Position.Y -= speed* delta;
-            else if(window.KeyDown(Key.Down))
-                transform.Position.Y += speed* delta;  
-
-            if (window.KeyDown(Key.U))
-                transform.Position.Z += speed * delta;
-            else if(window.KeyDown(Key.J))
-                transform.Position.Z -= speed * delta;
-
-            //axis rotation
-            if (window.KeyDown(Key.A))
-                Scene3D.Camera.Rotation += new Point(0, -speed * delta, 0);
-            else if (window.KeyDown(Key.D))
-                Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
-
         }
     }
 }

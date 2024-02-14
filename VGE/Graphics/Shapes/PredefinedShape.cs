@@ -71,7 +71,8 @@ namespace VGE.Graphics.Shapes
         {
             //wyliczenia elementów potrzebnych do poźniejszych kalkulacji
             float minX = points[0].X, maxX = points[0].X,
-                  minY = points[0].Y, maxY = points[0].Y;
+                  minY = points[0].Y, maxY = points[0].Y,
+                  minZ = points[0].Y, maxZ = points[0].Z;
 
             foreach (var current in points)
             {
@@ -80,12 +81,15 @@ namespace VGE.Graphics.Shapes
 
                 if (current.Y < minY) minY = current.Y;
                 else if (current.Y > maxY) maxY = current.Y;
+
+                if (current.Z < minY) minY = current.Z;
+                else if (current.Z > maxY) maxY = current.Z;
             }
 
-            topLeft = new Point(minX, minY);
-            bottomRight = new Point(maxX, maxY);
+            topLeft = new Point(minX, minY,minZ);
+            bottomRight = new Point(maxX, maxY, maxZ);
 
-            center = new Point((bottomRight.X - topLeft.X) / 2 + topLeft.X, (bottomRight.Y - topLeft.Y) / 2 + topLeft.Y);
+            center = new Point((bottomRight.X - topLeft.X) / 2 + topLeft.X, (bottomRight.Y - topLeft.Y) / 2 + topLeft.Y, (bottomRight.Z - topLeft.Z) / 2 + topLeft.Z);
 
             //kompilowanie kształtu
             compiledShape = new Line[connections.Length];
