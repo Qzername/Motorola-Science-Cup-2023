@@ -6,7 +6,7 @@ namespace Tempest
 {
     internal class GameWindow : Window
     {
-        public GameWindow() 
+        public GameWindow() : base(new TempestScene())
         {
             RegisterPhysicsEngine(new TempestPhysicsEngine());
 

@@ -20,16 +20,14 @@ namespace Asteroids.Objects
             return new Setup()
             {
                 Name = "Bullet",
-                Shape = new PointShape(Point.Zero2D, new Point(0,0), new Point(5, 0)),
+                Shape = new PointShape(Point.Zero, new Point(0,0), new Point(5, 0)),
                 Position = new Point(0,0),
-                Rotation = Point.Zero3D,
+                Rotation = Point.Zero,
             };
         }
 
         public void Setup(Point position, float rotation)
         {
-			position.Is3D = false; //z jakiegoś powodu jak przepisałem system shape to przesyłana tutaj pozycja to pozycja 3D więc musze to zmienić
-
             transform.Position = position;
             Rotate(new Point(0, 0, rotation));
         }

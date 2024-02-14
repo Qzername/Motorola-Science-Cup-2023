@@ -10,11 +10,6 @@ namespace Tempest.Objects
 {
     public class MapElement : VectorObject
     {
-        Resolution baseResolution;
-        Point centerOfScreen { get => new Point(baseResolution.Width / 2f, baseResolution.Height / 2f); }
-
-        Point perspectiveOffset;
-
         public override Setup Start()
         {
             return new Setup()
@@ -26,19 +21,16 @@ namespace Tempest.Objects
                                     new Point(50, 0, 950),
                                     new Point(50, 0, -350),
                                     new Point(-50, 0, -350)),
-                Rotation = Point.Zero3D,
-                PerspectiveCenter = new Point(0, 0),
+                Rotation = Point.Zero,
             };
         }
         public override void Update(float delta)
         {
-            GetPerspective();
         }
 
-        public void Setup(Point position, Point perspectiveOffset)
+        public void Setup(Point position)
         {
             transform.Position = position;
-            this.perspectiveOffset = perspectiveOffset;
         }
 
         public Point GetCenterPosition()
@@ -47,15 +39,6 @@ namespace Tempest.Objects
             return transform.Position+
                     new Point((firstLine.StartPosition.X + firstLine.EndPosition.X) / 2,
                               (firstLine.EndPosition.Y + firstLine.StartPosition.Y)/2);
-        }
-
-        void GetPerspective()
-        {
-            if (baseResolution == window.GetResolution())
-                return;
-
-            baseResolution = window.GetResolution();
-            transform.PerspectiveCenter = centerOfScreen + perspectiveOffset;
         }
     }
 }

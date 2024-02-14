@@ -25,8 +25,6 @@ namespace Tempest.Objects
         /// </summary>
         public Point PerspectivePoint => centerOfScreen + PerspectiveOffset;
 
-        public event Action<Point> ResolutionChanged;
-
         public override Setup Start()
         {
             baseResolution = window.GetResolution();
@@ -54,7 +52,7 @@ namespace Tempest.Objects
             {
                 MapElement element = new MapElement();
                 window.Instantiate(element);
-                element.Setup(new Point(i * 100 + offset, 150, 750), perspectiveOffset);
+                element.Setup(new Point(i * 100 + offset, 150, 750));
                 elements.Add(element);
             }
         }
@@ -65,14 +63,15 @@ namespace Tempest.Objects
 
             if(baseResolution != currentWindowResolution)
             {
-                ResolutionChanged?.Invoke(PerspectivePoint);
+                TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
                 baseResolution = window.GetResolution();
             }
         }
 
-        public override void RefreshGraphics(Canvas canvas)
+        public override bool OverrideRender(Canvas canvas)
         {
             //nie rysuj nic
+            return true;
         }
 
         /// <summary>

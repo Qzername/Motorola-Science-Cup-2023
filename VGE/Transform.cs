@@ -18,14 +18,10 @@ namespace VGE
                              Rotation.Z * MathTools.Deg2rad);
         }
 
-        //3D options
-        public bool Is3D => Position.Is3D;
-        public Point? PerspectiveCenter;
-
         public Transform()
         {
             Position = new Point();
-            Rotation = Point.Zero3D;
+            Rotation = Point.Zero;
         }
     }
 }

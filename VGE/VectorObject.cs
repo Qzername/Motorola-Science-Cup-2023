@@ -58,11 +58,7 @@ namespace VGE
             {
                 Position = setup.Position,
                 Rotation = setup.Rotation,
-                PerspectiveCenter = setup.PerspectiveCenter,
             };
-
-            if (transform.Position.Is3D && transform.PerspectiveCenter is null)
-                throw new Exception("Object is 3D, but it does not have perspective point set");
 
             if (transform.Rotation.X + transform.Rotation.Y + transform.Rotation.Z != 0)
                 shape.Rotate(transform.Rotation);
@@ -78,37 +74,12 @@ namespace VGE
         public abstract void Update(float delta);
 
         /// <summary>
-        /// Rysowanie obiektu na canvasie
-        /// Używaj/overrideuj tylko jeżeli wiesz co robisz
+        /// Nadpisywanie renderu, wywołuje się co klatke kiedy obiekt się renderuje
         /// </summary>
-        public virtual void RefreshGraphics(Canvas canvas)
+        /// <returns>Czy anulować rysowanie obiektu przez scene?</returns>
+        public virtual bool OverrideRender(Canvas canvas)
         {
-            if (transform.Is3D)
-            {
-                var perspectivePoint = transform.PerspectiveCenter!.Value;
-
-                foreach (var l in Shape.CompiledShape)
-                {
-                    //Długość Z jest inna dla każdego punktu, tutaj obliczenia na nowy:
-                    var startPosition = transform.Position + l.StartPosition;
-                    var endPosition = transform.Position + l.EndPosition;
-
-                    float deltaSP = perspectivePoint.Z / startPosition.Z;
-                    float deltaEP = perspectivePoint.Z / endPosition.Z;
-
-                    Line finalLine = new Line()
-                    {
-                        StartPosition = new Point(startPosition.X * deltaSP, startPosition.Y * deltaSP) + perspectivePoint,
-                        EndPosition = new Point(endPosition.X * deltaEP, endPosition.Y * deltaEP) + perspectivePoint,
-                        LineColor = shape.CustomColor
-                    };
-
-                    canvas.DrawLine(finalLine);
-                }
-            }
-            else
-                foreach (var l in shape.CompiledShape)
-                    canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.CustomColor));
+            return false;
         }
 
         /// <summary>
@@ -117,7 +88,7 @@ namespace VGE
         protected void Rotate(Point rotation)
         {
             shape.Rotate(rotation);
-            transform.Rotation = transform.Rotation + rotation;
+            transform.Rotation += rotation;
 
             //robie to aby angle nie wyszło poza 360 stopni
             transform.Rotation.X %= 360;
@@ -131,15 +102,13 @@ namespace VGE
             public IShape Shape;
             public Point Position; 
             public Point Rotation;
-            public Point? PerspectiveCenter;
 
-            public Setup(string name, IShape shape, Point position, Point rotation, Point? perspectiveCenter = null)
+            public Setup(string name, IShape shape, Point position, Point rotation)
             {
                 Name = name;
                 Shape = shape;
                 Position = position;
                 Rotation = rotation;
-                PerspectiveCenter = perspectiveCenter;
             }
         }
     }

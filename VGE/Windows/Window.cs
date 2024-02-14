@@ -2,6 +2,7 @@
 using System.Timers;
 using System.Windows.Automation;
 using VGE.Graphics;
+using VGE.Graphics.Scenes;
 using VGE.Physics;
 using VGE.WPF;
 
@@ -18,10 +19,13 @@ namespace VGE.Windows
         const int framerate = 60;
 
         List<VectorObject> objects;
+        IScene scene;
         PhysicsEngine? physicsEngine;
 
-        public Window()
+        public Window(IScene scene)
         {
+            this.scene = scene;
+
             mainWindow = new MainWindow();
 
             objects = new List<VectorObject>();
@@ -61,7 +65,8 @@ namespace VGE.Windows
                 objects[i].Update(time.DeltaTime);
 
             for (int i = 0; i < objects.Count; i++)
-                objects[i].RefreshGraphics(canvas);
+                if (!objects[i].OverrideRender(canvas))
+                    scene.DrawObject(canvas, objects[i]);
 
             mainWindow.RefreshCanvas();
         }

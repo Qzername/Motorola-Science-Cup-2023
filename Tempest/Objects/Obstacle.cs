@@ -22,11 +22,6 @@ namespace Tempest.Objects
 
         public override Setup Start()
         {
-            MapManager.Instance.ResolutionChanged += (p) =>
-            {
-                transform.PerspectiveCenter = p;
-            };
-
             return new Setup()
             {
                 Name = "Obstacle",
@@ -35,8 +30,7 @@ namespace Tempest.Objects
                                 new Point(0, -20, 0),
                                 new Point(20, 0, 0)),
                 Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0, 0, 400),
-                PerspectiveCenter = MapManager.Instance.PerspectivePoint,
-                Rotation = Point.Zero3D
+                Rotation = Point.Zero
             };
         }
 

@@ -74,7 +74,7 @@ namespace Asteroids.Objects
                 Name = "Obstacle",
                 Shape = new PointShape(shapes.ToArray()),
                 Position = new Point(0, 0),
-                Rotation = Point.Zero3D
+                Rotation = Point.Zero
             };
         }
 

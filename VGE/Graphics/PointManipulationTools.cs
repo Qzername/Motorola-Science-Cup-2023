@@ -60,7 +60,7 @@ namespace VGE.Graphics
                 float[,] rotatedPointMatrix = matrixPoint;
 
                 if(rotation.X != 0f)
-                    rotatedPointMatrix = MultiplyMatrix(matrixPoint, 
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint, 
                                                         new float[,] {//x
                                                             {1,0,0 },//y
                                                             {0,cosX,-sinX },//y
@@ -68,7 +68,7 @@ namespace VGE.Graphics
                                                         });
 
                 if(rotation.Y != 0f)
-                    rotatedPointMatrix = MultiplyMatrix(matrixPoint,
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint,
                                                         new float[,] {//x
                                                             {cosY, 0, sinY},//y
                                                             {0,1,0 },//y
@@ -76,7 +76,7 @@ namespace VGE.Graphics
                                                         });
 
                 if(rotation.Z != 0f)
-                    rotatedPointMatrix = MultiplyMatrix(matrixPoint,
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint,
                                                         new float[,] {//x
                                                             {cosZ,-sinZ,0 },//y
                                                             {sinZ,cosZ,0 },//y
@@ -89,33 +89,6 @@ namespace VGE.Graphics
             }
 
             return rotatedPoints;
-        }
-
-        //https://stackoverflow.com/questions/6311309/how-can-i-multiply-two-matrices-in-c
-        static float[,] MultiplyMatrix(float[,] A, float[,] B)
-        {
-            int rA = A.GetLength(0);
-            int cA = A.GetLength(1);
-            int rB = B.GetLength(0);
-            int cB = B.GetLength(1);
-
-            float temp = 0;
-            float[,] kHasil = new float[rA, cB];
-
-            for (int i = 0; i < rA; i++)
-            {
-                for (int j = 0; j < cB; j++)
-                {
-                    temp = 0;
-                    for (int k = 0; k < cA; k++)
-                    {
-                        temp += A[i, k] * B[k, j];
-                    }
-                    kHasil[i, j] = temp;
-                }
-            }
-
-            return kHasil;
         }
     }
 }

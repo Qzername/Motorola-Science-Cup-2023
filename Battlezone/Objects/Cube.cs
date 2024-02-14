@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using VGE;
 using VGE.Graphics;
+using VGE.Graphics.Scenes;
 using VGE.Graphics.Shapes;
 using VGE.Windows;
 
@@ -13,21 +14,13 @@ namespace Battlezone.Objects
     {
         const float speed = 40, rotationSpeed = 5f;
 
-        Transform camera = new Transform()
-        {
-            Position = new Point(0, 0, 0),
-            Rotation = new Point(0,0,0)
-        };
-
-        Point[] linesDefinition;
-
         public override Setup Start()
         {
             Resolution currentResolution = window.GetResolution();
             Point centerOfScreen = new Point(currentResolution.Width / 2, currentResolution.Height / 2);
 
-            var pointsDefinition = new Point[]
-            {
+            Point[] pointsDefinition = 
+            [
                 new Point(10,10,10),
                 new Point(-10,10,10),
                 new Point(-10,-10,10),
@@ -36,10 +29,10 @@ namespace Battlezone.Objects
                 new Point(-10,10,-10),
                 new Point(-10,-10,-10),
                 new Point(10,-10,-10),
-            };
+            ];
 
-            linesDefinition = new Point[]
-            {
+            Point[] linesDefinition =
+            [
                 //pierwszy kwadrat
                 new Point(0,1),
                 new Point(1,2),
@@ -55,18 +48,17 @@ namespace Battlezone.Objects
                 new Point(1,5),
                 new Point(2,6),
                 new Point(3,7),
-            };
+            ];
 
             return new Setup()
             {
                 Name = "Cube",
                 Position = new Point(0, 0, 100),
-                Rotation = Point.Zero3D,
+                Rotation = Point.Zero,
                 Shape = new PredefinedShape(pointsDefinition, linesDefinition),
-                PerspectiveCenter = new Point(centerOfScreen.X, centerOfScreen.Y, 500f)
             };
         }
-
+        //hubert gej
         public override void Update(float delta)
         { 
             //axis position
@@ -87,43 +79,10 @@ namespace Battlezone.Objects
 
             //axis rotation
             if (window.KeyDown(Key.A))
-                camera.Rotation += new Point(0, -speed * delta, 0);
+                Scene3D.Camera.Rotation += new Point(0, -speed * delta, 0);
             else if (window.KeyDown(Key.D))
-                camera.Rotation += new Point(0, speed * delta, 0);
+                Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
 
-        }
-
-        public override void RefreshGraphics(Canvas canvas)
-        {
-            var resolution = window.GetResolution();
-            Point centerOfScreen = new Point(resolution.Width / 2, resolution.Height / 2);
-
-            var pointsRaw = ((PredefinedShape)Shape).Points;
-            Point[] points = new Point[pointsRaw.Length];
-
-            for (int i = 0; i < pointsRaw.Length; i++)
-                points[i] = transform.Position + pointsRaw[i] - camera.Position;
-
-            points = PointManipulationTools.Rotate(camera.Rotation, points);
-
-            for (int i = 0; i < pointsRaw.Length; i++)
-            {
-                var curr = points[i];
-                points[i] = new Point(400 * curr.X / curr.Z, 400 * curr.Y / curr.Z) + centerOfScreen;
-            }
-
-            foreach (var ld in linesDefinition)
-                canvas.DrawLine(new Line(points[Convert.ToInt32(ld.X)], points[Convert.ToInt32(ld.Y)]));
-
-            /*var shape = new PredefinedShape(points, linesDefinition);
-
-            foreach (var line in shape.compiledShape)
-            {
-                var rawStartPoint = line.StartPosition + transform.Position;
-                var rawEndPoint = line.EndPosition + transform.Position;
-
-                canvas.DrawLine(new Line(startPoint, endPoint));
-            }*/
         }
     }
 }

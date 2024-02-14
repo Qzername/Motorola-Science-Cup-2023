@@ -6,6 +6,7 @@ using VGE.Physics;
 using System.Timers;
 using VGE.Objects;
 using VGE.Windows;
+using VGE.Graphics.Scenes;
 
 namespace Asteroids
 {
@@ -16,7 +17,7 @@ namespace Asteroids
 
         Random rand = new();
 
-		public GameWindow() : base()
+		public GameWindow() : base(new Scene2D())
         {
 			GameManager.Setup(this);
 

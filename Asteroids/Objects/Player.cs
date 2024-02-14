@@ -49,7 +49,7 @@ namespace Asteroids.Objects
                 // Zresetuj pozycje (itp. itd.) gracza
                 Resolution res = window.GetResolution();
 				transform.Position = new Point(res.Width / 2f, res.Height / 2f);
-                transform.Rotation = Point.Zero3D;
+                transform.Rotation = Point.Zero;
                 prevZRotation = Transform.Rotation.Z;
                 prevZRotationRadias = Transform.RotationRadians.Z;      
                 speed = 0;
@@ -74,7 +74,7 @@ namespace Asteroids.Objects
                                        new Point(-10, 10),
                                        new Point(20, 0)),
                 Position = new Point(res.Width / 2f, res.Height / 2f),
-                Rotation = Point.Zero3D,
+                Rotation = Point.Zero,
             };
         }
 

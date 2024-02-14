@@ -19,7 +19,7 @@ namespace VGE.Objects
                 Name = "Text",
                 Shape = null,
                 Position = new Point(0, 0),
-                Rotation = Point.Zero3D,
+                Rotation = Point.Zero,
             };
         }
 
@@ -36,7 +36,7 @@ namespace VGE.Objects
         {
         }
 
-        public override void RefreshGraphics(Canvas canvas)
+        public override bool OverrideRender(Canvas canvas)
         {
             float offset = 0;
 
@@ -69,6 +69,8 @@ namespace VGE.Objects
 
                 offset += maxRight + fontSize/2;
             }
+
+            return true;
         }
     }
 }

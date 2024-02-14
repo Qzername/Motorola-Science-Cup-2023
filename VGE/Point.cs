@@ -12,17 +12,14 @@ namespace VGE
         public float X;
         public float Y;
         public float Z;
-        public bool Is3D;
 
-        public static Point Zero3D = new Point(0,0,0);
-        public static Point Zero2D = new Point(0,0  );
+        public static Point Zero = new Point(0, 0, 0);
 
         public Point(float x, float y, float z)
         {
             X = x;
             Y = y;
             Z = z;
-            Is3D =true;
         }
 
         public Point(float x, float y)
@@ -30,7 +27,6 @@ namespace VGE
             X = x;
             Y = y;
             Z = 0;
-            Is3D = false;
         }
 
         public static implicit operator SKPoint(Point p)
@@ -43,25 +39,10 @@ namespace VGE
             return new Point(p.X, p.Y);
         }
 
-        public static Point operator +(Point p1, Point p2)
-        {
-            if(p1.Is3D || p2.Is3D)
-                return new Point(p1.X+p2.X, p1.Y+p2.Y, p1.Z + p2.Z);
-            else
-                return new Point(p1.X + p2.X, p1.Y + p2.Y);
-        }
+        public static Point operator +(Point p1, Point p2) => new Point(p1.X+p2.X, p1.Y+p2.Y, p1.Z + p2.Z);
 
-        public static Point operator -(Point p1, Point p2)
-        {
-            if (p1.Is3D || p2.Is3D)
-                return new Point(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
-            else
-                return new Point(p1.X - p2.X, p1.Y - p2.Y);
-        }
+        public static Point operator -(Point p1, Point p2) => new Point(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
 
-        public static implicit operator string(Point p)
-        {
-            return $"X: {p.X}, Y: {p.Y}, Z: {p.Z}";
-        }
+        public static implicit operator string(Point p) => $"X: {p.X}, Y: {p.Y}, Z: {p.Z}";
     }
 }
