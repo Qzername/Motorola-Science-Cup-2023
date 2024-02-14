@@ -61,7 +61,7 @@ namespace Tempest.Objects
         {
             var currentWindowResolution = window.GetResolution();
 
-            if(baseResolution != currentWindowResolution)
+            if(baseResolution.Height != currentWindowResolution.Height || baseResolution.Width != currentWindowResolution.Width)
             {
                 TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
                 baseResolution = window.GetResolution();
