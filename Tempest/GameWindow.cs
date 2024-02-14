@@ -15,16 +15,16 @@ namespace Tempest
             Instantiate(new Player());
 
             var obstacle1 = new Spike();
+            obstacle1.Setup(0, 650f);           
             Instantiate(obstacle1);
-            obstacle1.Setup(0, 650f);
 
             var obstacle2 = new Spike();
+            obstacle2.Setup(2, 750f);            
             Instantiate(obstacle2);
-            obstacle2.Setup(2, 750f);
 
             var obstacle3 = new Spike();
+            obstacle3.Setup(6, 850f);           
             Instantiate(obstacle3);
-            obstacle3.Setup(4, 850f);
         }
 
         public override void Update(Canvas canvas)

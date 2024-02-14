@@ -11,9 +11,7 @@ namespace Tempest.Objects
     public class Player : PhysicsObject
     {
         public override int PhysicsLayer => mapPosition;
-        int mapPosition = 0; //prostokąt na którym jest gracz
-
-        const float zSpeed = 250f;
+        int mapPosition; // Tile na którym jest gracz
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
@@ -35,7 +33,7 @@ namespace Tempest.Objects
             };
         }
 
-        bool wasLeftPressed = false, wasRightPressed = false, wasSpacePressed;
+        bool wasLeftPressed, wasRightPressed, wasSpacePressed;
 
         public override void Update(float delta)
         {
@@ -50,6 +48,11 @@ namespace Tempest.Objects
                     mapPosition--;
                     transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
                 }
+                else
+                {
+                    mapPosition = MapManager.Instance.Elements.Count - 1;
+					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+				}
             }
 
             if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !wasRightPressed)
@@ -58,11 +61,16 @@ namespace Tempest.Objects
             {
 				wasRightPressed = false;
 
-                if(mapPosition != MapManager.Instance.Elements.Count - 1)
+                if (mapPosition != MapManager.Instance.Elements.Count - 1)
                 {
                     mapPosition++;
                     transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
                 }
+                else
+                {
+					mapPosition = 0;
+					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+				}
             }
 
             if (window.KeyDown(Key.Space) && !wasSpacePressed)
