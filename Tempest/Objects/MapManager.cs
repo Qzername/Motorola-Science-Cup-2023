@@ -11,7 +11,7 @@ namespace Tempest.Objects
     {
         public static MapManager Instance;
 
-        Resolution baseResolution;
+        Resolution baseResolution = new(0, 0);
         Point centerOfScreen { get => new Point(baseResolution.Width / 2f, baseResolution.Height / 2f); }
 
         List<MapElement> elements;
@@ -27,8 +27,6 @@ namespace Tempest.Objects
 
         public override Setup Start()
         {
-            baseResolution = window.GetResolution();
-
             elements = new List<MapElement>();
             perspectiveOffset = new Point(0, 0, 500f);
 
@@ -63,8 +61,8 @@ namespace Tempest.Objects
 
             if(baseResolution.Height != currentWindowResolution.Height || baseResolution.Width != currentWindowResolution.Width)
             {
+                baseResolution = window.GetResolution();                
                 TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
-                baseResolution = window.GetResolution();
             }
         }
 
