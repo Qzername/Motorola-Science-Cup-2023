@@ -1,22 +1,22 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System.Data;
-using System.Diagnostics;
-using System.Net;
-using VGE;
-using VGE.Graphics;
-using VGE.Graphics.Scenes;
+﻿using VGE;
 using VGE.Graphics.Shapes;
-using VGE.Windows;
+using VGE.Physics;
 
 namespace Battlezone.Objects
 {
-    public class Cube : VectorObject
+    public class Cube : PhysicsObject
     {
         Point startPosition;
 
         public Cube(Point startPosition)
         {
             this.startPosition = startPosition;
+        }
+
+        public override int PhysicsLayer => 1;
+
+        public override void OnCollisionEnter(PhysicsObject other)
+        {
         }
 
         public override Setup Start()

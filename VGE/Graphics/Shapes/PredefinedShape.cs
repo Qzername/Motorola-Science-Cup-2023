@@ -82,8 +82,8 @@ namespace VGE.Graphics.Shapes
                 if (current.Y < minY) minY = current.Y;
                 else if (current.Y > maxY) maxY = current.Y;
 
-                if (current.Z < minY) minY = current.Z;
-                else if (current.Z > maxY) maxY = current.Z;
+                if (current.Z < minZ) minZ = current.Z;
+                else if (current.Z > maxZ) maxZ = current.Z;
             }
 
             topLeft = new Point(minX, minY,minZ);

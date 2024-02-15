@@ -78,13 +78,5 @@ namespace VGE.Graphics
 
             return transform.Position + new Point(distance * forwardVector.Z, distance * forwardVector.Y, distance * forwardVector.X);
         }
-
-        public static float Dot(Transform a, Transform b)
-        {
-            var Avec3 = new Vector3(a.Position.X, a.Position.Y, a.Position.Z);
-            var Bvec3 = new Vector3(b.Position.X, b.Position.Y, b.Position.Z);
-
-            return Vector3.Dot(Vector3.Normalize(Avec3), Vector3.Normalize(Bvec3));
-        }
     }
 }

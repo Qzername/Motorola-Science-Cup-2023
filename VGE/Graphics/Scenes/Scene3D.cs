@@ -55,7 +55,7 @@ namespace VGE.Graphics.Scenes
                 for (int i = 0; i < points.Length; i++)
                 {
                     var curr = points[i];
-                    points[i] = new Point(400 * curr.X / curr.Z, 400 * curr.Y / curr.Z) + centerOfScreen;
+                    points[i] = new Point(viewport.X * curr.X / curr.Z, viewport.Y * curr.Y / curr.Z) + centerOfScreen;
                 }
 
                 //jeżeli punkt nie jest na ekranie, nie rysuj go

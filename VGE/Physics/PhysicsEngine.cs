@@ -20,7 +20,7 @@ namespace VGE.Physics
          * w celu optymalizacji zrobiłem fizyke opartom na warstwach
          * wykorzystujemy to w np. asteroids, w którym asteroidy przelatują przez siebie, ale nie przez gracza
          */
-        Dictionary<int, List<PhysicsObject>> objects;
+        protected Dictionary<int, List<PhysicsObject>> objects;
 
         public PhysicsEngine(PhysicsConfiguration configuration)
         {

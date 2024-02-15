@@ -67,7 +67,9 @@ namespace VGE.Graphics.Shapes
         void CompileShape()
         {
             float minX = rawShape[0].X, maxX = rawShape[0].X,
-                  minY = rawShape[0].Y, maxY = rawShape[0].Y;
+                  minY = rawShape[0].Y, maxY = rawShape[0].Y,
+                  minZ = rawShape[0].Y, maxZ = rawShape[0].Z;
+
 
             for (int i = 1; i < rawShape.Length; i++)
             {
@@ -78,6 +80,9 @@ namespace VGE.Graphics.Shapes
 
                 if (current.Y < minY) minY = current.Y;
                 else if (current.Y > maxY) maxY = current.Y;
+
+                if (current.Z < minZ) minZ = current.Z;
+                else if (current.Z > maxZ) maxZ = current.Z;
 
                 compiledShape[i - 1] = new Line(rawShape[i - 1], current);
             }

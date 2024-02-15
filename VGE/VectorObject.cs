@@ -74,7 +74,7 @@ namespace VGE
         public abstract void Update(float delta);
 
         /// <summary>
-        /// Nadpisywanie renderu, wywołuje się co klatke kiedy obiekt się renderuje
+        /// Nadpisywanie renderu, wywołuje się co klatke kiedy obiekt się renderuje 
         /// </summary>
         /// <returns>Czy anulować rysowanie obiektu przez scene?</returns>
         public virtual bool OverrideRender(Canvas canvas)
