@@ -32,7 +32,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-            LoadMap(Levels.StylizedCross);
+            LoadMap(Levels.Triangle);
 
             return new Setup()
             {
