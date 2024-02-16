@@ -32,7 +32,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-            LoadMap(Levels.Clover);
+            LoadMap(Levels.V, false);
 
             return new Setup()
             {
@@ -40,10 +40,13 @@ namespace Tempest.Objects
             };
         }
 
-        void LoadMap(Point[] layout)
+        void LoadMap(Point[] layout, bool shouldClose = true)
         {
             for (int i = 0; i < layout.Length; i++)
             {
+	            if (!shouldClose && i + 1 == layout.Length)
+		            return;
+                    
                 // Nastepny punkt, jezeli nie istnieje - uzyj pierwszego (aby figura miala koniec)
                 Point nextPoint = i + 1 < layout.Length ? layout[i + 1] : layout[0];
 
