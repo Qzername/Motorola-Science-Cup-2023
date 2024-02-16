@@ -57,11 +57,11 @@ namespace VGE
             transform = new Transform()
             {
                 Position = setup.Position,
-                Rotation = setup.Rotation,
+                Rotation = Point.Zero,
             };
 
-            if (transform.Rotation.X + transform.Rotation.Y + transform.Rotation.Z != 0)
-                shape.Rotate(transform.Rotation);
+            if (setup.Rotation.X + setup.Rotation.Y + setup.Rotation.Z != 0)
+                Rotate(setup.Rotation);
         }
 
         /// <summary>

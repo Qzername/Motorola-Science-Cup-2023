@@ -29,19 +29,19 @@ namespace Battlezone.Objects
 
         public override void Update(float delta)
         {
+            Debug.WriteLine(Scene3D.Camera.Rotation);
             //movement
-            if(window.KeyDown(Key.W))
+            if (window.KeyDown(Key.W))
                 Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, speed * delta);
             else if(window.KeyDown(Key.S))
                 Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, -speed * delta);
-
-            transform.Position = Scene3D.Camera.Position;
 
             //rotation
             if (window.KeyDown(Key.A))
                 Scene3D.Camera.Rotation += new Point(0, -speed * delta, 0);
             else if (window.KeyDown(Key.D))
                 Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
+
 
             //bullet
             bool currentSpaceState = window.KeyDown(Key.Space);

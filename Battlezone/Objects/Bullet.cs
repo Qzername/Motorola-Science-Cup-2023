@@ -8,7 +8,10 @@ namespace Battlezone.Objects
 {
     public class Bullet : PhysicsObject
     {
-        const float Speed = 50f;
+        const float speed = 50f;
+        const float maxDistance = 100f;
+
+        float distance;
 
         public override int PhysicsLayer => 0;
 
@@ -16,6 +19,7 @@ namespace Battlezone.Objects
 
         public Bullet(Transform startTransform)
         {
+            distance = 0f;
             this.startTransform = startTransform;
         }
 
@@ -68,13 +72,22 @@ namespace Battlezone.Objects
                 Name = "Bullet",
                 Shape = new PredefinedShape(pointsDefinition, linesDefinition),
                 Position = startTransform.Position,
-                Rotation = startTransform.Rotation,
+                Rotation = startTransform.Rotation * -1f,
             };
         }
 
         public override void Update(float delta)
         {
-            transform.Position = PointManipulationTools.MovePointForward(transform, Speed * delta);
+            distance += speed * delta;
+
+            if (distance >= maxDistance)
+                window.Destroy(this);
+
+            transform.Position = PointManipulationTools.MovePointForward(new Transform()
+            {
+                Position =transform.Position,
+                Rotation = startTransform.Rotation
+            }, speed * delta);
         }
     }
 }
