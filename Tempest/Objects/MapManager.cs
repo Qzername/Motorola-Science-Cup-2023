@@ -44,12 +44,16 @@ namespace Tempest.Objects
         {
             for (int i = 0; i < Levels.Circle.Length; i++)
             {
+                // Nastepny punkt, jezeli nie istnieje - uzyj pierwszego (aby figura miala koniec)
                 Point nextPoint = i + 1 < Levels.Circle.Length ? Levels.Circle[i + 1] : Levels.Circle[0];
 
+                // Oblicz odleglosc i kat miedzy punktami
 				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - Levels.Circle[i].X), 2) + MathF.Pow((nextPoint.Y - Levels.Circle[i].Y), 2));
+				float tan = MathF.Atan2(nextPoint.Y - Levels.Circle[i].Y, nextPoint.X - Levels.Circle[i].X);
+				float rotation = -1 * ((tan * MathTools.Rad2deg) % 360);
 
 				MapElement element = new MapElement();
- 				element.Setup(Levels.Circle[i], distance, Levels.CircleRotations[i]);               
+				element.Setup(Levels.Circle[i], distance, rotation);
                 window.Instantiate(element);
                 elements.Add(element);
             }
