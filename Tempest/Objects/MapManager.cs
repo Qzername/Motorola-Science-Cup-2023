@@ -32,7 +32,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-            LoadMap(Levels.Heart);
+            LoadMap(Levels.Star);
 
             return new Setup()
             {
