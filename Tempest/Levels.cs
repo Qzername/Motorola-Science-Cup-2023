@@ -180,7 +180,7 @@ namespace Tempest
 			new(240, -210, 750)
 		];
 
-		// Change perspectiveOffset to (0, -175, 500)
+		// Zmien perspectiveOffset na (0, -175, 500)
 		public static Point[] Steps =
 		[
 			new(-200, 0, 750),
@@ -218,10 +218,10 @@ namespace Tempest
 			new(240, 0, 750),			
 			new(240, -80, 750),			
 			new(240, -160, 750),			
-			new(240, -240, 750),
+			new(240, -240, 750)
 		];
-		
-		// Change perspectiveOffset to (0, -50, 300)
+
+		// Zmien perspectiveOffset na (0, -50, 300)
 		public static Point[] CompletelyFlat =
 		[
 			new(-400, 200, 750),
@@ -240,7 +240,32 @@ namespace Tempest
 			new(250, 200, 750),
 			new(300, 200, 750),
 			new(350, 200, 750),
-			new(400, 200, 750),
+			new(400, 200, 750)
+		];
+
+		// Zmien perspectiveOffset na (0, 0, 400)
+		public static Point[] Heart =
+		[
+			new(0, -150, 750),
+			new(-50, -200, 750),
+			new(-120, -180, 750),
+			new(-180, -120, 750),
+			new(-200, -40, 750),
+			
+			new(-150, 20, 750),
+			new(-100, 80, 750),
+			new(-50, 140, 750),
+			
+			new(0, 200, 750),
+			
+			new(50, 140, 750),
+			new(100, 80, 750),
+			new(150, 20, 750),
+
+			new(200, -40, 750),
+			new(180, -120, 750),
+			new(120, -180, 750),
+			new(50, -200, 750)
 		];
 	}
 }
