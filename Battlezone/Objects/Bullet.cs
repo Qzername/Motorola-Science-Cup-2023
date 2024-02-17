@@ -25,8 +25,10 @@ namespace Battlezone.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            if (other.Name == "Cube")
-                window.Destroy(this);
+            if (other.Name != "Cube")
+                window.Destroy(other);
+
+            window.Destroy(this);
         }
 
         public override Setup Start()

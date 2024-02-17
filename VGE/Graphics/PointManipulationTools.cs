@@ -14,6 +14,9 @@ namespace VGE.Graphics
     public static class PointManipulationTools
     {   
         //https://math.libretexts.org/Bookshelves/Applied_Mathematics/Mathematics_for_Game_Developers_(Burzynski)/04%3A_Matrices/4.06%3A_Rotation_Matrices_in_3-Dimensions
+        /// <summary>
+        /// Obrót punktów względem rotacji
+        /// </summary>
         public static Point[] Rotate(Point rotation, Point[] points)
         {
             var sinX = MathF.Sin(rotation.X * MathTools.Deg2rad);
@@ -67,6 +70,9 @@ namespace VGE.Graphics
         }
 
         //https://stackoverflow.com/questions/45664697/calculating-forward-vector-given-rotation-in-3d
+        /// <summary>
+        /// Przeniesienie punktu o dystans do przodu gdzie jest skierowany
+        /// </summary>
         public static Point MovePointForward(Transform originTransform, float distance)
         {
             float cosZ = MathF.Cos(originTransform.RotationRadians.Z);

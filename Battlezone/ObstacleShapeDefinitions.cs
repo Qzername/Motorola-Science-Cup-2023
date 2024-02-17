@@ -71,5 +71,10 @@ namespace Battlezone
         {
             return obstacles[new Random().Next(0, obstacles.Count)];
         }
+
+        public static ShapeDefinition GetByIndex(int index)
+        {
+            return obstacles[index];
+        }
     }
 }

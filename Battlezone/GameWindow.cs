@@ -1,4 +1,5 @@
 ﻿using Battlezone.Objects;
+using Battlezone.Objects.Enemies;
 using SkiaSharp;
 using VGE;
 using VGE.Graphics;
@@ -26,6 +27,7 @@ namespace Battlezone
             Instantiate(new Background());
             Instantiate(new Player());
             Instantiate(new ObstacleGenerator());
+            //Instantiate(new EnemySpawner());
         }
 
         public override void Update(Canvas canvas)

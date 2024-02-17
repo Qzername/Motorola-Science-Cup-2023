@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Battlezone
 {
+    /// <summary>
+    /// Główne ustawienia do gry.
+    /// 
+    /// Nie wszystkie tutaj się znajdują
+    /// </summary>
     public static class Settings
     {
         public const float RenderDistance = 500f;
@@ -14,5 +19,8 @@ namespace Battlezone
         public const float ChunkSize = 250f;
         public const float ObstacleGeneratorDistance = 3500f;
 
+        //enemy spawner settings
+        public const int EnemyMinDistance = 100;
+        public const int EnemyMaxDistance = 400;
     }
 }

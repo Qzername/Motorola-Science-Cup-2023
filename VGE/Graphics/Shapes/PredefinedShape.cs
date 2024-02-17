@@ -101,7 +101,7 @@ namespace VGE.Graphics.Shapes
                 //tak to może powodować błąd ale to najszybszy sposób aby to zrobić
                 //dlatego wybrałem Point do zapisywania połączeń między punktami
                 compiledShape[i] = new Line(points[Convert.ToInt32(currentConnection.X)], 
-                                            points[Convert.ToInt32(currentConnection.Y)]);
+                                            points[Convert.ToInt32(currentConnection.Y)], customColor);
             }
         }
     }

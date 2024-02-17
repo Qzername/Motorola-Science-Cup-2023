@@ -47,8 +47,10 @@ namespace Battlezone.Objects
 
             float backgroundRotation = Scene3D.Camera.Rotation.Y*MathF.PI;
 
+            Debug.WriteLine(backgroundRotation);
+
             if(backgroundRotation < 0)
-                backgroundRotation = 360+backgroundRotation;
+                backgroundRotation = 360+backgroundRotation + (Convert.ToInt32(backgroundRotation/360) * -360);
 
             float offsetRatio = backgroundRotation / 360;
             float offsetWidth = Convert.ToInt32(offsetRatio * maxX);
