@@ -32,7 +32,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-            LoadMap(Levels.BowTie, false);
+            LoadMap(Levels.Steps, false);
 
             return new Setup()
             {
@@ -40,12 +40,12 @@ namespace Tempest.Objects
             };
         }
 
-        void LoadMap(Point[] layout, bool shouldClose = true)
+        void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0)
         {
             for (int i = 0; i < layout.Length; i++)
             {
 	            if (!shouldClose && i + 1 == layout.Length)
-		            return;
+		            continue;
                     
                 // Nastepny punkt, jezeli nie istnieje - uzyj pierwszego (aby figura miala koniec)
                 Point nextPoint = i + 1 < layout.Length ? layout[i + 1] : layout[0];
@@ -60,7 +60,10 @@ namespace Tempest.Objects
                 window.Instantiate(element);
                 elements.Add(element);
             }
-        }
+
+            perspectiveOffset.Y = perspectivePointY;
+            TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
+		}
 
         public override void Update(float delta)
         {
