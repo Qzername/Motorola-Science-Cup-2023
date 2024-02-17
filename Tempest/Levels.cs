@@ -243,7 +243,6 @@ namespace Tempest
 			new(400, 200, 750)
 		];
 
-		// Zmien perspectiveOffset na (0, 0, 400)
 		public static Point[] Heart =
 		[
 			new(0, -150, 750),
@@ -268,7 +267,6 @@ namespace Tempest
 			new(50, -200, 750)
 		];
 
-		// Zmien perspectiveOffset na (0, 0, 400)
 		public static Point[] Star =
 		[
 			new(-200, 0, 750),
@@ -292,7 +290,6 @@ namespace Tempest
 			new(-150, -50, 750)
 		];
 		
-		// Zmien perspectiveOffset na (0, 0, 400)
 		public static Point[] W =
 		[
 			new(-200, -200, 750),
@@ -312,7 +309,6 @@ namespace Tempest
 			new(200, -200, 750)
 		];
 		
-		// Zmien perspectiveOffset na (0, 0, 400)
 		public static Point[] Fan =
 		[
 			new(-210, -210, 750),

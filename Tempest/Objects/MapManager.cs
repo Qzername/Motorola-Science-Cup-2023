@@ -28,11 +28,11 @@ namespace Tempest.Objects
         public override Setup Start()
         {
 			elements = new List<MapElement>();
-            perspectiveOffset = new Point(0, 0, 500);
+            perspectiveOffset = new Point(0, 0, 400);
 
 			Instance = this;
 
-            LoadMap(Levels.Infinity);
+            LoadMap(Levels.Circle);
 
             return new Setup()
             {
@@ -40,7 +40,7 @@ namespace Tempest.Objects
             };
         }
 
-        void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0, float perspectivePointZ = 500)
+        void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0, float perspectivePointZ = 400)
         {
             for (int i = 0; i < layout.Length; i++)
             {
