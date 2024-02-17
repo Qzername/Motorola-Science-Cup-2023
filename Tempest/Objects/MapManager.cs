@@ -28,11 +28,11 @@ namespace Tempest.Objects
         public override Setup Start()
         {
 			elements = new List<MapElement>();
-            perspectiveOffset = new Point(0, 0, 500f);
+            perspectiveOffset = new Point(0, 0, 500);
 
 			Instance = this;
 
-            LoadMap(Levels.U, false);
+            LoadMap(Levels.CompletelyFlat, false, -50, 300);
 
             return new Setup()
             {
@@ -40,7 +40,7 @@ namespace Tempest.Objects
             };
         }
 
-        void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0)
+        void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0, float perspectivePointZ = 500)
         {
             for (int i = 0; i < layout.Length; i++)
             {
@@ -63,7 +63,8 @@ namespace Tempest.Objects
 
             GameManager.IsLevelClosed = shouldClose;
 			perspectiveOffset.Y = perspectivePointY;
-            TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
+			perspectiveOffset.Z = perspectivePointZ;
+			TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
 		}
 
         public override void Update(float delta)
