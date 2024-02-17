@@ -29,7 +29,7 @@ namespace Tempest.Objects
                                 new Point(-20, -20,0),
                                 new Point(-20, 20,0)),
                 Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0,0,400),
-                Rotation = Point.Zero
+                Rotation = MapManager.Instance.Elements[mapPosition].Transform.Rotation
             };
         }
 
@@ -53,7 +53,10 @@ namespace Tempest.Objects
                     mapPosition = MapManager.Instance.Elements.Count - 1;
 					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
 				}
-            }
+
+                Rotate(transform.Rotation * -1);
+				Rotate(MapManager.Instance.Elements[mapPosition].Transform.Rotation);
+			}
 
             if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !wasRightPressed)
 				wasRightPressed = true;
@@ -71,7 +74,10 @@ namespace Tempest.Objects
 					mapPosition = 0;
 					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
 				}
-            }
+
+				Rotate(transform.Rotation * -1);
+				Rotate(MapManager.Instance.Elements[mapPosition].Transform.Rotation);
+			}
 
             if (window.KeyDown(Key.Space) && !wasSpacePressed)
                 wasSpacePressed = true;
@@ -83,6 +89,6 @@ namespace Tempest.Objects
                 window.Instantiate(bullet);
                 bullet.Setup(mapPosition, transform.Position.Z);
 			}
-        }
+		}
     }
 }
