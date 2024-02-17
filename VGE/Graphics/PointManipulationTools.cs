@@ -67,16 +67,16 @@ namespace VGE.Graphics
         }
 
         //https://stackoverflow.com/questions/45664697/calculating-forward-vector-given-rotation-in-3d
-        public static Point MovePointForward(Transform transform, float distance)
+        public static Point MovePointForward(Transform originTransform, float distance)
         {
-            float cosZ = MathF.Cos(transform.RotationRadians.Z);
-            float cosY = MathF.Cos(transform.RotationRadians.Y);
-            float sinY = MathF.Sin(transform.RotationRadians.Y);
-            float sinZ = MathF.Sin(transform.RotationRadians.Z);
+            float cosZ = MathF.Cos(originTransform.RotationRadians.Z);
+            float cosY = MathF.Cos(originTransform.RotationRadians.Y);
+            float sinY = MathF.Sin(originTransform.RotationRadians.Y);
+            float sinZ = MathF.Sin(originTransform.RotationRadians.Z);
 
             var forwardVector = new Point(cosZ * cosY, sinZ, cosZ * sinY);
 
-            return transform.Position + new Point(distance * forwardVector.Z, distance * forwardVector.Y, distance * forwardVector.X);
+            return originTransform.Position + new Point(distance * forwardVector.Z, distance * forwardVector.Y, distance * forwardVector.X);
         }
     }
 }

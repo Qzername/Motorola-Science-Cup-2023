@@ -11,4 +11,10 @@
     <ProjectReference Include="..\VGE\VGE.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\bullet.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

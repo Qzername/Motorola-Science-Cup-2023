@@ -93,6 +93,8 @@ namespace Asteroids.Objects
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
 
+                window.PlaySound("Resources/bullet.wav");
+
                 lastSpaceState = true;
             }
             else if (!isSpacePressed && lastSpaceState)

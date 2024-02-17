@@ -119,6 +119,11 @@ namespace VGE.Windows
         #endregion
 
         /// <summary>
+        /// Można nim puścić jakiś dzwięk
+        /// </summary>
+        public void PlaySound(string path) => mainWindow.PlaySound(path);
+
+        /// <summary>
         /// Sprawdza czy dany przycisk jest wciśnięty.
         /// </summary>
         public bool KeyDown(Key key) => mainWindow.GetKey(key);

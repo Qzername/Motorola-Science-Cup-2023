@@ -48,15 +48,13 @@ namespace Battlezone.Objects
             float backgroundRotation = Scene3D.Camera.Rotation.Y*MathF.PI;
 
             if(backgroundRotation < 0)
-                backgroundRotation = 360-backgroundRotation;
+                backgroundRotation = 360+backgroundRotation;
 
             float offsetRatio = backgroundRotation / 360;
             float offsetWidth = Convert.ToInt32(offsetRatio * maxX);
 
-
             int amountToRender = (res.Width + Convert.ToInt32(offsetWidth)) / maxX;
 
-            Debug.WriteLine(amountToRender);
             for (int i = 0; i < amountToRender+1; i++)
                 foreach (var l in Shape.CompiledShape)
                     canvas.DrawLine(new Line()

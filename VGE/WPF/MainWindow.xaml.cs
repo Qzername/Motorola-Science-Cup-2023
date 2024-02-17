@@ -3,6 +3,10 @@ using SkiaSharp;
 using VGE.Graphics;
 using System.Windows.Threading;
 using System.Windows.Input;
+using System.Media;
+using System.Windows.Media;
+using System.Diagnostics;
+using System.Windows;
 
 namespace VGE.WPF
 {
@@ -11,11 +15,22 @@ namespace VGE.WPF
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        string exePath = string.Empty;
+
         List<Line> linesToDraw;
         SKPaint paint, customPaint;
 
+        MediaPlayer mediaplayer;
+
         public MainWindow()
         {
+            //branie obecnego folderu z exe
+            exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var files = exePath.Split('\\');
+            exePath = exePath.Replace(files[^1], string.Empty);
+
+            mediaplayer = new MediaPlayer();
+
             // Domyslna rozdzielczosc okna to 800x450
             MinWidth = 800;
             MinHeight = 450;
@@ -64,6 +79,15 @@ namespace VGE.WPF
             {
 
             }
+        }
+
+        public void PlaySound(string path)
+        {
+            mediaplayer.Dispatcher.Invoke(() =>
+            {
+                mediaplayer.Open(new Uri(exePath + path));
+                mediaplayer.Play();
+            });
         }
 
         public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);

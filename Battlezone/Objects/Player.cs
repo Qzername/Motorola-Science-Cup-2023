@@ -10,12 +10,23 @@ namespace Battlezone.Objects
 {
     public class Player : PhysicsObject
     {
+        PlayerCollider back, front;
+
         public override int PhysicsLayer => 0;
 
         const float speed = 40;
+        const float colliderDistance = 1f;
 
         public override Setup Start()
         {
+            back = new PlayerCollider();
+            window.Instantiate(back);
+
+            front =new PlayerCollider();
+            window.Instantiate(front);
+
+            RefreshCollidersPosition();
+
             return new Setup()
             {
                 Name = "Player",
@@ -30,10 +41,22 @@ namespace Battlezone.Objects
         public override void Update(float delta)
         {
             //movement
-            if (window.KeyDown(Key.W))
+            if (window.KeyDown(Key.W) && !front.IsColliding)
+            {
                 Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, speed * delta);
-            else if(window.KeyDown(Key.S))
+                RefreshCollidersPosition();
+
+                if (back.IsColliding)
+                    back.IsColliding = false;
+            }
+            else if(window.KeyDown(Key.S) && !back.IsColliding)
+            {
                 Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, -speed * delta);
+                RefreshCollidersPosition();
+
+                if (front.IsColliding)
+                    front.IsColliding = false;
+            }
 
             //rotation
             if (window.KeyDown(Key.A))
@@ -61,6 +84,12 @@ namespace Battlezone.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
+        }
+
+        void RefreshCollidersPosition()
+        {
+            front.UpdatePosition(PointManipulationTools.MovePointForward(Scene3D.Camera, colliderDistance));
+            back.UpdatePosition(PointManipulationTools.MovePointForward(Scene3D.Camera, -colliderDistance));
         }
     }
 }
