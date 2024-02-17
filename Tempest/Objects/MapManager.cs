@@ -32,7 +32,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-            LoadMap(Levels.Steps, false);
+            LoadMap(Levels.U, false);
 
             return new Setup()
             {
@@ -61,7 +61,8 @@ namespace Tempest.Objects
                 elements.Add(element);
             }
 
-            perspectiveOffset.Y = perspectivePointY;
+            GameManager.IsLevelClosed = shouldClose;
+			perspectiveOffset.Y = perspectivePointY;
             TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
 		}
 
