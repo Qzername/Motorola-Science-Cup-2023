@@ -19,14 +19,17 @@ namespace VGE.Graphics.Scenes
 
         Point viewport = new Point(400, 400);
 
+        float renderDistanceSquared;
+
         public void ChangeResolution(Resolution resolution)
         {
             this.resolution = resolution;
         }
 
-        public Scene3D()
+        public Scene3D(float renderDistance)
         {
             Camera = new Transform();
+            renderDistanceSquared = MathF.Pow(renderDistance,2);
         }
 
         //https://en.wikipedia.org/wiki/3D_projection
@@ -36,13 +39,17 @@ namespace VGE.Graphics.Scenes
             var transform = vectorObject.Transform;
 
             // --- Sprawdzanie czy punkt powinien byc renderowany ---
+            //sprawdzenie czy punkt jest w dystansie renderu
+            Point distanceOld = vectorObject.Transform.Position - Camera.Position;
+            float distanceOldCalculated = MathF.Pow(distanceOld.X, 2) + MathF.Pow(distanceOld.Y, 2) + MathF.Pow(distanceOld.Z, 2);
+            if (distanceOldCalculated > renderDistanceSquared)
+                return;
+
             //sprawdzanie czy punkt jest za drugim punktem
             //jeżeli tak jest, jeżeli dodamy punkt oddalony o 1 przed kamerą, to dystans do punktu sprawdzanego powinien się zwiększyć
-            Point distanceOld = vectorObject.Transform.Position - Camera.Position;
             Point distanceNew = vectorObject.Transform.Position - PointManipulationTools.MovePointForward(Camera, 1);
 
-            if (MathF.Pow(distanceNew.X, 2) + MathF.Pow(distanceNew.Y, 2) + MathF.Pow(distanceNew.Z, 2) >
-                MathF.Pow(distanceOld.X, 2) + MathF.Pow(distanceOld.Y, 2) + MathF.Pow(distanceOld.Z, 2))
+            if (MathF.Pow(distanceNew.X, 2) + MathF.Pow(distanceNew.Y, 2) + MathF.Pow(distanceNew.Z, 2) > distanceOldCalculated)
                 return;
 
             foreach (var line in shape.CompiledShape)

@@ -45,17 +45,24 @@ namespace VGE.WPF
 
             canvas.Clear(SKColors.Black);
 
-            for (int i = 0; i < linesToDraw.Count; i++)
+            try
             {
-                var line = linesToDraw[i];
-
-                if(line.LineColor is null)
-                    canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
-                else
+                for (int i = 0; i < linesToDraw.Count; i++)
                 {
-                    customPaint.Color = line.LineColor.Value;
-                    canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
+                    var line = linesToDraw[i];
+
+                    if (line.LineColor is null)
+                        canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
+                    else
+                    {
+                        customPaint.Color = line.LineColor.Value;
+                        canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
+                    }
                 }
+            }
+            catch(Exception)
+            {
+
             }
         }
 

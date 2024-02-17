@@ -29,7 +29,6 @@ namespace Battlezone.Objects
 
         public override void Update(float delta)
         {
-            Debug.WriteLine(Scene3D.Camera.Rotation);
             //movement
             if (window.KeyDown(Key.W))
                 Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, speed * delta);
@@ -41,7 +40,6 @@ namespace Battlezone.Objects
                 Scene3D.Camera.Rotation += new Point(0, -speed * delta, 0);
             else if (window.KeyDown(Key.D))
                 Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
-
 
             //bullet
             bool currentSpaceState = window.KeyDown(Key.Space);

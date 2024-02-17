@@ -8,8 +8,8 @@ namespace Battlezone.Objects
 {
     public class Bullet : PhysicsObject
     {
-        const float speed = 50f;
-        const float maxDistance = 100f;
+        const float speed = 150f;
+        const float maxDistance = 1000f;
 
         float distance;
 
@@ -25,11 +25,8 @@ namespace Battlezone.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            if(other.Name == "Cube")
-            {
-                window.Destroy(other);
+            if (other.Name == "Cube")
                 window.Destroy(this);
-            }
         }
 
         public override Setup Start()
@@ -64,8 +61,6 @@ namespace Battlezone.Objects
                 new Point(2, 6),
                 new Point(3, 7),
             ];
-
-            Debug.WriteLine(startTransform.Rotation);
 
             return new Setup()
             {

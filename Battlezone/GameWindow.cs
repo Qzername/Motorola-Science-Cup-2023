@@ -10,7 +10,7 @@ namespace Battlezone
 {
     internal class GameWindow : Window
     {
-        public GameWindow() : base(new Scene3D())
+        public GameWindow() : base(new Scene3D(Settings.RenderDistance))
         {
             PhysicsConfiguration configuration = new PhysicsConfiguration()
             {
@@ -24,13 +24,8 @@ namespace Battlezone
             RegisterPhysicsEngine(new PhysicsEngine(configuration));
 
             Instantiate(new Background());
-            
             Instantiate(new Player());
-
-            Instantiate(new Cube(new Point(0,0,100)));
-            Instantiate(new Cube(new Point(0, 0, -100)));
-            Instantiate(new Cube(new Point(100, 0, 0)));
-            Instantiate(new Cube(new Point(-100, 0, 0)));
+            Instantiate(new ObstacleGenerator());
         }
 
         public override void Update(Canvas canvas)
