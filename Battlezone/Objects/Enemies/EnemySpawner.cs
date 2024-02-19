@@ -10,8 +10,8 @@ namespace Battlezone.Objects.Enemies
         Random rng;
 
         //na początku przeciwnicy będą się spawnić co 5sek
-        float timerMax = 5f;
-        float timerDiff = 0.1f;
+        float timerMax = 2f;
+        float timerDiff = -100f;
 
         float currentTimer = 0f;
 
@@ -28,8 +28,6 @@ namespace Battlezone.Objects.Enemies
         public override void Update(float delta)
         {
             currentTimer += delta;
-
-            Debug.WriteLine(currentTimer);
 
             if (currentTimer < timerMax)
                 return;
@@ -52,7 +50,9 @@ namespace Battlezone.Objects.Enemies
                 Rotation = rotation
             }, distance);
 
-            window.Instantiate(new Missle(enemyPosition));
+            //Debug.WriteLine(enemyPosition);
+
+            window.Instantiate(new Missle(new Point(0,0,100)));
         }
 
         public override bool OverrideRender(Canvas canvas)
