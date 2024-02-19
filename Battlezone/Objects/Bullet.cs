@@ -8,7 +8,7 @@ namespace Battlezone.Objects
 {
     public class Bullet : PhysicsObject
     {
-        const float speed = 150f;
+        const float speed = 70f;
         const float maxDistance = 1000f;
 
         float distance;
@@ -25,6 +25,9 @@ namespace Battlezone.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
+            if (other.Name == "Player" || other.Name == "Collider")
+                return;
+
             if (other.Name != "Cube")
                 window.Destroy(other);
 

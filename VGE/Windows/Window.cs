@@ -64,6 +64,8 @@ namespace VGE.Windows
             for (int i = 0; i < objects.Count; i++)
                 objects[i].Update(time.DeltaTime);
 
+            scene.UpdateResolution(GetResolution());
+
             for (int i = 0; i < objects.Count; i++)
                 if (!objects[i].OverrideRender(canvas))
                     scene.DrawObject(canvas, objects[i]);

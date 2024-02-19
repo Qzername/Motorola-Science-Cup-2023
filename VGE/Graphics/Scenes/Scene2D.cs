@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
+using VGE.Windows;
 
 namespace VGE.Graphics.Scenes
 {
@@ -16,6 +17,11 @@ namespace VGE.Graphics.Scenes
 
             foreach (var l in shape.CompiledShape)
                 canvas.DrawLine(new Line(l.StartPosition + transform.Position, l.EndPosition + transform.Position, shape.CustomColor));
+        }
+
+        public void UpdateResolution(Resolution resolution)
+        {
+            
         }
     }
 }

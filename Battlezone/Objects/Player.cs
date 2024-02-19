@@ -15,7 +15,7 @@ namespace Battlezone.Objects
         public override int PhysicsLayer => 0;
 
         const float speed = 40;
-        const float colliderDistance = 1f;
+        const float colliderDistance = 10f;
 
         public override Setup Start()
         {

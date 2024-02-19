@@ -13,7 +13,7 @@ namespace Battlezone.Objects
             this.startPosition = startPosition;
         }
 
-        public override int PhysicsLayer => 1;
+        public override int PhysicsLayer => 2;
 
         public override void OnCollisionEnter(PhysicsObject other)
         {

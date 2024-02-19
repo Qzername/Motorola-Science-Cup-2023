@@ -52,7 +52,7 @@ namespace Battlezone.Objects.Enemies
 
             //Debug.WriteLine(enemyPosition);
 
-            window.Instantiate(new Missle(new Point(0,0,100)));
+            window.Instantiate(new Tank(new Point(0,0,100)));
         }
 
         public override bool OverrideRender(Canvas canvas)

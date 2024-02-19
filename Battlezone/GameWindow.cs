@@ -17,8 +17,9 @@ namespace Battlezone
             {
                 LayerConfiguration = new Dictionary<int, int[]>()
                 {
-                    { 0, new int[] {1} }, //0 -> player
-                    { 1, new int[] {0} }, //1 -> bullets && obstacles
+                    { 0, [1,2] }, //0 -> player
+                    { 1, [0,2] }, //1 -> enemies 
+                    { 2, [1,2] }, //2 -> obstacles
                 }
             };
             

@@ -72,5 +72,10 @@ namespace VGE.Graphics.Scenes
                 canvas.DrawLine(new Line(points[0], points[1], line.LineColor));
             }
         }
+
+        public void UpdateResolution(Resolution resolution)
+        {
+            this.resolution = resolution;
+        }
     }
 }

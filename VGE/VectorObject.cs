@@ -90,11 +90,6 @@ namespace VGE
         {
             shape.Rotate(rotation);
             transform.Rotation += rotation;
-
-            //robie to aby angle nie wyszło poza 360 stopni
-            transform.Rotation.X %= 360;
-            transform.Rotation.Y %= 360;
-            transform.Rotation.Z %= 360;
         }
         
         public struct Setup
