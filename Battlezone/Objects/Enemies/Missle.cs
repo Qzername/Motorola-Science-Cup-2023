@@ -13,7 +13,7 @@ namespace Battlezone.Objects.Enemies
     {
         public override int PhysicsLayer => 1;
 
-        const float speed = 80f;
+        const float speed = 20f;//80f;
 
         protected override int Score => 2000;
 
@@ -33,19 +33,36 @@ namespace Battlezone.Objects.Enemies
             {
                 Name = "Enemy_MISSLE",
                 Position = startPosition,
-                Rotation = Point.Zero,
+                Rotation = new Point(0,110,0),
                 Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Yellow)
             };
         }
 
         public override void Update(float delta)
         {
-            var rotationTowardsPlayer = MathF.Atan2((transform.Position.Z - Scene3D.Camera.Position.Z) * MathTools.Deg2rad,
-                                                    (transform.Position.X - Scene3D.Camera.Position.X) * MathTools.Deg2rad) * MathTools.Rad2deg;
+            //angle
+            Point offset = transform.Position - Scene3D.Camera.Position;
 
-            Rotate(new Point(0, rotationTowardsPlayer-transform.Rotation.Y+90, 0));
+            float c = MathF.Sqrt(MathF.Pow(offset.X, 2) + MathF.Pow(offset.Z, 2));
 
-            transform.Position = PointManipulationTools.MovePointForward(transform, speed * delta);
+            float sinAngleToPlayer = offset.Z / c;
+            float angleToPlayer = (MathF.Asin(sinAngleToPlayer) * MathTools.Rad2deg);
+
+            Debug.WriteLine(offset);
+
+            if(offset.X  >0)
+                Rotate(new Point(0, angleToPlayer - transform.Rotation.Y, 0));
+            else
+                Rotate(new Point(0, ((angleToPlayer * -1f )- transform.Rotation.Y) , 0));
+
+            //next position
+            float cNext = (delta * speed);
+
+            float z = sinAngleToPlayer * cNext;
+            float x = (offset.X / c) * cNext;
+
+            transform.Position.X -= x;
+            transform.Position.Z -= z;
         }
     }
 }

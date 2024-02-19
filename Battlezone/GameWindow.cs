@@ -27,7 +27,7 @@ namespace Battlezone
             Instantiate(new Background());
             Instantiate(new Player());
             Instantiate(new ObstacleGenerator());
-            //Instantiate(new EnemySpawner());
+            Instantiate(new EnemySpawner());
         }
 
         public override void Update(Canvas canvas)
