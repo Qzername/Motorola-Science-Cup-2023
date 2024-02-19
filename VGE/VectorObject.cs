@@ -25,6 +25,7 @@ namespace VGE
         public IShape Shape
         {
             get => shape;
+            set => shape = value;
         }
 
         protected Transform transform;

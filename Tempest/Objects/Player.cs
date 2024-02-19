@@ -10,8 +10,7 @@ namespace Tempest.Objects
 {
     public class Player : PhysicsObject
     {
-        public override int PhysicsLayer => mapPosition;
-        int mapPosition; // Tile na którym jest gracz
+	    public override int PhysicsLayer => GameManager.MapPosition;
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
@@ -24,16 +23,16 @@ namespace Tempest.Objects
             {
                 Name = "Player",
                 Shape = new PointShape(GameManager.Configuration.Player,
-                                new Point(20, 20,0),
-                                new Point(20, -20,0),
-                                new Point(-20, -20,0),
-                                new Point(-20, 20,0)),
-                Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0,0,400),
-                Rotation = MapManager.Instance.Elements[mapPosition].Transform.Rotation
+                                new Point(0, -20,0),
+                                new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0,0),
+                                new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0,0),
+                                new Point(0, -20,0)),
+                Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z) + new Point(0,0,400),
+                Rotation = MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation
             };
         }
 
-        bool wasLeftPressed, wasRightPressed, wasSpacePressed;
+        private bool wasLeftPressed, wasRightPressed, wasSpacePressed;
 
         public override void Update(float delta)
         {
@@ -43,19 +42,23 @@ namespace Tempest.Objects
             {
 				wasLeftPressed = false;
 
-                if (mapPosition != 0)
+                if (GameManager.MapPosition != 0)
                 {
-                    mapPosition--;
-                    transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+                    GameManager.MapPosition--;
+                    transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
                 }
                 else if (GameManager.IsLevelClosed)
                 {
-                    mapPosition = MapManager.Instance.Elements.Count - 1;
-					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+                    GameManager.MapPosition = MapManager.Instance.Elements.Count - 1;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
 
-                Rotate(transform.Rotation * -1);
-				Rotate(MapManager.Instance.Elements[mapPosition].Transform.Rotation);
+				Shape = new PointShape(GameManager.Configuration.Player,
+					new Point(0, -20, 0),
+					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
+					new Point(0, -20, 0));
+				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
 			}
 
             if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !wasRightPressed)
@@ -64,19 +67,23 @@ namespace Tempest.Objects
             {
 				wasRightPressed = false;
 
-                if (mapPosition != MapManager.Instance.Elements.Count - 1)
+                if (GameManager.MapPosition != MapManager.Instance.Elements.Count - 1)
                 {
-                    mapPosition++;
-                    transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+                    GameManager.MapPosition++;
+                    transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
                 }
 				else if (GameManager.IsLevelClosed)
 				{
-					mapPosition = 0;
-					transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+					GameManager.MapPosition = 0;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
 
-				Rotate(transform.Rotation * -1);
-				Rotate(MapManager.Instance.Elements[mapPosition].Transform.Rotation);
+				Shape = new PointShape(GameManager.Configuration.Player,
+					new Point(0, -20, 0),
+					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
+					new Point(0, -20, 0));
+				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
 			}
 
             if (window.KeyDown(Key.Space) && !wasSpacePressed)
@@ -87,7 +94,7 @@ namespace Tempest.Objects
 
                 Bullet bullet = new Bullet();
                 window.Instantiate(bullet);
-                bullet.Setup(mapPosition, transform.Position.Z);
+                bullet.Setup(GameManager.MapPosition, transform.Position.Z);
 			}
 		}
     }

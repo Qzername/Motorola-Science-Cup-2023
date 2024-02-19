@@ -11,6 +11,7 @@ namespace Tempest.Objects
     public class MapElement : VectorObject
     {
 	    private float length, rotation;
+        public float Length { get => length; }
         
         public override Setup Start()
         {
