@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Battlezone.Objects.Enemies;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -27,12 +28,14 @@ namespace Battlezone.Objects
 
             RefreshCollidersPosition();
 
+            var shape = ObstacleShapeDefinitions.GetByIndex(0);
+
             return new Setup()
             {
                 Name = "Player",
                 Position = Point.Zero,
                 Rotation = Point.Zero,
-                Shape = new PointShape(new Point(20, 0,20), new Point(-20, 0, 20), new Point(-20,0,-20), new Point(20,0,-20)),
+                Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition),
             };
         }
 
@@ -57,6 +60,8 @@ namespace Battlezone.Objects
                 if (front.IsColliding)
                     front.IsColliding = false;
             }
+
+            transform.Position = Scene3D.Camera.Position;
 
             //rotation
             if (window.KeyDown(Key.A))
@@ -84,6 +89,25 @@ namespace Battlezone.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
+            if (other.Name != "Enemy_MISSLE" && other.Name != "Bullet")
+                return;
+
+            window.Destroy(other);
+
+            GameManager.Lives--;
+
+            if (GameManager.Lives == 0)
+                window.Close();
+
+            EnemySpawner.Instance.DestroyAllObjects();
+            Scene3D.Camera = new Transform()
+            {
+                Position = Point.Zero,
+                Rotation = Point.Zero
+            };
+
+            front.IsColliding = false;
+            back.IsColliding = false;   
         }
 
         void RefreshCollidersPosition()

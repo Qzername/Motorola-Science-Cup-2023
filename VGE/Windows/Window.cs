@@ -113,6 +113,8 @@ namespace VGE.Windows
             if (obj == null)
                 return;
 
+            obj.OnDestroy();
+
             if (obj is PhysicsObject)
                 physicsEngine?.UnregisterObject((PhysicsObject)obj);
 

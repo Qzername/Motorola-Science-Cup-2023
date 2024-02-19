@@ -15,7 +15,7 @@ namespace Battlezone.Objects.Enemies
 
         const float speed = 80f;
 
-        protected override int Score => 2000;
+        public override int Score => 2000;
 
         public Missle(Point startPosition) : base(startPosition)
         {
@@ -27,7 +27,7 @@ namespace Battlezone.Objects.Enemies
 
         public override Setup Start()
         {
-            var shape = ObstacleShapeDefinitions.GetByIndex(1);
+            var shape = ObstacleShapeDefinitions.GetByIndex(0);
 
             return new Setup()
             {

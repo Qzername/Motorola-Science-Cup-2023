@@ -10,6 +10,15 @@ namespace VGE.Objects
         string currentText;
         float fontSize;
 
+        Point startPosition;
+
+        public Text(string text, float fontSize, Point startPosition)
+        {
+            SetText(text);
+            this.fontSize = fontSize;
+            this.startPosition = startPosition;
+        }
+
         public override Setup Start()
         {
             alphabet = ResourcesHandler.GetShapeSet("alphabet");
@@ -18,16 +27,9 @@ namespace VGE.Objects
             {
                 Name = "Text",
                 Shape = null,
-                Position = new Point(0, 0),
+                Position = startPosition,
                 Rotation = Point.Zero,
             };
-        }
-
-        public void Setup(string text, float fontSize, Point position)
-        {
-            SetText(text);
-            this.fontSize = fontSize;
-            transform.Position = position;
         }
 
         public void SetText(string text) => currentText = text.ToUpper();

@@ -16,7 +16,7 @@ namespace Battlezone.Objects.Enemies
 
         public override int PhysicsLayer => 1;
 
-        protected override int Score => 5000;
+        public override int Score => 5000;
 
         Point defaultRotatiion;
 

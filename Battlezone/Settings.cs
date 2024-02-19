@@ -20,7 +20,7 @@ namespace Battlezone
         public const float ObstacleGeneratorDistance = 3500f;
 
         //enemy spawner settings
-        public const int EnemyMinDistance = 100;
+        public const int EnemyMinDistance = 200;
         public const int EnemyMaxDistance = 400;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Battlezone.Objects.Enemies;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
@@ -28,8 +29,11 @@ namespace Battlezone.Objects
             if (other.Name == "Player" || other.Name == "Collider")
                 return;
 
-            if (other.Name != "Cube")
+            if(other is Enemy)
+            {
+                GameManager.Score += ((Enemy)other).Score;
                 window.Destroy(other);
+            }
 
             window.Destroy(this);
         }

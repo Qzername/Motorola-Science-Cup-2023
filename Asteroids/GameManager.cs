@@ -11,13 +11,11 @@ namespace Asteroids
 
         public static void Setup(Window window)
         {
-            scoreText = new Text();
+            scoreText = new Text("Score: 0", 2, new SKPoint(10, 40));
             window.Instantiate(scoreText);
-            scoreText.Setup("Score: 0", 2, new SKPoint(10,40));
 
-            livesText = new Text(); 
+            livesText = new Text("Lives: 3", 2, new SKPoint(10, 10)); 
             window.Instantiate(livesText);
-            livesText.Setup("Lives: 3", 2, new SKPoint(10, 10));
         }
 
         static int _score = 0;

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
@@ -22,11 +23,13 @@ namespace Battlezone.Objects
 
         public override Setup Start()
         {
+            var shape = ObstacleShapeDefinitions.GetByIndex(0);
+
             return new Setup()
             {
                 Name = "Collider",
                 Position = Point.Zero,
-                Shape = new PointShape(new Point(20, 0, 20), new Point(-20, 0, 20), new Point(-20, 0, -20), new Point(20, 0, -20)),
+                Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition),
             };
         }
 
@@ -41,7 +44,6 @@ namespace Battlezone.Objects
 
         public override bool OverrideRender(Canvas canvas)
         {
-            //nie rysuj nic
             return true;
         }
     }

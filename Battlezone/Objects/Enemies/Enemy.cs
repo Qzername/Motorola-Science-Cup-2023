@@ -7,7 +7,7 @@ namespace Battlezone.Objects.Enemies
     {
         //Punktacja jest zawsze wzięta stąd:
         //https://www.arcade-history.com/?n=battlezone-upright-model&page=detail&id=210
-        protected abstract int Score { get; }
+        public abstract int Score { get; }
         protected Point startPosition;
 
         public Enemy(Point startPosition)

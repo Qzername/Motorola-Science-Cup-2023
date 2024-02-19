@@ -14,6 +14,8 @@ namespace Battlezone.Objects.Enemies
 
         const float colliderDistance = 5f;
 
+        public override int Score => 1000;
+
         protected virtual float Speed => 10f;
         const float bulletFrequency = 4f;
         float currentTimer = 0f;
@@ -23,8 +25,6 @@ namespace Battlezone.Objects.Enemies
         }
 
         public override int PhysicsLayer => 1;
-
-        protected override int Score => 1000;
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
@@ -70,6 +70,12 @@ namespace Battlezone.Objects.Enemies
             window.Instantiate(new EnemyBullet(RecalculateRotation()));
 
             currentTimer = 0f;
+        }
+
+        public override void OnDestroy()
+        {
+            //gdyby nie ta linijka ten obiekt nadal by instniał mimo że jego posiadacz już nie istnieje
+            window.Destroy(front);
         }
 
         Transform RecalculateRotation()
