@@ -41,10 +41,10 @@ namespace Tempest.Objects
             {
                 Name = "Tanker",
                 Shape = new PointShape(GameManager.Configuration.Tanker,
-                                new Point(MapManager.Instance.Elements[mapPosition].Length / 2, -10,0),
-								new Point(MapManager.Instance.Elements[mapPosition].Length / 2, 10, 0),
-								new Point(MapManager.Instance.Elements[mapPosition].Length / -2, -10,0),
-								new Point(MapManager.Instance.Elements[mapPosition].Length / -2, 10, 0)),
+                                new Point(0, 20, 0),
+								new Point(20, 0, 0),
+								new Point(0, -20,0),
+								new Point(-20, 0, 0)),
                 Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0,0,1600),
                 Rotation = MapManager.Instance.Elements[mapPosition].Transform.Rotation
             };
