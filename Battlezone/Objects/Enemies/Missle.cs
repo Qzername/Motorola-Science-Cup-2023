@@ -13,7 +13,7 @@ namespace Battlezone.Objects.Enemies
     {
         public override int PhysicsLayer => 1;
 
-        const float speed = 80f;
+        const float speed = 20f;
 
         public override int Score => 2000;
 

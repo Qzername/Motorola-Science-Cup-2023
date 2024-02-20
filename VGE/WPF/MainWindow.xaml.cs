@@ -18,7 +18,10 @@ namespace VGE.WPF
         string exePath = string.Empty;
 
         List<Line> linesToDraw;
+        List<Circle> circlesToDraw;
+
         SKPaint paint, customPaint;
+        SKPaint circlePaint, customCirclePaint;
 
         MediaPlayer mediaplayer;
 
@@ -49,7 +52,22 @@ namespace VGE.WPF
                 Color = SKColors.White
             };
 
+            circlePaint = new SKPaint()
+            {
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 1,
+                Color = SKColors.White,
+            };
+
+            customCirclePaint = new SKPaint()
+            {
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 1,
+                Color = SKColors.White
+            };
+
             linesToDraw = new List<Line>();
+            circlesToDraw = new List<Circle>();
 
             skElement.PaintSurface += OnPaintSurface;
         }
@@ -74,6 +92,19 @@ namespace VGE.WPF
                         canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
                     }
                 }
+
+                for(int i = 0; i <circlesToDraw.Count; i++)
+                {
+                    var circle = circlesToDraw[i];
+
+                    if (circle.CircleColor is null)
+                        canvas.DrawCircle(circle.Position, circle.Radius, circlePaint);
+                    else
+                    {
+                        customCirclePaint.Color = circle.CircleColor.Value;
+                        canvas.DrawCircle(circle.Position, circle.Radius, customCirclePaint);
+                    }
+                }
             }
             catch(Exception)
             {
@@ -92,6 +123,7 @@ namespace VGE.WPF
 
         public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
         public void SetLines(List<Line> lines) => linesToDraw = lines;
+        public void SetCircles(List<Circle> circles) => circlesToDraw = circles; 
         public bool GetKey(Windows.Key key)
         {
             bool getKey = false;

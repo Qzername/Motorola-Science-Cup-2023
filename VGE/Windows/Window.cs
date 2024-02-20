@@ -37,6 +37,7 @@ namespace VGE.Windows
             frameTimer.Elapsed += FrameUpdate;
 
             mainWindow.SetLines(canvas.GetLines());
+            mainWindow.SetCircles(canvas.GetCircles());
         }
 
         //windows do swojego okna dodaje niewidzialne obiekty, tutaj jest kompensacja za nie

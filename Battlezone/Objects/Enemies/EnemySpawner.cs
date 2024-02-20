@@ -10,10 +10,10 @@ namespace Battlezone.Objects.Enemies
         public static EnemySpawner Instance;
 
         Random rng;
-        List<Enemy> enemies;
+        public List<Enemy> Enemies;
 
         //na początku przeciwnicy będą się spawnić co 5sek
-        float timerMax = 4f;
+        float timerMax = 6f;
         float timerDiff = 0.001f;
 
         float currentTimer = 0f;
@@ -23,7 +23,7 @@ namespace Battlezone.Objects.Enemies
             Instance = this;
 
             rng = new Random();
-            enemies = new List<Enemy>();
+            Enemies = new List<Enemy>();
 
             return new Setup()
             {
@@ -47,7 +47,7 @@ namespace Battlezone.Objects.Enemies
 
         public void DestroyAllObjects()
         {
-            foreach (var enemy in enemies)
+            foreach (var enemy in Enemies)
                 window.Destroy(enemy);
         }
 
@@ -56,7 +56,7 @@ namespace Battlezone.Objects.Enemies
             var enemyPosition = GetEnemyPosition();
 
             var enemy = GetRandomEnemy(new Point(0,0,100));
-            enemies.Add(enemy);
+            Enemies.Add(enemy);
 
             window.Instantiate(enemy);
         }
@@ -93,7 +93,7 @@ namespace Battlezone.Objects.Enemies
             if(ufoChance == 0)
                 return new UFO(enemyPosition);
 
-            var enemyChance = 3;
+            var enemyChance = rng.Next(0,4);
 
             if (enemyChance == 2) //25% na szybki czołg
                 return new FastTank(enemyPosition);

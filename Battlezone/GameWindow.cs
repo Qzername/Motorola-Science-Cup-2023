@@ -32,6 +32,7 @@ namespace Battlezone
 
             //UI
             Instantiate(new UIManager());
+            Instantiate(new Radar());
         }
 
         public override void Update(Canvas canvas)
