@@ -136,7 +136,7 @@ namespace Tempest.Objects
 		{
 			var bullet = new BulletFlipper();
 			window.Instantiate(bullet);
-			bullet.Setup(mapPosition, transform.Position.Z);
+			bullet.Setup(mapPosition, transform.Position.Z - 50);
 		}
 
 		void Destroy()

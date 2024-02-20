@@ -83,7 +83,7 @@ namespace Tempest.Objects
 			if (mapPosition > 0)
 				flipper2MapPosition -= 1;
 
-			flipper2.Setup(flipper2MapPosition, transform.Position.Z);
+			flipper2.Setup(flipper2MapPosition, transform.Position.Z - 50);
 			
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
