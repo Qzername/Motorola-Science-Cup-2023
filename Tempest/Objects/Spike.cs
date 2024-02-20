@@ -16,7 +16,10 @@ namespace Tempest.Objects
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
-            if (other.Name == "Bullet")
+	        if (other.PhysicsLayer != mapPosition)
+		        return;
+
+			if (other.Name == "Bullet")
                 window.Destroy(this);
         }
 

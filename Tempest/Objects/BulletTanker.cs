@@ -8,7 +8,7 @@ using VGE.Windows;
 
 namespace Tempest.Objects
 {
-	public class BulletFlipper : PhysicsObject
+	public class BulletTanker : PhysicsObject
 	{
 		public override int PhysicsLayer => mapPosition;
 		private int mapPosition;
@@ -19,7 +19,7 @@ namespace Tempest.Objects
 		{
 			if (other.PhysicsLayer != mapPosition)
 				return;
-			
+
 			if (other.Name == "Bullet")
 				window.Destroy(this);
 			else if (other.Name == "Player")
@@ -31,8 +31,8 @@ namespace Tempest.Objects
 		{
 			return new Setup()
 			{
-				Name = "BulletFlipper",
-				Shape = new PointShape(GameManager.Configuration.Flipper,
+				Name = "BulletTanker",
+				Shape = new PointShape(GameManager.Configuration.Tanker,
 								new Point(5, 5, 0),
 								new Point(5, -5, 0),
 								new Point(-5, -5, 0),

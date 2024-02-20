@@ -12,7 +12,7 @@ namespace Tempest.Objects
     public class Flipper : PhysicsObject
     {
 	    public override int PhysicsLayer => GameManager.MapPosition;
-	    private int mapPosition;
+	    private int mapPosition = -1;
 	    System.Timers.Timer bulletTimer = new();
 	    System.Timers.Timer moveTimer = new();
 
@@ -22,13 +22,11 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
+			if (other.PhysicsLayer != mapPosition)
+				return;
+
 			if (other.Name == "Bullet")
-			{
-				other = (Bullet)other;
-				
-				if (other.PhysicsLayer == mapPosition)
-					window.Destroy(this);
-			}
+				Destroy();
 			else if (other.Name == "Player")
 				return;
 				// Zrob funkcje w GameManager lub GameWindow, ktora restartuje poziom
@@ -36,7 +34,10 @@ namespace Tempest.Objects
 
         public override Setup Start()
         {
-            mapPosition = GameManager.MapPosition;
+			if (mapPosition < 0 || mapPosition >= MapManager.Instance.Elements.Count - 1)
+				mapPosition = GameManager.MapPosition;
+
+			transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
 
 			bulletTimer.Elapsed += TimerShoot;
 			bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
@@ -54,21 +55,27 @@ namespace Tempest.Objects
 								new Point(MapManager.Instance.Elements[mapPosition].Length / 2, 10, 0),
 								new Point(MapManager.Instance.Elements[mapPosition].Length / -2, -10,0),
 								new Point(MapManager.Instance.Elements[mapPosition].Length / -2, 10, 0)),
-                Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z) + new Point(0,0,1600),
+                Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z),
                 Rotation = MapManager.Instance.Elements[mapPosition].Transform.Rotation
             };
         }
 
-        public override void Update(float delta)
+		public void Setup(int mapPosition, float zPosition = 1600)
+		{
+			this.mapPosition = mapPosition;
+			transform.Position.Z = zPosition;
+		}
+
+		public override void Update(float delta)
         {
 	        if (transform.Position.Z > 400)
 				transform.Position.Z -= zSpeed * delta;
 	        else if (!atTheEnd)
 	        {
 		        atTheEnd = true;
-		        chance = 2;
+		        chance = 0;
 		        bulletTimer.Enabled = false;
-				moveTimer.Interval = 100;
+				moveTimer.Interval = 250;
 	        }
 		}
 
@@ -121,6 +128,13 @@ namespace Tempest.Objects
 			var bullet = new BulletFlipper();
 			window.Instantiate(bullet);
 			bullet.Setup(mapPosition, transform.Position.Z);
+		}
+
+		void Destroy()
+		{
+			bulletTimer.Enabled = false;
+			moveTimer.Enabled = false;
+			window.Destroy(this);
 		}
 	}
 }
