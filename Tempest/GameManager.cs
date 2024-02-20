@@ -22,5 +22,7 @@
 			get => mapPosition; 
 			set => mapPosition = value;
 		}
+		
+		public static Random Rand = new();
 	}
 }

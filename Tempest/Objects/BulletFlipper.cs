@@ -8,17 +8,16 @@ using VGE.Windows;
 
 namespace Tempest.Objects
 {
-	public class Bullet : PhysicsObject
+	public class BulletFlipper : PhysicsObject
 	{
 		public override int PhysicsLayer => mapPosition;
 		private int mapPosition;
 
-		const float zSpeed = 750f;
-		const float maxLength = 1600f;
+		const float zSpeed = 250f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.Name == "Flipper" || other.Name == "BulletFlipper")
+			if (other.Name == "Bullet")
 				window.Destroy(this);
 		}
 
@@ -26,8 +25,8 @@ namespace Tempest.Objects
 		{
 			return new Setup()
 			{
-				Name = "Bullet",
-				Shape = new PointShape(GameManager.Configuration.Player,
+				Name = "BulletFlipper",
+				Shape = new PointShape(GameManager.Configuration.Flipper,
 								new Point(5, 5, 0),
 								new Point(5, -5, 0),
 								new Point(-5, -5, 0),
@@ -46,9 +45,9 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			transform.Position.Z += zSpeed * delta;
+			transform.Position.Z -= zSpeed * delta;
 
-			if (transform.Position.Z > maxLength)
+			if (transform.Position.Z < 400)
 				window.Destroy(this);
 		}
 	}

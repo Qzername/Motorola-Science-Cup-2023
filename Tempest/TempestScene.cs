@@ -1,6 +1,7 @@
 ﻿using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
+using VGE.Windows;
 
 namespace Tempest
 {
@@ -20,7 +21,12 @@ namespace Tempest
             this.perspectivePoint = perspectivePoint;
         }
 
-        public void DrawObject(Canvas canvas, VectorObject vectorObject)
+        public void UpdateResolution(Resolution resolution)
+        {
+            
+        }
+
+		public void DrawObject(Canvas canvas, VectorObject vectorObject)
         {
             var shape = vectorObject.Shape;
             var transform = vectorObject.Transform;

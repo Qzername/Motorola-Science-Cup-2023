@@ -13,6 +13,7 @@ namespace Tempest
 
             Instantiate(new MapManager());
             Instantiate(new Player());
+            Instantiate(new Flipper());
         }
 
         public override void Update(Canvas canvas)
