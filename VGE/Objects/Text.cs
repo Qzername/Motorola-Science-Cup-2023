@@ -6,6 +6,8 @@ namespace VGE.Objects
 {
     public class Text : VectorObject
     {
+        public bool IsEnabled = true;
+
         ShapeSet alphabet;
         string currentText;
         float fontSize;
@@ -40,6 +42,9 @@ namespace VGE.Objects
 
         public override bool OverrideRender(Canvas canvas)
         {
+            if (!IsEnabled)
+                return true;
+
             float offset = 0;
 
             for(int i = 0; i < currentText.Length; i++)

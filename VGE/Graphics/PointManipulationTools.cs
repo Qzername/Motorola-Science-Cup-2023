@@ -38,7 +38,7 @@ namespace VGE.Graphics
                 float[,] rotatedPointMatrix = matrixPoint;
 
                 if(rotation.X != 0f)
-                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint, 
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(rotatedPointMatrix, 
                                                         new float[,] {//x
                                                             {1,0,0 },//y
                                                             {0,cosX,-sinX },//y
@@ -46,7 +46,7 @@ namespace VGE.Graphics
                                                         });
 
                 if(rotation.Y != 0f)
-                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint,
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(rotatedPointMatrix,
                                                         new float[,] {//x
                                                             {cosY, 0, sinY},//y
                                                             {0,1,0 },//y
@@ -54,7 +54,7 @@ namespace VGE.Graphics
                                                         });
 
                 if(rotation.Z != 0f)
-                    rotatedPointMatrix = MathTools.MultiplyMatrix(matrixPoint,
+                    rotatedPointMatrix = MathTools.MultiplyMatrix(rotatedPointMatrix,
                                                         new float[,] {//x
                                                             {cosZ,-sinZ,0 },//y
                                                             {sinZ,cosZ,0 },//y
