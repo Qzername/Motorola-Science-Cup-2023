@@ -13,7 +13,7 @@ namespace Tempest.Objects
 		public override int PhysicsLayer => mapPosition;
 		private int mapPosition;
 
-		const float zSpeed = 750f;
+		const float zSpeed = 900f;
 		const float maxLength = 1600f;
 
 		public override void OnCollisionEnter(PhysicsObject other)

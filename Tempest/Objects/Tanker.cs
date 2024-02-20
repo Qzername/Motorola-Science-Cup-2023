@@ -70,9 +70,21 @@ namespace Tempest.Objects
 			Destroy();
 
 			Flipper flipper1 = new Flipper();
-			flipper1.Setup(mapPosition + 1, transform.Position.Z);
+			
+			int flipper1MapPosition = mapPosition;
+			if (mapPosition < MapManager.Instance.Elements.Count - 1)
+				flipper1MapPosition += 1;
+
+			flipper1.Setup(flipper1MapPosition, transform.Position.Z);
+			
 			Flipper flipper2 = new Flipper();
-			flipper2.Setup(mapPosition - 1, transform.Position.Z);
+
+			int flipper2MapPosition = mapPosition;
+			if (mapPosition > 0)
+				flipper2MapPosition -= 1;
+
+			flipper2.Setup(flipper2MapPosition, transform.Position.Z);
+			
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
 		}

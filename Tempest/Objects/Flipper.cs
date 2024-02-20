@@ -15,6 +15,7 @@ namespace Tempest.Objects
 	    private int mapPosition = -1;
 	    System.Timers.Timer bulletTimer = new();
 	    System.Timers.Timer moveTimer = new();
+	    private int mapChangeCount;
 
 	    private bool atTheEnd;
 	    private int chance = 4;
@@ -34,7 +35,7 @@ namespace Tempest.Objects
 
         public override Setup Start()
         {
-			if (mapPosition < 0 || mapPosition >= MapManager.Instance.Elements.Count - 1)
+			if (mapPosition == -1)
 				mapPosition = GameManager.MapPosition;
 
 			transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
@@ -75,7 +76,7 @@ namespace Tempest.Objects
 		        atTheEnd = true;
 		        chance = 0;
 		        bulletTimer.Enabled = false;
-				moveTimer.Interval = 250;
+				moveTimer.Interval = 500;
 	        }
 		}
 
@@ -120,7 +121,15 @@ namespace Tempest.Objects
 					new Point(MapManager.Instance.Elements[mapPosition].Length / -2, -10, 0),
 					new Point(MapManager.Instance.Elements[mapPosition].Length / -2, 10, 0));
 				Rotate(MapManager.Instance.Elements[mapPosition].Transform.Rotation);
-			}
+
+				if (atTheEnd)
+				{
+					mapChangeCount++;
+
+					if (mapChangeCount > 16)
+						Destroy();					
+				}
+	        }
 		}
 
 		void TimerShoot(object? sender, ElapsedEventArgs e)
