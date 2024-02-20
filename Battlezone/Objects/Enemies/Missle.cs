@@ -40,6 +40,7 @@ namespace Battlezone.Objects.Enemies
 
         public override void Update(float delta)
         {
+            return;
             var pos = PositionCalculationTools.NextPositionTowardsPlayer(transform, speed, delta);
 
             transform.Position = pos.Item1;

@@ -75,6 +75,7 @@ namespace Battlezone.Objects.Enemies
         public override void OnDestroy()
         {
             //gdyby nie ta linijka ten obiekt nadal by instniał mimo że jego posiadacz już nie istnieje
+            IsDead = true;
             window.Destroy(front);
         }
 

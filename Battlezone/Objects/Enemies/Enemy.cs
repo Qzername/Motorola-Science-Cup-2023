@@ -10,9 +10,16 @@ namespace Battlezone.Objects.Enemies
         public abstract int Score { get; }
         protected Point startPosition;
 
+        public bool IsDead;
+
         public Enemy(Point startPosition)
         {
             this.startPosition = startPosition;
+        }
+
+        public override void OnDestroy()
+        {
+            IsDead = true;
         }
     }
 }

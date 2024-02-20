@@ -1,5 +1,6 @@
 ﻿using Battlezone.Objects.Enemies;
 using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -32,6 +33,8 @@ namespace Battlezone.Objects.UI
 
         public override void Update(float delta)
         {
+            transform.Position.X = window.GetResolution().Width / 2;
+
             rotationOfScanner += scannerSpeed * delta;
             rotationOfScanner %= 360;
         }
@@ -45,17 +48,23 @@ namespace Battlezone.Objects.UI
 
             foreach(var enemy in EnemySpawner.Instance.Enemies)
             {
+                if (enemy.IsDead)
+                    continue;
+
                 if (CalculateDistanceToCamera(enemy.Transform.Position) >= radarDistance)
                     continue;
 
+                if (enemy.Name == "Enemy_UFO")
+                    continue;
+
                 var offset = enemy.Transform.Position - Scene3D.Camera.Position;
-                var pos = new Point(radarHeight * (offset.X/radarDistance), radarHeight * (offset.Z / radarDistance),0);
+                var pos = new Point(radarHeight * (offset.X/radarDistance), -radarHeight * (offset.Z / radarDistance),0);
 
                 foreach (var line in enemyOnRadar.CompiledShape)
                 {
                     Point[] linePoints = [line.StartPosition + pos, line.EndPosition+pos];
 
-                    linePoints = PointManipulationTools.Rotate(new Point(0, 0, Scene3D.Camera.Rotation.Y-180), linePoints);
+                    linePoints = PointManipulationTools.Rotate(new Point(0, 0, Scene3D.Camera.Rotation.Y), linePoints);
 
                     canvas.DrawLine(new Line(linePoints[0] + transform.Position, linePoints[1] + transform.Position, SKColors.Aqua));
                 }

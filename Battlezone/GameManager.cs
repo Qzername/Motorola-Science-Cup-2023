@@ -6,6 +6,7 @@ namespace Battlezone
     {
         static int score = 0;
         static int lives = 3;
+        static bool isReloading = false; 
 
         public static int Score
         {
@@ -23,6 +24,16 @@ namespace Battlezone
             set
             {
                 lives = value;
+                UIManager.Instance.RefreshUI();
+            }
+        }
+
+        public static bool IsReloading
+        {
+            get => isReloading;
+            set
+            {
+                isReloading = value;
                 UIManager.Instance.RefreshUI();
             }
         }

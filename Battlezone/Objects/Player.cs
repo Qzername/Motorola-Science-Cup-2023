@@ -18,6 +18,12 @@ namespace Battlezone.Objects
         const float speed = 40;
         const float colliderDistance = 10f;
 
+        int magazine = 3;
+
+        const float reloadingTime = 3f;
+        const float shootCooldownTime = 1f;
+        float reloadingTimer = 0f, shootCooldownTimer = 1f;
+
         public override Setup Start()
         {
             back = new PlayerCollider();
@@ -70,12 +76,37 @@ namespace Battlezone.Objects
                 Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
 
             //bullet
+            if (magazine == 0)
+            {
+                GameManager.IsReloading = true;
+                reloadingTimer += delta;
+
+                if (reloadingTime < reloadingTimer)
+                {
+                    magazine = 3;
+                    reloadingTimer = 0;
+                    shootCooldownTimer = 10f;
+                    GameManager.IsReloading = false;
+                }
+
+                return;
+            }
+
+            if(shootCooldownTimer < shootCooldownTime)
+            {
+                shootCooldownTimer += delta;
+                return;
+            }
+
             bool currentSpaceState = window.KeyDown(Key.Space);
 
             if (currentSpaceState && !lastSpaceState)
             {
+                magazine--;
+
                 window.Instantiate(new Bullet(Scene3D.Camera));
                 lastSpaceState = true;
+                shootCooldownTimer = 0f;
             }
             else if (!currentSpaceState && lastSpaceState)
                 lastSpaceState = false;
@@ -107,7 +138,13 @@ namespace Battlezone.Objects
             };
 
             front.IsColliding = false;
-            back.IsColliding = false;   
+            back.IsColliding = false;
+
+            //shooting
+            GameManager.IsReloading = false;
+            shootCooldownTimer = shootCooldownTime;
+            reloadingTimer = 0f;
+            magazine = 3;
         }
 
         void RefreshCollidersPosition()

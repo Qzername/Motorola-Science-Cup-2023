@@ -49,13 +49,15 @@ namespace Battlezone.Objects.Enemies
         {
             foreach (var enemy in Enemies)
                 window.Destroy(enemy);
+
+            Enemies.Clear();
         }
 
         void SpawnEnemy()
         {
             var enemyPosition = GetEnemyPosition();
 
-            var enemy = GetRandomEnemy(new Point(0,0,100));
+            var enemy = GetRandomEnemy(enemyPosition); 
             Enemies.Add(enemy);
 
             window.Instantiate(enemy);
