@@ -19,6 +19,9 @@ namespace Tempest.Objects
 		{
 			if (other.Name == "Bullet")
 				window.Destroy(this);
+			else if (other.Name == "Player")
+				return;
+				// Zrob funkcje w GameManager lub GameWindow, ktora restartuje poziom
 		}
 
 		public override Setup Start()

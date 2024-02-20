@@ -16,7 +16,9 @@ namespace Tempest.Objects
 	    System.Timers.Timer bulletTimer = new();
 	    System.Timers.Timer moveTimer = new();
 
-		const float zSpeed = 150f;
+	    private bool atTheEnd;
+	    private int chance = 4;
+	    private const float zSpeed = 150f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
@@ -38,7 +40,7 @@ namespace Tempest.Objects
 
 			bulletTimer.Elapsed += TimerShoot;
 			bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
-			bulletTimer.Enabled = true;			
+			bulletTimer.Enabled = true;
 			
             moveTimer.Elapsed += TimerMove;
             moveTimer.Interval = 1000;
@@ -59,19 +61,24 @@ namespace Tempest.Objects
 
         public override void Update(float delta)
         {
-	        transform.Position.Z -= zSpeed * delta;
-
-			if (transform.Position.Z < 400)
-				window.Destroy(this);
+	        if (transform.Position.Z > 400)
+				transform.Position.Z -= zSpeed * delta;
+	        else if (!atTheEnd)
+	        {
+		        atTheEnd = true;
+		        chance = 2;
+		        bulletTimer.Enabled = false;
+				moveTimer.Interval = 100;
+	        }
 		}
 
         void TimerMove(object? snder, ElapsedEventArgs e)
         {
 			// 25% szansy na ruch w lewo lub prawo
-	        int random = GameManager.Rand.Next(0, 4);
+	        int random = GameManager.Rand.Next(0, chance);
 	        if (random == 0)
 	        {
-		        int side = GameManager.Rand.Next(0, 1);
+		        int side = GameManager.Rand.Next(0, 2);
 				
 		        if (side == 0)
 		        {

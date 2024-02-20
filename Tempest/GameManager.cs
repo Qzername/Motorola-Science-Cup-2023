@@ -9,14 +9,14 @@
 			set => _configuration = value;
 		}
 
-		private static bool _isLevelClosed = false;
+		private static bool _isLevelClosed;
 		public static bool IsLevelClosed
 		{
 			get => _isLevelClosed; 
 			set => _isLevelClosed = value;
 		}
 
-		private static int mapPosition = 0;
+		private static int mapPosition;
 		public static int MapPosition
 		{
 			get => mapPosition; 
