@@ -1,5 +1,4 @@
 ﻿using SkiaSharp;
-using System.ComponentModel;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -8,86 +7,86 @@ using VGE.Physics;
 
 namespace Battlezone.Objects.Enemies
 {
-    public class Tank : Enemy
-    {
-        EnemyCollider front;
+	public class Tank : Enemy
+	{
+		EnemyCollider front;
 
-        const float colliderDistance = 5f;
+		const float colliderDistance = 5f;
 
-        public override int Score => 1000;
+		public override int Score => 1000;
 
-        protected virtual float Speed => 10f;
-        const float bulletFrequency = 4f;
-        float currentTimer = 0f;
+		protected virtual float Speed => 10f;
+		const float bulletFrequency = 4f;
+		float currentTimer = 0f;
 
-        public Tank(Point startPosition) : base(startPosition)
-        {
-        }
+		public Tank(Point startPosition) : base(startPosition)
+		{
+		}
 
-        public override int PhysicsLayer => 1;
+		public override int PhysicsLayer => 1;
 
-        public override void OnCollisionEnter(PhysicsObject other)
-        {
-        }
+		public override void OnCollisionEnter(PhysicsObject other)
+		{
+		}
 
-        public override Setup Start()
-        {
-            front = new EnemyCollider();
-            window.Instantiate(front);
+		public override Setup Start()
+		{
+			front = new EnemyCollider();
+			window.Instantiate(front);
 
-            front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
-            
-            var shape = ObstacleShapeDefinitions.GetByIndex(0);
+			front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
 
-            return new Setup()
-            {
-                Name = "Enemy_TANK",
-                Position = startPosition,
-                Rotation = Point.Zero,
-                Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Red)
-            };
-        }
+			var shape = ObstacleShapeDefinitions.GetByIndex(0);
 
-        public override void Update(float delta)
-        {
-            front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
+			return new Setup()
+			{
+				Name = "Enemy_TANK",
+				Position = startPosition,
+				Rotation = Point.Zero,
+				Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Red)
+			};
+		}
 
-            if (!front.IsColliding)
-            {
-                //position
-                var pos = PositionCalculationTools.NextPositionTowardsPlayer(transform, Speed, delta);
+		public override void Update(float delta)
+		{
+			front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
 
-                transform.Position = pos.Item1;
-                Rotate(new Point(0, pos.Item2, 0));
+			if (!front.IsColliding)
+			{
+				//position
+				var pos = PositionCalculationTools.NextPositionTowardsPlayer(transform, Speed, delta);
 
-                //shooting
-                currentTimer += delta;
-            }
+				transform.Position = pos.Item1;
+				Rotate(new Point(0, pos.Item2, 0));
 
-            if (currentTimer < bulletFrequency)
-                return;
+				//shooting
+				currentTimer += delta;
+			}
 
-            window.Instantiate(new EnemyBullet(RecalculateRotation()));
+			if (currentTimer < bulletFrequency)
+				return;
 
-            currentTimer = 0f;
-        }
+			window.Instantiate(new EnemyBullet(RecalculateRotation()));
 
-        public override void OnDestroy()
-        {
-            //gdyby nie ta linijka ten obiekt nadal by instniał mimo że jego posiadacz już nie istnieje
-            IsDead = true;
-            window.Destroy(front);
-        }
+			currentTimer = 0f;
+		}
 
-        Transform RecalculateRotation()
-        {
-            var offset = Scene3D.Camera.Position - transform.Position;
+		public override void OnDestroy()
+		{
+			//gdyby nie ta linijka ten obiekt nadal by instniał mimo że jego posiadacz już nie istnieje
+			IsDead = true;
+			window.Destroy(front);
+		}
 
-            return new Transform()
-            {
-                Position = transform.Position,
-                Rotation = new Point(0, 180 - transform.Rotation.Y - 90 + (offset.X < 0 && offset.Z < 0 ? 180 : 0), 0)
-            };
-        }
-    }
+		Transform RecalculateRotation()
+		{
+			var offset = Scene3D.Camera.Position - transform.Position;
+
+			return new Transform()
+			{
+				Position = transform.Position,
+				Rotation = new Point(0, 180 - transform.Rotation.Y - 90 + (offset.X < 0 && offset.Z < 0 ? 180 : 0), 0)
+			};
+		}
+	}
 }

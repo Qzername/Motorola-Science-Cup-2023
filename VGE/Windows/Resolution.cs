@@ -1,8 +1,8 @@
 ﻿namespace VGE.Windows
 {
-    public struct Resolution(int width, int height)
-    {
-        public int Width { get; } = width;
-        public int Height { get; } = height;
-    }
+	public struct Resolution(int width, int height)
+	{
+		public int Width { get; } = width;
+		public int Height { get; } = height;
+	}
 }

@@ -1,30 +1,23 @@
-﻿using SkiaSharp;
-using System.Diagnostics;
-using VGE;
-using VGE.Graphics;
+﻿using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
-using VGE.Windows;
 
 namespace Tempest.Objects
 {
 	public class BulletTanker : PhysicsObject
 	{
-		public override int PhysicsLayer => mapPosition;
-		private int mapPosition;
+		public override int PhysicsLayer => _mapPosition;
+		private int _mapPosition;
 
-		const float zSpeed = 250f;
+		private const float ZSpeed = 250f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != mapPosition)
+			if (other.PhysicsLayer != _mapPosition)
 				return;
 
 			if (other.Name == "Bullet")
 				window.Destroy(this);
-			else if (other.Name == "Player")
-				return;
-				// Zrob funkcje w GameManager lub GameWindow, ktora restartuje poziom
 		}
 
 		public override Setup Start()
@@ -37,21 +30,21 @@ namespace Tempest.Objects
 								new Point(5, -5, 0),
 								new Point(-5, -5, 0),
 								new Point(-5, 5, 0)),
-				Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = Point.Zero
 			};
 		}
 
 		public void Setup(int mapPosition, float zPosition)
 		{
-			this.mapPosition = mapPosition;
+			_mapPosition = mapPosition;
 			transform.Position.Z = zPosition;
 			transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
 		}
 
 		public override void Update(float delta)
 		{
-			transform.Position.Z -= zSpeed * delta;
+			transform.Position.Z -= ZSpeed * delta;
 
 			if (transform.Position.Z < 400)
 				window.Destroy(this);

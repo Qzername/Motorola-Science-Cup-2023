@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VGE;
+﻿using VGE;
 
 namespace Battlezone.Objects.Enemies
 {
-    public class FastTank : Tank
-    {
-        protected override float Speed => 30f;
-        public override int Score => 3000;
+	public class FastTank : Tank
+	{
+		protected override float Speed => 30f;
+		public override int Score => 3000;
 
-        public FastTank(Point startPosition) : base(startPosition)
-        {
-        }
-    }
+		public FastTank(Point startPosition) : base(startPosition)
+		{
+		}
+	}
 }

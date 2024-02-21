@@ -4,36 +4,36 @@ using VGE.Physics;
 
 namespace Battlezone.Objects
 {
-    public class Obstacle : PhysicsObject
-    {
-        Point startPosition;
+	public class Obstacle : PhysicsObject
+	{
+		Point startPosition;
 
-        public Obstacle(Point startPosition)
-        {
-            this.startPosition = startPosition;
-        }
+		public Obstacle(Point startPosition)
+		{
+			this.startPosition = startPosition;
+		}
 
-        public override int PhysicsLayer => 2;
+		public override int PhysicsLayer => 2;
 
-        public override void OnCollisionEnter(PhysicsObject other)
-        {
-        }
+		public override void OnCollisionEnter(PhysicsObject other)
+		{
+		}
 
-        public override Setup Start()
-        {
-            var definition = ObstacleShapeDefinitions.GetRandom();
+		public override Setup Start()
+		{
+			var definition = ObstacleShapeDefinitions.GetRandom();
 
-            return new Setup()
-            {
-                Name = "Cube",
-                Position = startPosition,
-                Rotation = Point.Zero,
-                Shape = new PredefinedShape(definition.PointsDefinition, definition.LinesDefinition),
-            };
-        }
+			return new Setup()
+			{
+				Name = "Cube",
+				Position = startPosition,
+				Rotation = Point.Zero,
+				Shape = new PredefinedShape(definition.PointsDefinition, definition.LinesDefinition),
+			};
+		}
 
-        public override void Update(float delta)
-        { 
-        }
-    }
+		public override void Update(float delta)
+		{
+		}
+	}
 }

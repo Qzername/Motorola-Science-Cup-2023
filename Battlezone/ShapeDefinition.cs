@@ -2,9 +2,9 @@
 
 namespace Battlezone
 {
-    public struct ShapeDefinition
-    {
-        public Point[] PointsDefinition;
-        public Point[] LinesDefinition;
-    }
+	public struct ShapeDefinition
+	{
+		public Point[] PointsDefinition;
+		public Point[] LinesDefinition;
+	}
 }
