@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System.Diagnostics;
 using VGE.Graphics;
 using VGE.Resources;
 
@@ -80,11 +81,14 @@ namespace VGE.Objects
                     if(shape is null)
                         continue;
 
-                    if (shape.BottomRight.X > maxRight)
-                        maxRight = shape.BottomRight.X * fontSize;
-
                     foreach (var l in shape.CompiledShape)
                     {
+                        if (l.StartPosition.X > maxRight)
+                            maxRight = l.StartPosition.X;
+
+                        if(l.EndPosition.X > maxRight)
+                            maxRight = l.EndPosition.X;
+
                         var start = new Point(l.StartPosition.X * fontSize + offset, l.StartPosition.Y * fontSize);
                         var end = new Point(l.EndPosition.X * fontSize + offset, l.EndPosition.Y * fontSize);
 
@@ -92,7 +96,7 @@ namespace VGE.Objects
                     }
                 }
 
-                offset += (maxRight + fontSize/2) * (int)textAlignment;
+                offset += ((maxRight* fontSize) + fontSize/2) * (int)textAlignment;
             }
 
             return true;

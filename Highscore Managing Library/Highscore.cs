@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asteroids
+namespace HML
 {
-    public enum Screen
+    public struct Highscore
     {
-        MainMenu,
-        Game,
-        GameOver,
-        Highscore
+        public string Name { get; set; }
+        public int Score { get; set; }
     }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VGE", "VGE\VGE.csproj", "{13F3D802-967D-42F4-ADB6-4FCE54148A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Game Engine", "VGE\Vector Game Engine.csproj", "{13F3D802-967D-42F4-ADB6-4FCE54148A4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Asteroids\Asteroids.csproj", "{6E3D07C4-DDFC-43E4-B20B-11A011A5F36A}"
 EndProject
@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tempest", "Tempest\Tempest.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battlezone", "Battlezone\Battlezone.csproj", "{B5CD88A9-D64B-4BDB-91DD-2028C513DDE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Shape Renderer", "3D Shape Renderer\3D Shape Renderer.csproj", "{358F0C98-5619-452F-815B-2FC5590A6628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3D Shape Renderer", "3D Shape Renderer\3D Shape Renderer.csproj", "{358F0C98-5619-452F-815B-2FC5590A6628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Highscore Managing Library", "Highscore Managing Library\Highscore Managing Library.csproj", "{6FFE3572-8712-48E1-826A-706BB7D14C42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{358F0C98-5619-452F-815B-2FC5590A6628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{358F0C98-5619-452F-815B-2FC5590A6628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{358F0C98-5619-452F-815B-2FC5590A6628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -94,7 +94,7 @@ namespace Asteroids.Objects
 
         void TimerSpawnObstacle()
         {
-            if (GameManager.Instance.CurrentScreen == Screen.GameOver)
+            if (GameManager.Instance.CurrentScreen == Screen.GameOver || GameManager.Instance.CurrentScreen == Screen.Highscore)
                 return;
 
             // Co 5000 puktow, spawnuj o 1 przeszkode wiecej
@@ -114,7 +114,7 @@ namespace Asteroids.Objects
 
         void TimerSpawnUfo()
         {
-            if (GameManager.Instance.CurrentScreen == Screen.GameOver)
+            if (GameManager.Instance.CurrentScreen == Screen.GameOver || GameManager.Instance.CurrentScreen == Screen.Highscore)
                 return;
 
             int[] pos = GetRandomPosition();

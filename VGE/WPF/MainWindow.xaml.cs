@@ -22,8 +22,6 @@ namespace VGE.WPF
 		SKPaint paint, customPaint;
 		SKPaint circlePaint, customCirclePaint;
 
-		MediaPlayer mediaplayer;
-
 		/// <summary>
 		/// Skala okienek jaka jest ustawiona w windowsie
 		/// </summary>
@@ -37,8 +35,6 @@ namespace VGE.WPF
 			exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
 			var files = exePath.Split('\\');
 			exePath = exePath.Replace(files[^1], string.Empty);
-
-			mediaplayer = new MediaPlayer();
 
 			// Domyslna rozdzielczosc okna to 800x450
 			MinWidth = 800;
@@ -120,12 +116,10 @@ namespace VGE.WPF
 
 		public void PlaySound(string path)
 		{
-			mediaplayer.Dispatcher.Invoke(() =>
-			{
-				mediaplayer.Open(new Uri(exePath + path));
-				mediaplayer.Play();
-			});
-		}
+            var mediaplayer = new MediaPlayer();
+            mediaplayer.Open(new Uri(exePath + path));
+            mediaplayer.Play();
+        }
 
 		public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
 		public void SetLines(List<Line> lines) => linesToDraw = lines;

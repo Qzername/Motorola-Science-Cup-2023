@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using HML;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,16 @@ namespace Asteroids.Objects.UI
 
         Resolution resolution;
 
-        Text scoreText, copyright;
-        Text mainMenu, gameOver;
+        Text scoreText, higestscore, copyright;
+        Text gameOver, newHighscore;
+
+        Scoreboard scoreboard;
 
         public override Setup Start()
         {
             Instance = this;
 
-            scoreText = new Text("0", 2, new SKPoint(200, 10), Text.TextAlignment.Right);
+            scoreText = new Text("00", 2, new SKPoint(200, 10), Text.TextAlignment.Right);
             window.Instantiate(scoreText);
 
             window.Instantiate(new LifeCounter(new Point(140, 60)));
@@ -33,12 +36,18 @@ namespace Asteroids.Objects.UI
             copyright = new Text("COPYRIGHT WBRT:TS 2024", 1, new Point(resolution.Width/2-120, resolution.Height - 5f));
             window.Instantiate(copyright);
 
-            mainMenu = new Text("MAIN MENU", 2f, new Point(resolution.Width / 2, resolution.Height / 2));
-            window.Instantiate(mainMenu);
-
             gameOver = new Text("GAME OVER", 2f, new Point(resolution.Width / 2, resolution.Height / 2));
             window.Instantiate(gameOver);
 
+            newHighscore = new Text("your highscore is among the best scores", 2f, new Point(resolution.Width / 2, resolution.Height / 2));
+            window.Instantiate(newHighscore);
+
+            higestscore = new Text("00", 1.5f, new Point(resolution.Width / 2 - 19, 10));
+            window.Instantiate(higestscore);
+
+            scoreboard = new Scoreboard();
+            window.Instantiate(scoreboard);
+            
             ChangeScreen(Screen.MainMenu);
 
             return new Setup()
@@ -49,7 +58,7 @@ namespace Asteroids.Objects.UI
 
         public void RefreshUI()
         {
-            scoreText.SetText(GameManager.Instance.Score.ToString());
+            scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());
         }
 
         public override void Update(float delta)
@@ -57,6 +66,7 @@ namespace Asteroids.Objects.UI
             resolution = window.GetResolution();
 
             copyright.SetPosition(new Point(resolution.Width / 2-120, resolution.Height - 30));
+            RefreshHighestScore();
         }
 
         public override bool OverrideRender(Canvas canvas)
@@ -66,20 +76,41 @@ namespace Asteroids.Objects.UI
 
         public void ChangeScreen(Screen screen)
         {
-            mainMenu.IsEnabled = false;
             gameOver.IsEnabled = false;
+            newHighscore.IsEnabled = false;
+            scoreboard.ShowScoreboard = false;
 
-            switch(screen)
+            switch (screen)
             {
                 case Screen.MainMenu:
-                    mainMenu.IsEnabled = true;
+                    RefreshHighestScore();
+                    scoreboard.ShowScoreboard = true;
+                    scoreboard.Refresh();
                     break;
                 case Screen.Game:
                     break;
                 case Screen.GameOver:
                     gameOver.IsEnabled = true;
                     break;
+                case Screen.Highscore:
+                    newHighscore.IsEnabled = true;
+                    break;
             }
+        }
+
+        void RefreshHighestScore()
+        {
+            var scores = HighscoreManager.GetScores();
+            string higiestScore = "0";
+
+            if (scores.Length != 0)
+                higiestScore = HighscoreManager.GetScores()[0].Score.ToString();
+
+            if (higiestScore == "0")
+                higiestScore = "00";
+
+            higestscore.SetText(higiestScore);
+            higestscore.SetPosition(new Point(resolution.Width / 2 - (9.5f * higiestScore.Length), 10));
         }
     }
 }

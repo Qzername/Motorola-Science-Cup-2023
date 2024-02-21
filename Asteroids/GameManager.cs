@@ -1,5 +1,6 @@
 ﻿using Asteroids.Objects;
 using Asteroids.Objects.UI;
+using HML;
 using SkiaSharp;
 using System.Diagnostics;
 using VGE;
@@ -44,6 +45,8 @@ namespace Asteroids
 		public int ScoreToGet = 10000;
 		public int BulletsOnScreen;
 
+        NameSetter nameSetter;
+
         public override Setup Start()
         {
             Instance = this;
@@ -57,6 +60,8 @@ namespace Asteroids
 
         bool isSpacePressedOld;
 
+        float gameOverTimer;
+
         public override void Update(float delta)
         {
             bool isSpacePressed = window.KeyDown(Key.Space);
@@ -67,8 +72,6 @@ namespace Asteroids
             {
                 if(spaceToggled)
                 {
-                    Debug.WriteLine("tak");
-
                     Player = new Player();
                     window.Instantiate(Player);
 
@@ -80,9 +83,20 @@ namespace Asteroids
 
             if(Screen.GameOver == CurrentScreen)
             {
-                if (spaceToggled)
+                gameOverTimer += delta;
+
+                if (gameOverTimer < 3)
+                    return;
+
+                if (Score != 0 && HighscoreManager.IsNewHighscore(Score))
                 {
-                    isSpacePressedOld = false;
+                    CurrentScreen = Screen.Highscore;
+
+                    nameSetter = new NameSetter();
+                    window.Instantiate(nameSetter);
+                }
+                else
+                {
                     CurrentScreen = Screen.MainMenu;
                     Score = 0;
                     Lives = 3;
@@ -94,9 +108,23 @@ namespace Asteroids
             if (Screen.Game == CurrentScreen && Lives == 0)
             {
                 CurrentScreen = Screen.GameOver;
+                gameOverTimer = 0f;
                 window.Destroy(Player);
                 return;
             }
+        }
+
+        public void FinishedWritingName(string name)
+        {
+            HighscoreManager.SetScore(new Highscore()
+            {
+                Name = name,
+                Score = Score
+            });
+
+            CurrentScreen = Screen.MainMenu;
+            Score = 0;
+            Lives = 3;
         }
 
         public override bool OverrideRender(Canvas canvas)

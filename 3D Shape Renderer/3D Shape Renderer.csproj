@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VGE\VGE.csproj" />
+    <ProjectReference Include="..\VGE\Vector Game Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
