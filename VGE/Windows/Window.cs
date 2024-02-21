@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Diagnostics;
+using System.Timers;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
 using VGE.Physics;
@@ -39,7 +40,7 @@ namespace VGE.Windows
 		}
 
 		//windows do swojego okna dodaje niewidzialne obiekty, tutaj jest kompensacja za nie
-		int widthOffset = -16, heightOffset = -40;
+		int widthOffset = -16, heightOffset = -30;
 
 		public Resolution GetResolution()
 		{
@@ -49,7 +50,8 @@ namespace VGE.Windows
 			int width = (int)(actualWidth == 0 ? mainWindow.Width : actualWidth);
 			int height = (int)(actualHeight == 0 ? mainWindow.Height : actualHeight);
 
-			return new Resolution(width + widthOffset, height + heightOffset);
+		    return new Resolution(Convert.ToInt32((width + widthOffset) * mainWindow.Scale), 
+							      Convert.ToInt32((height + heightOffset) * mainWindow.Scale));
 		}
 
 		#region Zarządzanie klatkami
@@ -117,10 +119,14 @@ namespace VGE.Windows
 			if (obj is PhysicsObject)
 				physicsEngine?.UnregisterObject((PhysicsObject)obj);
 
-			objects.Remove(obj);
-		}
+			int index = objects.IndexOf(obj);
 
-		public void DestroyAll()
+			GC.SuppressFinalize(objects[index]);
+
+            objects.Remove(obj);
+        }
+
+        public void DestroyAll()
 		{
 			VectorObject[] objectsCopy = objects.ToArray();
 

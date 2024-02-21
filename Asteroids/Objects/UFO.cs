@@ -21,7 +21,6 @@ namespace Asteroids.Objects
 	    public UFOType Type = ufoType;
 		const float speed = 150f;
         float setRotationRadians;
-        System.Timers.Timer bulletTimer = new();
 
 		public override int PhysicsLayer => (int)PhysicsLayers.Other;
 
@@ -29,17 +28,12 @@ namespace Asteroids.Objects
         {
 	        if (other.Name == "Bullet")
 	        {
-		        bulletTimer.Enabled = false;
 				window.Destroy(this);             
 	        }
 		}
 
         public override Setup Start()
         {
-	        bulletTimer.Elapsed += TimerShoot;
-	        bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
-	        bulletTimer.Enabled = true;
-
 	        List<Point> shapes = new();
 			
 			if (Type == UFOType.Random)
@@ -96,23 +90,28 @@ namespace Asteroids.Objects
 			setRotationRadians = rotation * MathTools.Deg2rad;
 		}
 
-        void TimerShoot(object? sender, ElapsedEventArgs e)
-        {
-            Point playerCenter = new Point(GameManager.Player.Transform.Position.X + GameManager.Player.Shape.Center.X,
-                GameManager.Player.Transform.Position.Y + GameManager.Player.Shape.Center.Y);
-
-            float rotation = MathF.Atan2(
-                (playerCenter.Y - transform.Position.Y),
-                (playerCenter.X - transform.Position.X))
-                * MathTools.Rad2deg;
-
-            var bullet = new BulletUFO();
-            window.Instantiate(bullet);
-            bullet.Setup(transform.Position, -rotation);
-        }
+		float timer;
 
         public override void Update(float deltaTime)
         {
+			timer += deltaTime;
+
+			if(timer > 2f && GameManager.Instance.Player is not null)
+            {
+                Point playerCenter = new Point(GameManager.Instance.Player.Transform.Position.X + GameManager.Instance.Player.Shape.Center.X,
+                    GameManager.Instance.Player.Transform.Position.Y + GameManager.Instance.Player.Shape.Center.Y);
+
+                float rotation = MathF.Atan2(
+                    (playerCenter.Y - transform.Position.Y),
+                    (playerCenter.X - transform.Position.X))
+                    * MathTools.Rad2deg;
+
+                var bullet = new BulletUFO();
+                window.Instantiate(bullet);
+                bullet.Setup(transform.Position, -rotation);
+				timer = 0f;
+            }
+
 			float sin = MathF.Sin(setRotationRadians);
 			float cos = MathF.Cos(setRotationRadians);
 			// Oblicz sin i cos uzywajac ustawionej rotacji (setRotationRadians, oryginalna rotacja UFO to zawsze 0)

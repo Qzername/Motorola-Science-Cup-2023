@@ -130,11 +130,15 @@ namespace Asteroids.Objects
 				window.Instantiate(obstacle);
 				obstacle.Setup(Transform.Position, Transform.Rotation.Z + GameManager.Rand.Next(30, 151));
 
+				EnemySpawner.Instance.RegisterObstacle(obstacle);
+
 				obstacle = new Obstacle(newType);
 				window.Instantiate(obstacle);
 				obstacle.Setup(Transform.Position, Transform.Rotation.Z - GameManager.Rand.Next(30, 151));
-				// Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
-			}
+                // Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
+
+                EnemySpawner.Instance.RegisterObstacle(obstacle);
+            }
 		}
     }
 }

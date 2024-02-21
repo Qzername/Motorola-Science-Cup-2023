@@ -72,43 +72,47 @@ namespace Asteroids.Objects
 		            switch ((other as Obstacle).Type)
 		            {
 						case ObstacleType.Small:
-							GameManager.Score += 100;
+							GameManager.Instance.Score += 100;
 							break;
 						case ObstacleType.Medium:
-							GameManager.Score += 50;
+							GameManager.Instance.Score += 50;
 							break;
 						case ObstacleType.Large:
-							GameManager.Score += 20;
+							GameManager.Instance.Score += 20;
 							break;
 					}
+
+					EnemySpawner.Instance.RemoveObstacle((Obstacle)other);
 	            } 
 	            else if (other is UFO)
 	            {
 					switch ((other as UFO).Type)
 					{
 						case UFOType.Large:
-							GameManager.Score += 200;
+							GameManager.Instance.Score += 200;
 							break;
 						case UFOType.Small:
-							GameManager.Score += 1000;
+							GameManager.Instance.Score += 1000;
 							break;
 					}
-				}
 
-                // "za kazde zdobyte 10 000 punktow gracz otrzymuje dodatkowe zycie"
-                if (GameManager.Score >= GameManager.ScoreToGet)
-                {
-					GameManager.Lives++;
-					GameManager.ScoreToGet += 10000;
+                    EnemySpawner.Instance.RemoveUFO((UFO)other);
                 }
 
+                // "za kazde zdobyte 10 000 punktow gracz otrzymuje dodatkowe zycie"
+                if (GameManager.Instance.Score >= GameManager.Instance.ScoreToGet)
+                {
+					GameManager.Instance.Lives++;
+					GameManager.Instance.ScoreToGet += 10000;
+                }
+				
 				Destroy();
             }
         }
 
         void Destroy()
         {
-	        GameManager.BulletsOnScreen--;
+	        GameManager.Instance.BulletsOnScreen--;
 	        window.Destroy(this);
 		}
     }

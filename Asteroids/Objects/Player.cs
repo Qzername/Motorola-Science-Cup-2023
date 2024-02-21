@@ -10,6 +10,11 @@ namespace Asteroids.Objects
 {
     public class Player : PhysicsObject
     {
+        public static PointShape PlayerShape = new PointShape(new Point(-10, -10),
+                                       new Point(0, 0),
+                                       new Point(-10, 10),
+                                       new Point(20, 0));
+
         const float minSpeed = 0, maxSpeed = 400f;
         float speed, rotationSpeed = 90, prevZRotation, prevZRotationRadias;
     
@@ -34,13 +39,10 @@ namespace Asteroids.Objects
 		        }
                 
 		        window.Destroy(this);
-                GameManager.Lives--;
-                
-                if (GameManager.Lives == 0)
-                {
-					window.Close();
-					return;
-                }
+                GameManager.Instance.Lives--;
+
+                if (GameManager.Instance.Lives == 0)
+                    return;
 
 				respawnShield = true;
                 
@@ -56,7 +58,7 @@ namespace Asteroids.Objects
                 
                 window.Instantiate(this);
                 
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
                 
                 respawnShield = false;
 			}
@@ -86,9 +88,9 @@ namespace Asteroids.Objects
 				Wystrzel pocisk jesli spacja jest wcisnieta (przytrzymanie spacji wystrzeli pocisk tylko raz) oraz jesli na ekranie jest mniej niz 4 pociskow
 				https://www.classicgaming.cc/classics/asteroids/play-guide
             */
-			if (isSpacePressed && !lastSpaceState && GameManager.BulletsOnScreen < 4)
+			if (isSpacePressed && !lastSpaceState && GameManager.Instance.BulletsOnScreen < 4)
             {
-                GameManager.BulletsOnScreen++;
+                GameManager.Instance.BulletsOnScreen++;
                 var bullet = new Bullet();
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
@@ -177,7 +179,6 @@ namespace Asteroids.Objects
                 transform.Position = new Point(transform.Position.X,0);
 			// Jesli gracz wyleci poza ekran, przenies go na przeciwna krawedz
             
-            GameManager.Player = this;
             // Zaktualizuj pozycje gracza, ktora jest globalnie dostepna
 		}
 

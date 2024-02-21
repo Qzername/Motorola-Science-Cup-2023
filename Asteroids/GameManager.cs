@@ -1,67 +1,107 @@
 ﻿using Asteroids.Objects;
+using Asteroids.Objects.UI;
 using SkiaSharp;
+using System.Diagnostics;
+using VGE;
+using VGE.Graphics;
 using VGE.Objects;
 using VGE.Windows;
 
 namespace Asteroids
 {
-    public static class GameManager
+    public class GameManager : VectorObject
     {
-        static Text scoreText, livesText;
+		public static GameManager Instance;
+        public static Random Rand = new();
 
-        public static void Setup(Window window)
+        Screen _currentScreen;
+        public Screen CurrentScreen
         {
-            scoreText = new Text("Score: 0", 2, new SKPoint(10, 40));
-            window.Instantiate(scoreText);
+            get => _currentScreen;
+            set
+            {
+                if(UIManager.Instance is not null)
+                    UIManager.Instance.ChangeScreen(value);
 
-            livesText = new Text("Lives: 3", 2, new SKPoint(10, 10)); 
-            window.Instantiate(livesText);
+                EnemySpawner.Instance.RefreshSpawner(value != Screen.GameOver);
+                _currentScreen = value;
+            }
         }
 
-        static int _score = 0;
-        public static int Score
-        {
+        int _score = 0;
+        public int Score 
+        { 
             get => _score;
-            set
-            {
-                _score = value;
-                //nie ma znaczenia czy literka jest mała czy duża btw
-                scoreText.SetText("Score: " + value);
-            }
+            set 
+            { 
+                _score = value; 
+                UIManager.Instance.RefreshUI(); 
+            } 
         }
+		
+        public int Lives = 3;
+		public Player Player;
+		public int ScoreToGet = 10000;
+		public int BulletsOnScreen;
 
-        static int _lives = 3;
-        public static int Lives
+        public override Setup Start()
         {
-            get => _lives;
-            set
+            Instance = this;
+            CurrentScreen = Screen.MainMenu;
+
+            return new()
             {
-                _lives = value;
-                livesText.SetText("Lives: "+ value);
+                Name = "GameManager"
+            };
+        }
+
+        bool isSpacePressedOld;
+
+        public override void Update(float delta)
+        {
+            bool isSpacePressed = window.KeyDown(Key.Space);
+            bool spaceToggled = !isSpacePressed && isSpacePressedOld;
+            isSpacePressedOld = isSpacePressed;
+
+            if (Screen.MainMenu == CurrentScreen)
+            {
+                if(spaceToggled)
+                {
+                    Debug.WriteLine("tak");
+
+                    Player = new Player();
+                    window.Instantiate(Player);
+
+                    CurrentScreen = Screen.Game;
+                }
+
+                return;
+            }
+
+            if(Screen.GameOver == CurrentScreen)
+            {
+                if (spaceToggled)
+                {
+                    isSpacePressedOld = false;
+                    CurrentScreen = Screen.MainMenu;
+                    Score = 0;
+                    Lives = 3;
+                }
+
+                return;
+            }
+
+            if (Screen.Game == CurrentScreen && Lives == 0)
+            {
+                CurrentScreen = Screen.GameOver;
+                window.Destroy(Player);
+                return;
             }
         }
 
-		static Player _player;
-		public static Player Player
-		{
-			get => _player;
-			set => _player = value;
-		}
-
-		private static int _scoreToGet = 10000;
-		public static int ScoreToGet
-		{
-			get => _scoreToGet;
-			set => _scoreToGet = value;
-		}
-
-		private static int _bulletsOnScreen = 0;
-		public static int BulletsOnScreen
-		{
-			get => _bulletsOnScreen;
-			set => _bulletsOnScreen = value;
-		}
-
-		public static Random Rand = new();
-	}
+        public override bool OverrideRender(Canvas canvas)
+        {
+            return true;
+        }
+    }
 }

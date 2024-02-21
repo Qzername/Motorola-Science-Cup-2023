@@ -1,5 +1,7 @@
 ﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -22,8 +24,15 @@ namespace VGE.WPF
 
 		MediaPlayer mediaplayer;
 
+		/// <summary>
+		/// Skala okienek jaka jest ustawiona w windowsie
+		/// </summary>
+		public float Scale;
+
 		public MainWindow()
 		{
+			Scale = 1f;
+
 			//branie obecnego folderu z exe
 			exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
 			var files = exePath.Split('\\');
@@ -37,7 +46,7 @@ namespace VGE.WPF
 
 			InitializeComponent();
 
-			paint = new SKPaint()
+            paint = new SKPaint()
 			{
 				StrokeWidth = 1,
 				Color = SKColors.White,
@@ -75,7 +84,7 @@ namespace VGE.WPF
 
 			canvas.Clear(SKColors.Black);
 
-			try
+            try
 			{
 				for (int i = 0; i < linesToDraw.Count; i++)
 				{
@@ -120,7 +129,14 @@ namespace VGE.WPF
 
 		public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
 		public void SetLines(List<Line> lines) => linesToDraw = lines;
-		public void SetCircles(List<Circle> circles) => circlesToDraw = circles;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            PresentationSource source = PresentationSource.FromVisual(this);
+            Scale = Convert.ToSingle(source.CompositionTarget.TransformToDevice.M22);
+        }
+
+        public void SetCircles(List<Circle> circles) => circlesToDraw = circles;
 		public bool GetKey(Windows.Key key)
 		{
 			bool getKey = false;

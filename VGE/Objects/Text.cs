@@ -8,17 +8,20 @@ namespace VGE.Objects
     {
         public bool IsEnabled = true;
 
+        public TextAlignment textAlignment;
+
         ShapeSet alphabet;
-        string currentText;
+        string currentText, currentTextReverse;
         float fontSize;
 
         Point startPosition;
 
-        public Text(string text, float fontSize, Point startPosition)
+        public Text(string text, float fontSize, Point startPosition, TextAlignment textAlignment = TextAlignment.Left)
         {
             SetText(text);
             this.fontSize = fontSize;
             this.startPosition = startPosition;
+            this.textAlignment = textAlignment;
         }
 
         public override Setup Start()
@@ -34,7 +37,20 @@ namespace VGE.Objects
             };
         }
 
-        public void SetText(string text) => currentText = text.ToUpper();
+        public void SetText(string text)
+        {
+            currentText = text.ToUpper();
+            currentTextReverse = text.ToUpper();    
+
+            var reverse = currentTextReverse.ToCharArray();
+            Array.Reverse(reverse);
+            currentTextReverse = new string(reverse);
+        }
+
+        public void SetPosition(Point position)
+        {
+            transform.Position = position;
+        }
 
         public override void Update(float delta)
         {
@@ -45,19 +61,21 @@ namespace VGE.Objects
             if (!IsEnabled)
                 return true;
 
-            float offset = 0;
+            float offset = 0;// textAlignment == TextAlignment.Left ? 0 : fontSize * currentText.Length;
 
-            for(int i = 0; i < currentText.Length; i++)
+            string tempText = textAlignment == TextAlignment.Left ? currentText : currentTextReverse;
+
+            for(int i = 0; i < tempText.Length; i++)
             {
                 float maxRight = 0;
 
-                if (currentText[i] == ' ')
+                if (tempText[i] == ' ')
                 {
-                    offset += fontSize * 6f;
+                    offset += fontSize * 6f * (int)textAlignment;
                     continue;
                 }
 
-                foreach (var shape in alphabet.Set[currentText[i].ToString()])
+                foreach (var shape in alphabet.Set[tempText[i].ToString()])
                 {
                     if(shape is null)
                         continue;
@@ -74,10 +92,16 @@ namespace VGE.Objects
                     }
                 }
 
-                offset += maxRight + fontSize/2;
+                offset += (maxRight + fontSize/2) * (int)textAlignment;
             }
 
             return true;
+        }
+
+        public enum TextAlignment
+        {
+            Left = 1,
+            Right = -1,
         }
     }
 }
