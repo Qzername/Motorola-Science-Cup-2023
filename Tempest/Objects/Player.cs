@@ -11,9 +11,12 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			string[] names = { "BulletFlipper", "BulletTanker", "Flipper", "Tanker" };
+			if (other.PhysicsLayer != GameManager.MapPosition)
+				return;
+			
+			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
 
-			if (names.Any(x => other.Name.Contains(x)))
+			if (names.Any(other.Name.Contains))
 				((GameWindow)window).RestartLevel();
 		}
 

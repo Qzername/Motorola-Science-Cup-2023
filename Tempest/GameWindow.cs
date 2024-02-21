@@ -1,4 +1,5 @@
 ﻿using System.Timers;
+using System.Windows.Media.Imaging;
 using Tempest.Objects;
 using VGE.Graphics;
 using VGE.Windows;
@@ -16,10 +17,11 @@ namespace Tempest
 
 			Instantiate(new MapManager());
 			Instantiate(new Player());
+			Instantiate(new Spiker());
 
 			spawnEnemyTimer.Elapsed += TimerSpawnEnemy;
 			spawnEnemyTimer.Interval = 1000; // Tworz wroga co sekunde
-			spawnEnemyTimer.Enabled = true;
+			// spawnEnemyTimer.Enabled = true;
 		}
 
 		void TimerSpawnEnemy(object? sender, ElapsedEventArgs e)
@@ -40,16 +42,14 @@ namespace Tempest
 					break;
 				case Enemies.Spiker:
 					if (GameManager.SpikerSpawn)
-						// Instantiate(new Spiker());
-						return;
+						Instantiate(new Spiker());
 					else
 						Instantiate(new Flipper());
 
 					break;
 				case Enemies.Fuseball:
 					if (GameManager.FuseballSpawn)
-						// Instantiate(new Fuseball());
-						return;
+						Instantiate(new Fuseball());
 					else
 						Instantiate(new Flipper());
 

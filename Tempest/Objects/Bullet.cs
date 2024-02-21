@@ -17,7 +17,7 @@ namespace Tempest.Objects
 			if (other.PhysicsLayer != _mapPosition)
 				return;
 
-			string[] names = { "BulletFlipper", "BulletTanker", "Flipper", "Tanker" };
+			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
 
 			if (names.Any(x => other.Name.Contains(x)))
 				window.Destroy(this);

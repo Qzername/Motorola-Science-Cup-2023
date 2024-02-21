@@ -8,8 +8,8 @@ namespace Tempest.Objects
 {
 	public class Tanker : PhysicsObject
 	{
-		public override int PhysicsLayer => GameManager.MapPosition;
-		private int _mapPosition;
+		public override int PhysicsLayer => _mapPosition;
+		private int _mapPosition = -1;
 		private readonly Timer _bulletTimer = new();
 
 		private const float ZSpeed = 200f;
@@ -25,7 +25,8 @@ namespace Tempest.Objects
 
 		public override Setup Start()
 		{
-			_mapPosition = GameManager.MapPosition;
+			if (_mapPosition == -1)
+				_mapPosition = GameManager.MapPosition;
 
 			_bulletTimer.Elapsed += TimerShoot;
 			_bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
@@ -39,9 +40,15 @@ namespace Tempest.Objects
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, 1600),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
+		}
+
+		public void Setup(int mapPosition, float zPosition = 1600)
+		{
+			_mapPosition = mapPosition;
+			transform.Position.Z = zPosition;
 		}
 
 		public override void Update(float delta)
@@ -61,7 +68,7 @@ namespace Tempest.Objects
 
 		void Split()
 		{
-			Destroy();
+			window.Destroy(this);
 
 			Flipper flipper1 = new Flipper();
 
@@ -83,10 +90,10 @@ namespace Tempest.Objects
 			window.Instantiate(flipper2);
 		}
 
-		void Destroy()
+		public override void OnDestroy()
 		{
+			_bulletTimer.Close();
 			_bulletTimer.Enabled = false;
-			window.Destroy(this);
 		}
 	}
 }

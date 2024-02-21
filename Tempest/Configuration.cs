@@ -12,7 +12,8 @@ namespace Tempest
 		public SKColor SuperZapper = superZapper != null ? (SKColor)superZapper : SKColors.Yellow;
 		public SKColor Flipper = flipper != null ? (SKColor)flipper : SKColors.Red;
 		public SKColor Tanker = tanker != null ? (SKColor)tanker : SKColors.Purple;
-		public SKColor Spike = spike != null ? (SKColor)spike : SKColors.Green;
+		public SKColor Spiker = spike != null ? (SKColor)spike : SKColors.Green;
 		public SKColor Pulsar = pulsar != null ? (SKColor)pulsar : SKColors.Empty; // Pojawiają się dopiero później w grze
+		public SKColor Fuseball = SKColors.White;
 	}
 }

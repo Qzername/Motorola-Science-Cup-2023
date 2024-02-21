@@ -8,15 +8,14 @@ namespace Tempest.Objects
 {
 	public class Flipper : PhysicsObject
 	{
-		public override int PhysicsLayer => GameManager.MapPosition;
+		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition = -1;
-		private readonly Timer _bulletTimer = new();
 		private readonly Timer _moveTimer = new();
 		private int _mapChangeCount;
 
 		private bool _atTheEnd;
 		private int _chance = 4;
-		private const float ZSpeed = 150f;
+		private const float ZSpeed = 300f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
@@ -24,19 +23,13 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet")
-				Destroy();
+				window.Destroy(this);
 		}
 
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
 				_mapPosition = GameManager.MapPosition;
-
-			transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
-
-			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
-			_bulletTimer.Enabled = true;
 
 			_moveTimer.Elapsed += TimerMove;
 			_moveTimer.Interval = 1000;
@@ -69,7 +62,6 @@ namespace Tempest.Objects
 			{
 				_atTheEnd = true;
 				_chance = 0;
-				_bulletTimer.Enabled = false;
 				_moveTimer.Interval = 500;
 			}
 		}
@@ -121,23 +113,15 @@ namespace Tempest.Objects
 					_mapChangeCount++;
 
 					if (_mapChangeCount > 16)
-						Destroy();
+						window.Destroy(this);
 				}
 			}
 		}
 
-		void TimerShoot(object? sender, ElapsedEventArgs e)
+		public override void OnDestroy()
 		{
-			var bullet = new BulletFlipper();
-			window.Instantiate(bullet);
-			bullet.Setup(_mapPosition, transform.Position.Z - 50);
-		}
-
-		void Destroy()
-		{
-			_bulletTimer.Enabled = false;
+			_moveTimer.Close();
 			_moveTimer.Enabled = false;
-			window.Destroy(this);
 		}
 	}
 }
