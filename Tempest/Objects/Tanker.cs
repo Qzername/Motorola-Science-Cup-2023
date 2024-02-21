@@ -12,7 +12,7 @@ namespace Tempest.Objects
 		private int _mapPosition;
 		private readonly Timer _bulletTimer = new();
 
-		private const float zSpeed = 200f;
+		private const float ZSpeed = 200f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
@@ -47,7 +47,7 @@ namespace Tempest.Objects
 		public override void Update(float delta)
 		{
 			if (transform.Position.Z > 400)
-				transform.Position.Z -= zSpeed * delta;
+				transform.Position.Z -= ZSpeed * delta;
 			else
 				Split();
 		}
