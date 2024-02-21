@@ -25,13 +25,6 @@ namespace Tempest
 			set => _mapPosition = value;
 		}
 
-		private static bool _flipperSpawn = true;
-		public static bool FlipperSpawn
-		{
-			get => _flipperSpawn;
-			set => _flipperSpawn = value;
-		}
-
 		private static bool _tankerSpawn = true;
 		public static bool TankerSpawn
 		{
@@ -53,7 +46,7 @@ namespace Tempest
 			set => _fuseballSpawn = value;
 		}
 
-		private static Point[] currentLevel = Levels.Infinity;
+		private static Point[] currentLevel = Levels.Circle;
 		public static Point[] CurrentLevel
 		{
 			get => currentLevel;
