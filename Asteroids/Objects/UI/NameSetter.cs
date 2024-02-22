@@ -50,6 +50,7 @@ namespace Asteroids.Objects.UI
                 if(currentIndex == 3)
                 {
                     GameManager.Instance.FinishedWritingName(name);
+                    window.Destroy(underline);
                     window.Destroy(text);
                     window.Destroy(this);
                     return;
@@ -87,7 +88,6 @@ namespace Asteroids.Objects.UI
 
         public override bool OverrideRender(Canvas canvas)
         {
-
             return true;
         }
     }
