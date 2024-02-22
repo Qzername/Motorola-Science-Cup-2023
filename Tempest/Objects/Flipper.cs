@@ -81,7 +81,7 @@ namespace Tempest.Objects
 						_mapPosition--;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
 					}
-					else if (GameManager.IsLevelClosed)
+					else if (GameManager.Configuration.IsLevelClosed)
 					{
 						_mapPosition = MapManager.Instance.Elements.Count - 1;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
@@ -94,7 +94,7 @@ namespace Tempest.Objects
 						_mapPosition++;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
 					}
-					else if (GameManager.IsLevelClosed)
+					else if (GameManager.Configuration.IsLevelClosed)
 					{
 						_mapPosition = 0;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);

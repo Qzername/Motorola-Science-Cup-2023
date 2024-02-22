@@ -13,11 +13,14 @@ namespace Tempest.Objects
 		{
 			if (other.PhysicsLayer != GameManager.MapPosition)
 				return;
-			
-			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
 
-			if (names.Any(other.Name.Contains))
-				((GameWindow)window).RestartLevel();
+			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "Fuseball" };
+
+			foreach (string name in names)
+			{
+				if (name == other.Name)
+					((GameWindow)window).RestartLevel();
+			}
 		}
 
 		public override Setup Start()
@@ -50,7 +53,7 @@ namespace Tempest.Objects
 					GameManager.MapPosition--;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.IsLevelClosed)
+				else if (GameManager.Configuration.IsLevelClosed)
 				{
 					GameManager.MapPosition = MapManager.Instance.Elements.Count - 1;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
@@ -75,7 +78,7 @@ namespace Tempest.Objects
 					GameManager.MapPosition++;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.IsLevelClosed)
+				else if (GameManager.Configuration.IsLevelClosed)
 				{
 					GameManager.MapPosition = 0;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);

@@ -10,7 +10,6 @@ namespace Tempest.Objects
 		private int _mapPosition;
 
 		private const float ZSpeed = 900f;
-		private const float MaxLength = 1600f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
@@ -19,8 +18,11 @@ namespace Tempest.Objects
 
 			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
 
-			if (names.Any(x => other.Name.Contains(x)))
-				window.Destroy(this);
+			foreach (string name in names)
+			{
+				if (name == other.Name)
+					window.Destroy(this);
+			}
 		}
 
 		public override Setup Start()
@@ -49,7 +51,7 @@ namespace Tempest.Objects
 		{
 			transform.Position.Z += ZSpeed * delta;
 
-			if (transform.Position.Z > MaxLength)
+			if (transform.Position.Z > GameManager.Configuration.LevelLength)
 				window.Destroy(this);
 		}
 	}

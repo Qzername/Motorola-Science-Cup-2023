@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Timers;
-using VGE;
+﻿using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
-using Timer = System.Timers.Timer;
 
 namespace Tempest.Objects
 {
@@ -11,7 +8,7 @@ namespace Tempest.Objects
 	{
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition = -1;
-		private SpikerLine _spikerLine;
+		private SpikerLine _spikerLine = new();
 
 		private const float ZSpeed = 350f;
 		private bool _turnAround;
@@ -22,7 +19,10 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet" && !_turnAround)
+			{
 				_turnAround = true;
+				_spikerLine.IsDead = true;
+			}
 		}
 
 		public override Setup Start()
@@ -30,7 +30,6 @@ namespace Tempest.Objects
 			if (_mapPosition == -1)
 				_mapPosition = GameManager.MapPosition;
 
-			_spikerLine = new();
 			_spikerLine.Setup(_mapPosition);
 			window.Instantiate(_spikerLine);
 
@@ -42,7 +41,7 @@ namespace Tempest.Objects
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, 1600),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.Configuration.LevelLength),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}
@@ -57,9 +56,9 @@ namespace Tempest.Objects
 			if (!_turnAround)
 			{
 				transform.Position.Z -= ZSpeed * delta;
-				_spikerLine.Length -= ZSpeed * delta;
-				
-				if (transform.Position.Z < 0)
+				_spikerLine.Length += ZSpeed * delta;
+
+				if (transform.Position.Z < 400)
 				{
 					Tanker tanker = new();
 					tanker.Setup(_mapPosition);
@@ -74,10 +73,10 @@ namespace Tempest.Objects
 				if (transform.Position.Z > 1600)
 					window.Destroy(this);
 			}
-			
+
 			_spikerLine.Shape = new PointShape(GameManager.Configuration.Spiker,
 				new Point(0, 0, 0),
-				new Point(0, 0,  _spikerLine.Length));
+				new Point(0, 0, _spikerLine.Length));
 		}
 	}
 }

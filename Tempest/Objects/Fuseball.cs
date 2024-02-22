@@ -1,8 +1,6 @@
-﻿using System.Timers;
-using VGE;
+﻿using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
-using Timer = System.Timers.Timer;
 
 namespace Tempest.Objects
 {
@@ -33,7 +31,7 @@ namespace Tempest.Objects
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, 1600),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.Configuration.LevelLength),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}

@@ -2,18 +2,47 @@
 
 namespace Tempest
 {
-	public class Configuration(SKColor? tunnel = null, SKColor? player = null, SKColor? superZapper = null,
-		SKColor? flipper = null, SKColor? tanker = null, SKColor? spike = null, SKColor? pulsar = null)
+	public class Configuration()
 	{
 		// https://www.arcade-history.com/?n=tempest-upright-model&page=detail&id=2865
 		// Domyślne kolory to kolory dla pierwszych 16 poziomów
-		public SKColor Tunnel = tunnel != null ? (SKColor)tunnel : SKColors.Blue;
-		public SKColor Player = player != null ? (SKColor)player : SKColors.Yellow;
-		public SKColor SuperZapper = superZapper != null ? (SKColor)superZapper : SKColors.Yellow;
-		public SKColor Flipper = flipper != null ? (SKColor)flipper : SKColors.Red;
-		public SKColor Tanker = tanker != null ? (SKColor)tanker : SKColors.Purple;
-		public SKColor Spiker = spike != null ? (SKColor)spike : SKColors.Green;
-		public SKColor Pulsar = pulsar != null ? (SKColor)pulsar : SKColors.Empty; // Pojawiają się dopiero później w grze
+		public SKColor Tunnel = SKColors.Blue;
+		public SKColor Player = SKColors.Yellow;
+		public SKColor SuperZapper = SKColors.Yellow;
+		public SKColor Flipper = SKColors.Red;
+		public SKColor Tanker = SKColors.Purple;
+		public SKColor Spiker = SKColors.Green;
+		public SKColor Pulsar = SKColors.Empty; // Pojawiają się dopiero później w grze
 		public SKColor Fuseball = SKColors.White;
+
+		private bool _isLevelClosed;
+		public bool IsLevelClosed
+		{
+			get => _isLevelClosed;
+			set => _isLevelClosed = value;
+		}
+
+		private bool _tankerSpawn = true;
+		public bool TankerSpawn
+		{
+			get => _tankerSpawn;
+			set => _tankerSpawn = value;
+		}
+
+		private bool _spikerSpawn;
+		public bool SpikerSpawn
+		{
+			get => _spikerSpawn;
+			set => _spikerSpawn = value;
+		}
+
+		private bool _fuseballSpawn;
+		public bool FuseballSpawn
+		{
+			get => _fuseballSpawn;
+			set => _fuseballSpawn = value;
+		}
+
+		public readonly int LevelLength = 1700;
 	}
 }

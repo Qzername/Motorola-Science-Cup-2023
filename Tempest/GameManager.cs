@@ -11,13 +11,6 @@ namespace Tempest
 			set => _configuration = value;
 		}
 
-		private static bool _isLevelClosed;
-		public static bool IsLevelClosed
-		{
-			get => _isLevelClosed;
-			set => _isLevelClosed = value;
-		}
-
 		private static int _mapPosition;
 		public static int MapPosition
 		{
@@ -25,70 +18,49 @@ namespace Tempest
 			set => _mapPosition = value;
 		}
 
-		private static bool _tankerSpawn = true;
-		public static bool TankerSpawn
-		{
-			get => _tankerSpawn;
-			set => _tankerSpawn = value;
-		}
-
-		private static bool _spikerSpawn;
-		public static bool SpikerSpawn
-		{
-			get => _spikerSpawn;
-			set => _spikerSpawn = value;
-		}
-
-		private static bool _fuseballSpawn;
-		public static bool FuseballSpawn
-		{
-			get => _fuseballSpawn;
-			set => _fuseballSpawn = value;
-		}
-
-		private static Point[] currentLevel = Levels.Circle;
+		private static Point[] _currentLevel = Levels.Circle;
 		public static Point[] CurrentLevel
 		{
-			get => currentLevel;
-			set => currentLevel = value;
+			get => _currentLevel;
+			set => _currentLevel = value;
 		}
 
 		public static Random Rand = new();
 
 		public static void NextLevel()
 		{
-			if (currentLevel == Levels.Circle)
-				currentLevel = Levels.Square;
-			else if (currentLevel == Levels.Square)
-				currentLevel = Levels.Plus;
-			else if (currentLevel == Levels.Plus)
-				currentLevel = Levels.BowTie;
-			else if (currentLevel == Levels.BowTie)
-				currentLevel = Levels.StylizedCross;
-			else if (currentLevel == Levels.StylizedCross)
-				currentLevel = Levels.Triangle;
-			else if (currentLevel == Levels.Triangle)
-				currentLevel = Levels.Clover;
-			else if (currentLevel == Levels.Clover)
-				currentLevel = Levels.V;
-			else if (currentLevel == Levels.V)
-				currentLevel = Levels.Steps;
-			else if (currentLevel == Levels.Steps)
-				currentLevel = Levels.U;
-			else if (currentLevel == Levels.U)
-				currentLevel = Levels.CompletelyFlat;
-			else if (currentLevel == Levels.CompletelyFlat)
-				currentLevel = Levels.Heart;
-			else if (currentLevel == Levels.Heart)
-				currentLevel = Levels.Star;
-			else if (currentLevel == Levels.Star)
-				currentLevel = Levels.W;
-			else if (currentLevel == Levels.W)
-				currentLevel = Levels.Fan;
-			else if (currentLevel == Levels.Fan)
-				currentLevel = Levels.Infinity;
-			else if (currentLevel == Levels.Infinity)
-				currentLevel = Levels.Circle;
+			if (_currentLevel == Levels.Circle)
+				_currentLevel = Levels.Square;
+			else if (_currentLevel == Levels.Square)
+				_currentLevel = Levels.Plus;
+			else if (_currentLevel == Levels.Plus)
+				_currentLevel = Levels.BowTie;
+			else if (_currentLevel == Levels.BowTie)
+				_currentLevel = Levels.StylizedCross;
+			else if (_currentLevel == Levels.StylizedCross)
+				_currentLevel = Levels.Triangle;
+			else if (_currentLevel == Levels.Triangle)
+				_currentLevel = Levels.Clover;
+			else if (_currentLevel == Levels.Clover)
+				_currentLevel = Levels.V;
+			else if (_currentLevel == Levels.V)
+				_currentLevel = Levels.Steps;
+			else if (_currentLevel == Levels.Steps)
+				_currentLevel = Levels.U;
+			else if (_currentLevel == Levels.U)
+				_currentLevel = Levels.CompletelyFlat;
+			else if (_currentLevel == Levels.CompletelyFlat)
+				_currentLevel = Levels.Heart;
+			else if (_currentLevel == Levels.Heart)
+				_currentLevel = Levels.Star;
+			else if (_currentLevel == Levels.Star)
+				_currentLevel = Levels.W;
+			else if (_currentLevel == Levels.W)
+				_currentLevel = Levels.Fan;
+			else if (_currentLevel == Levels.Fan)
+				_currentLevel = Levels.Infinity;
+			else if (_currentLevel == Levels.Infinity)
+				_currentLevel = Levels.Circle;
 		}
 	}
 }
