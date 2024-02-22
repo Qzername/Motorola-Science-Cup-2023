@@ -1,5 +1,7 @@
-﻿using SkiaSharp;
+﻿using Asteroids.Objects.Animations;
+using SkiaSharp;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
@@ -16,10 +18,10 @@ namespace Asteroids.Objects
 		Random
 	}
     
-    public class Obstacle(ObstacleType obstacleType = ObstacleType.Random) : PhysicsObject
+    public class Obstacle(float speedboost, ObstacleType obstacleType = ObstacleType.Random) : PhysicsObject
     {
         public ObstacleType Type = obstacleType;
-        float speed = GameManager.Rand.Next(50, 201);
+        float speed = GameManager.Rand.Next(50 + Convert.ToInt32(speedboost), 101 + Convert.ToInt32(speedboost));
         // Wylosuj predkosc pomiedzy 50 a 200
 
 		public override int PhysicsLayer =>(int)PhysicsLayers.Other;
@@ -113,8 +115,9 @@ namespace Asteroids.Objects
 		public override void OnCollisionEnter(PhysicsObject other)
         {
 	        if (other.Name == "Bullet")
-	        {
-				window.Destroy(this);
+            {
+                window.Instantiate(new Explosion(transform.Position));
+                window.Destroy(this);
 
 				if (Type == ObstacleType.Small)
 					return;
@@ -126,18 +129,21 @@ namespace Asteroids.Objects
 				else if (Type == ObstacleType.Large)
 					newType = ObstacleType.Medium;
 
-				Obstacle obstacle = new Obstacle(newType);
+				Obstacle obstacle = new Obstacle(speedboost, newType);
 				window.Instantiate(obstacle);
 				obstacle.Setup(Transform.Position, Transform.Rotation.Z + GameManager.Rand.Next(30, 151));
 
 				EnemySpawner.Instance.RegisterObstacle(obstacle);
 
-				obstacle = new Obstacle(newType);
+				obstacle = new Obstacle(speedboost, newType);
 				window.Instantiate(obstacle);
 				obstacle.Setup(Transform.Position, Transform.Rotation.Z - GameManager.Rand.Next(30, 151));
                 // Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
 
                 EnemySpawner.Instance.RegisterObstacle(obstacle);
+
+                //efekt dźwiękowy przy zniszczeniu
+                window.PlaySound($"Resources/bang{Type}.wav");
             }
 		}
     }

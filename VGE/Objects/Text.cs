@@ -62,7 +62,7 @@ namespace VGE.Objects
             if (!IsEnabled)
                 return true;
 
-            float offset = 0;// textAlignment == TextAlignment.Left ? 0 : fontSize * currentText.Length;
+            float xOffset = 0, yOffset = 0;
 
             string tempText = textAlignment == TextAlignment.Left ? currentText : currentTextReverse;
 
@@ -70,9 +70,16 @@ namespace VGE.Objects
             {
                 float maxRight = 0;
 
+                if (tempText[i] == '\n')
+                {
+                    yOffset += fontSize * 14f;
+                    xOffset = 0;
+                    continue;
+                }
+
                 if (tempText[i] == ' ')
                 {
-                    offset += fontSize * 6f * (int)textAlignment;
+                    xOffset += fontSize * 6f * (int)textAlignment;
                     continue;
                 }
 
@@ -89,14 +96,14 @@ namespace VGE.Objects
                         if(l.EndPosition.X > maxRight)
                             maxRight = l.EndPosition.X;
 
-                        var start = new Point(l.StartPosition.X * fontSize + offset, l.StartPosition.Y * fontSize);
-                        var end = new Point(l.EndPosition.X * fontSize + offset, l.EndPosition.Y * fontSize);
+                        var start = new Point(l.StartPosition.X * fontSize + xOffset, l.StartPosition.Y * fontSize + yOffset);
+                        var end = new Point(l.EndPosition.X * fontSize + xOffset, l.EndPosition.Y * fontSize + yOffset);
 
                         canvas.DrawLine(new Line(start + transform.Position, end + transform.Position));
                     }
                 }
 
-                offset += ((maxRight* fontSize) + fontSize/2) * (int)textAlignment;
+                xOffset += ((maxRight* fontSize) + fontSize/2) * (int)textAlignment;
             }
 
             return true;

@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Microsoft.VisualBasic.FileIO;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,11 +24,16 @@ namespace Asteroids.Objects
         // obstacleRotationOffset nie moze byc wiekszy niz 45, poniewaz wtedy przeszkoda moze byc poza ekranem
         const int obstacleRotationOffset = 30;
 
-        float ufoMax = 30f, asteroidMax = 5f;
-        float ufoTimer = 0f, asteroidTimer = 0f;
+        float ufoMax = 15;
+        float asteroidsPerLevel = 2;
+        float speedboost = 0f;
+
+        float ufoTimer = 0f;
 
         List<Obstacle> obstacles;
         List<UFO> ufos;
+
+        bool isWaveGenerating;
 
         public override Setup Start()
         {
@@ -48,13 +54,11 @@ namespace Asteroids.Objects
                 return;
 
             ufoTimer += delta;
-            asteroidTimer += delta;
 
-            if(asteroidTimer > asteroidMax)
-            {
-                asteroidTimer = 0f;
-                TimerSpawnObstacle();
-            }
+            if (obstacles.Count == 0 && ufos.Count == 0 && !isWaveGenerating &&
+                GameManager.Instance.CurrentScreen != Screen.GameOver &&
+                GameManager.Instance.CurrentScreen != Screen.Highscore)
+                NextWave();
 
             if(ufoTimer > ufoMax)
             {
@@ -65,9 +69,12 @@ namespace Asteroids.Objects
 
         public void RefreshSpawner(bool spawningAllowed)
         {
+            asteroidsPerLevel = 5f;
+            speedboost = 0f;
+            ufoTimer = 15f;
+
             this.spawningAllowed = spawningAllowed;
             ufoTimer = 0f;
-            asteroidTimer = 0f;
 
             for(int i = 0; i < obstacles.Count;i++)
                 if (obstacles[i] is not null)
@@ -92,33 +99,53 @@ namespace Asteroids.Objects
 
         public void RegisterObstacle(Obstacle obs) => obstacles.Add(obs);
 
-        void TimerSpawnObstacle()
+        void NextWave()
         {
-            if (GameManager.Instance.CurrentScreen == Screen.GameOver || GameManager.Instance.CurrentScreen == Screen.Highscore)
-                return;
+            isWaveGenerating = true;
 
-            // Co 5000 puktow, spawnuj o 1 przeszkode wiecej
-            int spawnTimes = (int)Math.Ceiling((GameManager.Instance.Score != 0 ? GameManager.Instance.Score : 1) / 5000M);
-
-            for (int i = 0; i < spawnTimes; i++)
+            if (GameManager.Instance.CurrentScreen == Screen.MainMenu)
             {
-                int[] pos = GetRandomPosition();
-                var obstacle = new Obstacle();
-                window.Instantiate(obstacle);
-                obstacle.Setup(new SKPoint(pos[0], pos[1]), pos[2]);
-                // 0 -> x, 1 -> y, 2 -> rotation
+                for (int i = 0; i < 10; i++)
+                    SpawnObstacle();
 
-                obstacles.Add(obstacle);
+                isWaveGenerating = false;
+                return;
             }
+
+            for (int i = 0; i < asteroidsPerLevel; i++)
+                SpawnObstacle();
+
+            asteroidsPerLevel += 2;
+            speedboost += 10f;
+
+            if (ufoTimer > 5f)
+                ufoTimer -= 1f;
+
+            isWaveGenerating = false;
+        }
+
+        void SpawnObstacle()
+        {
+            int[] pos = GetRandomPosition();
+
+            var obstacle = new Obstacle(speedboost);
+            window.Instantiate(obstacle);
+            obstacle.Setup(new SKPoint(pos[0], pos[1]), pos[2]);
+            // 0 -> x, 1 -> y, 2 -> rotation
+
+            obstacles.Add(obstacle);
         }
 
         void TimerSpawnUfo()
         {
+            if (obstacles.Count == 0)
+                return;
+
             if (GameManager.Instance.CurrentScreen == Screen.GameOver || GameManager.Instance.CurrentScreen == Screen.Highscore)
                 return;
 
             int[] pos = GetRandomPosition();
-            var ufo = new UFO();
+            var ufo = new UFO((GameManager.Instance.Score > 10000 ? UFOType.Small : UFOType.Random));
             window.Instantiate(ufo);
             ufo.Setup(new SKPoint(pos[0], pos[1]), pos[2]);
             // 0 -> x, 1 -> y, 2 -> rotation

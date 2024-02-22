@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Asteroids.Objects.Animations;
+using SkiaSharp;
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
@@ -37,8 +38,9 @@ namespace Asteroids.Objects
                     window.Destroy(other);
 					return;                    
 		        }
-                
-		        window.Destroy(this);
+
+                window.Instantiate(new Explosion(transform.Position));
+                window.Destroy(this);
                 GameManager.Instance.Lives--;
 
                 if (GameManager.Instance.Lives == 0)
@@ -80,6 +82,8 @@ namespace Asteroids.Objects
             };
         }
 
+        float exhaustAnimationTimer =1f;
+
         public override void Update(float deltaTime)
         {
             bool isSpacePressed = window.KeyDown(Key.Space);
@@ -95,7 +99,7 @@ namespace Asteroids.Objects
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
 
-                window.PlaySound("Resources/bullet.wav");
+                window.PlaySound("Resources/fire.wav");
 
                 lastSpaceState = true;
             }
@@ -121,6 +125,11 @@ namespace Asteroids.Objects
             // Poruszanie do przodu/Hamowanie (jesli gracz nie porusza sie do przodu ORAZ nie hamuje, zwolnij - 2x wolniej niz manualne hamowanie)
             if (window.KeyDown(Key.Up) || window.KeyDown(Key.W))
             {
+                exhaustAnimationTimer += deltaTime;
+
+                if (exhaustAnimationTimer > 0.2f)
+                    exhaustAnimationTimer = 0f;
+
                 if (ShouldSlow())
                 {
                     if (speed - maxSpeed / 100 > 35)
@@ -148,6 +157,8 @@ namespace Asteroids.Objects
             }
             else if (window.KeyDown(Key.Down) || window.KeyDown(Key.S))
             {
+                exhaustAnimationTimer = 1f;
+
                 transform.Position.X += cos * speedDelta;
                 transform.Position.Y += sin * speedDelta;
 
@@ -158,6 +169,8 @@ namespace Asteroids.Objects
             }
             else
             {
+                exhaustAnimationTimer = 1f;
+
                 transform.Position.X += cos * speedDelta;
                 transform.Position.Y += sin * speedDelta;
 
@@ -182,13 +195,32 @@ namespace Asteroids.Objects
             // Zaktualizuj pozycje gracza, ktora jest globalnie dostepna
 		}
 
+        public override bool OverrideRender(Canvas canvas)
+        {
+            //animacja silnika
+            if(exhaustAnimationTimer < 0.1f)
+            {
+                Point[] animation = [new(-5, 5), new(-20, 0), new(-5, -5)];
+
+                animation = PointManipulationTools.Rotate(transform.Rotation, animation);
+
+                canvas.DrawLine(new Line(animation[0] + transform.Position, animation[1] + transform.Position, SKColors.Red));
+                canvas.DrawLine(new Line(animation[1] + transform.Position, animation[2] + transform.Position, SKColors.Red));
+
+                window.PlaySound("Resources/thrust.wav");
+            }
+
+            //chcemy by gracz dalej sie narysował, dlatego false
+            return false;
+        }
+
         /*
 			Jesli poprzednia zarejestrowana rotacja jest "daleko" od obecnej rotacji, zwroc true
 			Jesli nie, zwroc false
 			ShoudSlow dziala gdy np. Lecimy w lewą stronę, obracamy sie w prawą i chcemy przyspieszyc
 			Wtedy statek zwalnia, bo nie jest skierowany w ta sama strone, w ktora przed chwila lecial 
         */
-		bool ShouldSlow()
+        bool ShouldSlow()
         {
             // "fix" dla negatywnych wartosci
             float tPrevRotation = 360 + prevZRotation;

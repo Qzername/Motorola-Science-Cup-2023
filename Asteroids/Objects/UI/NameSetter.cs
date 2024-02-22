@@ -13,14 +13,17 @@ namespace Asteroids.Objects.UI
 
         int currentLetter = 0, currentIndex = 0;
 
-        Text text;
+        Text text, underline;
 
         public override Setup Start()
         {
             var res = window.GetResolution();
 
             text = new Text("A", 5f, new Point(res.Width / 2, res.Height / 2));
+            underline = new Text("___", 5f, new Point(res.Width / 2, res.Height / 2 + 5f));
+
             window.Instantiate(text);
+            window.Instantiate(underline);
 
             return new()
             {
@@ -32,6 +35,11 @@ namespace Asteroids.Objects.UI
 
         public override void Update(float delta)
         {
+            var res = window.GetResolution();
+
+            text.SetPosition(new Point(res.Width / 2-92, res.Height / 2+30f));
+            underline.SetPosition(new Point(res.Width / 2-92, res.Height / 2+30f + 5f));
+
             bool currentIsSpacePressed = window.KeyDown(Key.Space);
 
             if (!currentIsSpacePressed && lastIsSpacePressed)
