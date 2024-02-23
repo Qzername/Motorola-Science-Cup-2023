@@ -44,5 +44,12 @@ namespace Tempest
 		}
 
 		public readonly int LevelLength = 1700;
+
+		private int _enemiesToSpawn = 15;
+		public int EnemiesToSpawn
+		{
+			get => _enemiesToSpawn;
+			set => _enemiesToSpawn = value;
+		}
 	}
 }

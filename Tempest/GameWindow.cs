@@ -7,64 +7,69 @@ namespace Tempest
 {
 	internal class GameWindow : Window
 	{
-		System.Timers.Timer spawnEnemyTimer = new();
-
 		public GameWindow() : base(new TempestScene())
 		{
 			GameManager.Configuration = new();
 			RegisterPhysicsEngine(new TempestPhysicsEngine());
 
-			Instantiate(new MapManager());
-			Instantiate(new Player());
-			Spiker spiker = new();
-			spiker.Setup(2);
-			Instantiate(spiker);
-
-			spawnEnemyTimer.Elapsed += TimerSpawnEnemy;
-			spawnEnemyTimer.Interval = 1000; // Tworz wroga co sekunde
-											 // spawnEnemyTimer.Enabled = true;
+			StartLevel();
 		}
 
-		void TimerSpawnEnemy(object? sender, ElapsedEventArgs e)
+		void SpawnEnemies()
 		{
-			Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+			int enemiesToSpawn = GameManager.Configuration.EnemiesToSpawn;
 
-			switch (enemy)
+			for (int i = 0; i < enemiesToSpawn; i++)
 			{
-				case Enemies.Flipper:
-					Instantiate(new Flipper());
-					break;
-				case Enemies.Tanker:
-					if (GameManager.Configuration.TankerSpawn)
-						Instantiate(new Tanker());
-					else
-						Instantiate(new Flipper());
+				GameManager.Configuration.EnemiesToSpawn--;
+				Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
-					break;
-				case Enemies.Spiker:
-					if (GameManager.Configuration.SpikerSpawn)
-						Instantiate(new Spiker());
-					else
+				switch (enemy)
+				{
+					case Enemies.Flipper:
 						Instantiate(new Flipper());
+						break;
+					case Enemies.Tanker:
+						if (GameManager.Configuration.TankerSpawn)
+							Instantiate(new Tanker());
+						else
+							Instantiate(new Flipper());
 
-					break;
-				case Enemies.Fuseball:
-					if (GameManager.Configuration.FuseballSpawn)
-						Instantiate(new Fuseball());
-					else
-						Instantiate(new Flipper());
+						break;
+					case Enemies.Spiker:
+						if (GameManager.Configuration.SpikerSpawn)
+							Instantiate(new Spiker());
+						else
+							Instantiate(new Flipper());
 
-					break;
+						break;
+					case Enemies.Fuseball:
+						if (GameManager.Configuration.FuseballSpawn)
+							Instantiate(new Fuseball());
+						else
+							Instantiate(new Flipper());
+
+						break;
+				}
+
+				Thread.Sleep(GameManager.Rand.Next(250, 1001));
 			}
 		}
 
-		public void RestartLevel()
+		public void StartLevel(bool destroyObjects = false)
 		{
 			GameManager.MapPosition = 0;
-			DestroyAll();
+			if (destroyObjects)
+				DestroyAll();
+
+			Thread.Sleep(5000);
+
+			if (GameManager.Lives <= 0)
+				Close();
 
 			Instantiate(new MapManager());
 			Instantiate(new Player());
+			// SpawnEnemies();
 		}
 
 		private bool _isChangingMap;
@@ -77,8 +82,8 @@ namespace Tempest
 			{
 				_isChangingMap = false;
 
-				GameManager.NextLevel();
-				RestartLevel();
+				// GameManager.NextLevel();
+				// StartLevel();
 			}
 		}
 	}

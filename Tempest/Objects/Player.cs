@@ -19,7 +19,10 @@ namespace Tempest.Objects
 			foreach (string name in names)
 			{
 				if (name == other.Name)
-					((GameWindow)window).RestartLevel();
+				{
+					GameManager.Lives--;
+					((GameWindow)window).StartLevel();
+				}
 			}
 		}
 

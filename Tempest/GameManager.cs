@@ -25,6 +25,13 @@ namespace Tempest
 			set => _currentLevel = value;
 		}
 
+		private static int _lives = 4;
+		public static int Lives
+		{
+			get => _lives;
+			set => _lives = value;
+		}
+
 		public static Random Rand = new();
 
 		public static void NextLevel()

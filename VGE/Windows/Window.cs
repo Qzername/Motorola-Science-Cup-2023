@@ -127,7 +127,10 @@ namespace VGE.Windows
         }
 
         public void DestroyAll()
-		{
+        {
+	        if (objects.Count == 0)
+		        return;
+
 			VectorObject[] objectsCopy = objects.ToArray();
 
 			foreach (VectorObject obj in objectsCopy)
