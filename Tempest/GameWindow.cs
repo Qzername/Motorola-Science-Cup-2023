@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.Timers;
 using Tempest.Objects;
-using VGE;
 using VGE.Graphics;
 using VGE.Physics;
 using VGE.Windows;
