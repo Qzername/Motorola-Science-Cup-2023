@@ -27,13 +27,13 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition)
+			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
 				return;
 
 			if (other.Name == "Bullet")
 			{
 				_length -= 100;
-				Shape = new PointShape(GameManager.Configuration.Spiker,
+				Shape = new PointShape(GameManager.LevelConfig.Spiker,
 					new Point(0, 0, 0),
 					new Point(0, 0, _length));
 				transform.Position.Z += 100;
@@ -48,10 +48,10 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "SpikerLine",
-				Shape = new PointShape(GameManager.Configuration.Spiker,
+				Shape = new PointShape(GameManager.LevelConfig.Spiker,
 								new Point(0, 0, 0),
 								new Point(0, 0, _length)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.Configuration.LevelLength + 100),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.LevelConfig.Length + 100),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}
@@ -63,6 +63,9 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
 			if (transform.Position.Z > 400 && !_isDead)
 				transform.Position.Z -= ZSpeed * delta;
 		}

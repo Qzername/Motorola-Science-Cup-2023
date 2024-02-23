@@ -2,7 +2,7 @@
 
 namespace Tempest
 {
-	public class Configuration()
+	public class LevelConfiguration()
 	{
 		// https://www.arcade-history.com/?n=tempest-upright-model&page=detail&id=2865
 		// Domyślne kolory to kolory dla pierwszych 16 poziomów
@@ -15,41 +15,34 @@ namespace Tempest
 		public SKColor Pulsar = SKColors.Empty; // Pojawiają się dopiero później w grze
 		public SKColor Fuseball = SKColors.White;
 
-		private bool _isLevelClosed;
-		public bool IsLevelClosed
+		private bool _isClosed;
+		public bool IsClosed
 		{
-			get => _isLevelClosed;
-			set => _isLevelClosed = value;
+			get => _isClosed;
+			set => _isClosed = value;
 		}
 
-		private bool _tankerSpawn = true;
-		public bool TankerSpawn
+		private bool _spawnTanker = true;
+		public bool SpawnTanker
 		{
-			get => _tankerSpawn;
-			set => _tankerSpawn = value;
+			get => _spawnTanker;
+			set => _spawnTanker = value;
 		}
 
-		private bool _spikerSpawn;
-		public bool SpikerSpawn
+		private bool _spawnSpiker;
+		public bool SpawnSpiker
 		{
-			get => _spikerSpawn;
-			set => _spikerSpawn = value;
+			get => _spawnSpiker;
+			set => _spawnSpiker = value;
 		}
 
-		private bool _fuseballSpawn;
-		public bool FuseballSpawn
+		private bool _spawnFuseball;
+		public bool SpawnFuseball
 		{
-			get => _fuseballSpawn;
-			set => _fuseballSpawn = value;
+			get => _spawnFuseball;
+			set => _spawnFuseball = value;
 		}
 
-		public readonly int LevelLength = 1700;
-
-		private int _enemiesToSpawn = 15;
-		public int EnemiesToSpawn
-		{
-			get => _enemiesToSpawn;
-			set => _enemiesToSpawn = value;
-		}
+		public readonly int Length = 1700;
 	}
 }

@@ -1,6 +1,10 @@
-﻿using System.Timers;
+﻿using System.Diagnostics;
+using System.Net.NetworkInformation;
+using System.Timers;
 using Tempest.Objects;
+using VGE;
 using VGE.Graphics;
+using VGE.Physics;
 using VGE.Windows;
 
 namespace Tempest
@@ -9,20 +13,24 @@ namespace Tempest
 	{
 		public GameWindow() : base(new TempestScene())
 		{
-			GameManager.Configuration = new();
+			GameManager.LevelConfig = new();
 			RegisterPhysicsEngine(new TempestPhysicsEngine());
 
 			StartLevel();
 		}
 
-		void SpawnEnemies()
+		async void SpawnEnemies()
 		{
-			int enemiesToSpawn = GameManager.Configuration.EnemiesToSpawn;
+			int enemiesToSpawn = GameManager.EnemiesToSpawn;
 
 			for (int i = 0; i < enemiesToSpawn; i++)
 			{
-				GameManager.Configuration.EnemiesToSpawn--;
-				Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+				if (GameManager.StopGame)
+					return;
+
+				Instantiate(new Flipper());
+
+				/* Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
 				switch (enemy)
 				{
@@ -30,46 +38,53 @@ namespace Tempest
 						Instantiate(new Flipper());
 						break;
 					case Enemies.Tanker:
-						if (GameManager.Configuration.TankerSpawn)
+						if (GameManager.LevelConfig.SpawnTanker)
 							Instantiate(new Tanker());
 						else
 							Instantiate(new Flipper());
 
 						break;
 					case Enemies.Spiker:
-						if (GameManager.Configuration.SpikerSpawn)
+						if (GameManager.LevelConfig.SpawnSpiker)
 							Instantiate(new Spiker());
 						else
 							Instantiate(new Flipper());
 
 						break;
 					case Enemies.Fuseball:
-						if (GameManager.Configuration.FuseballSpawn)
+						if (GameManager.LevelConfig.SpawnFuseball)
 							Instantiate(new Fuseball());
 						else
 							Instantiate(new Flipper());
 
 						break;
-				}
+				} */
 
-				Thread.Sleep(GameManager.Rand.Next(250, 1001));
+				await Task.Delay(GameManager.Rand.Next(500, 2001));
 			}
 		}
 
-		public void StartLevel(bool destroyObjects = false)
+		public async void StartLevel()
 		{
-			GameManager.MapPosition = 0;
-			if (destroyObjects)
-				DestroyAll();
+			GameManager.StopGame = true;
 
-			Thread.Sleep(5000);
+			await Task.Delay(500);
+			DestroyAll();
+			await Task.Delay(500);
+
+			GameManager.EnemiesKilled = 0;
+			GameManager.MapPosition = 0;
 
 			if (GameManager.Lives <= 0)
 				Close();
 
 			Instantiate(new MapManager());
 			Instantiate(new Player());
-			// SpawnEnemies();
+
+			GameManager.StopGame = false;
+
+			await Task.Delay(1000);
+			await Task.Run(SpawnEnemies);
 		}
 
 		private bool _isChangingMap;
@@ -82,8 +97,23 @@ namespace Tempest
 			{
 				_isChangingMap = false;
 
-				// GameManager.NextLevel();
-				// StartLevel();
+				GameManager.NextLevel();
+				StartLevel();
+			}
+		}
+
+		public void EnemyKilled(PhysicsObject enemy)
+		{
+			if (enemy.IsDead)
+				return;
+
+			GameManager.EnemiesKilled++;
+			Debug.WriteLine($"Enemy killed: {enemy.Guid}");
+
+			if (GameManager.EnemiesKilled >= GameManager.EnemiesToSpawn)
+			{
+				GameManager.NextLevel();
+				StartLevel();
 			}
 		}
 	}

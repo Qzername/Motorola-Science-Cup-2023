@@ -19,26 +19,29 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition)
+			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
 				return;
 
 			if (other.Name == "Bullet")
-				window.Destroy(this);
+				Die();
 		}
 
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
-				_mapPosition = GameManager.MapPosition;
+				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
+
+			if (transform.Position.Z == 0)
+				transform.Position.Z = GameManager.LevelConfig.Length;
 
 			_moveTimer.Elapsed += TimerMove;
-			_moveTimer.Interval = 1000;
+			_moveTimer.Interval = GameManager.Rand.Next(250, 2001);
 			_moveTimer.Enabled = true;
 
 			return new Setup()
 			{
 				Name = "Flipper",
-				Shape = new PointShape(GameManager.Configuration.Flipper,
+				Shape = new PointShape(GameManager.LevelConfig.Flipper,
 								new Point(MapManager.Instance.Elements[_mapPosition].Length / 2, -10, 0),
 								new Point(MapManager.Instance.Elements[_mapPosition].Length / 2, 10, 0),
 								new Point(MapManager.Instance.Elements[_mapPosition].Length / -2, -10, 0),
@@ -56,18 +59,29 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
 			if (transform.Position.Z > 400)
 				transform.Position.Z -= ZSpeed * delta;
 			else if (!_atTheEnd)
 			{
 				_atTheEnd = true;
 				_chance = 0;
-				_moveTimer.Interval = 500;
+				_moveTimer.Interval = GameManager.Rand.Next(100, 501);
 			}
 		}
 
 		void TimerMove(object? snder, ElapsedEventArgs e)
 		{
+			if (GameManager.StopGame)
+				return;
+
+			if (!_atTheEnd)
+				_moveTimer.Interval = GameManager.Rand.Next(100, 501);
+			else
+				_moveTimer.Interval = GameManager.Rand.Next(250, 2001);
+
 			// 25% szansy na ruch w lewo lub prawo
 			int random = GameManager.Rand.Next(0, _chance);
 			if (random == 0)
@@ -81,7 +95,7 @@ namespace Tempest.Objects
 						_mapPosition--;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
 					}
-					else if (GameManager.Configuration.IsLevelClosed)
+					else if (GameManager.LevelConfig.IsClosed)
 					{
 						_mapPosition = MapManager.Instance.Elements.Count - 1;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
@@ -94,14 +108,14 @@ namespace Tempest.Objects
 						_mapPosition++;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
 					}
-					else if (GameManager.Configuration.IsLevelClosed)
+					else if (GameManager.LevelConfig.IsClosed)
 					{
 						_mapPosition = 0;
 						transform.Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z);
 					}
 				}
 
-				Shape = new PointShape(GameManager.Configuration.Flipper,
+				Shape = new PointShape(GameManager.LevelConfig.Flipper,
 					new Point(MapManager.Instance.Elements[_mapPosition].Length / 2, -10, 0),
 					new Point(MapManager.Instance.Elements[_mapPosition].Length / 2, 10, 0),
 					new Point(MapManager.Instance.Elements[_mapPosition].Length / -2, -10, 0),
@@ -112,10 +126,21 @@ namespace Tempest.Objects
 				{
 					_mapChangeCount++;
 
-					if (_mapChangeCount > 16)
-						window.Destroy(this);
+					if (_mapChangeCount > 8)
+						Die();
 				}
 			}
+		}
+
+		void Die()
+		{
+			if (IsDead)
+				return;
+
+			((GameWindow)window).EnemyKilled(this);
+			IsDead = true;
+
+			window.Destroy(this);
 		}
 
 		public override void OnDestroy()

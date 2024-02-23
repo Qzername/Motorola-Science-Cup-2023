@@ -11,7 +11,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != GameManager.MapPosition)
+			if (other.PhysicsLayer != GameManager.MapPosition || GameManager.StopGame)
 				return;
 
 			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "Fuseball" };
@@ -31,7 +31,7 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "Player",
-				Shape = new PointShape(GameManager.Configuration.Player,
+				Shape = new PointShape(GameManager.LevelConfig.Player,
 								new Point(0, -20, 0),
 								new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
 								new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
@@ -45,6 +45,9 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
 			if ((window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && !_wasLeftPressed)
 				_wasLeftPressed = true;
 			else if (!(window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && _wasLeftPressed)
@@ -56,13 +59,13 @@ namespace Tempest.Objects
 					GameManager.MapPosition--;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.Configuration.IsLevelClosed)
+				else if (GameManager.LevelConfig.IsClosed)
 				{
 					GameManager.MapPosition = MapManager.Instance.Elements.Count - 1;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
 
-				Shape = new PointShape(GameManager.Configuration.Player,
+				Shape = new PointShape(GameManager.LevelConfig.Player,
 					new Point(0, -20, 0),
 					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
 					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
@@ -81,13 +84,13 @@ namespace Tempest.Objects
 					GameManager.MapPosition++;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.Configuration.IsLevelClosed)
+				else if (GameManager.LevelConfig.IsClosed)
 				{
 					GameManager.MapPosition = 0;
 					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
 				}
 
-				Shape = new PointShape(GameManager.Configuration.Player,
+				Shape = new PointShape(GameManager.LevelConfig.Player,
 					new Point(0, -20, 0),
 					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
 					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),

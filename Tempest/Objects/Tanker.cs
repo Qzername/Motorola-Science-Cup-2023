@@ -16,7 +16,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition)
+			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
 				return;
 
 			if (other.Name == "Bullet")
@@ -26,16 +26,16 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
-				_mapPosition = GameManager.MapPosition;
+				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
 
 			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = 2000; // Strzelaj co 2 sekundy
+			_bulletTimer.Interval = GameManager.Rand.Next(250, 2001); // Strzelaj co 0.5 do 2 sekund
 			_bulletTimer.Enabled = true;
 
 			return new Setup()
 			{
 				Name = "Tanker",
-				Shape = new PointShape(GameManager.Configuration.Tanker,
+				Shape = new PointShape(GameManager.LevelConfig.Tanker,
 								new Point(0, 20, 0),
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
@@ -53,6 +53,9 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
 			if (transform.Position.Z > 400)
 				transform.Position.Z -= ZSpeed * delta;
 			else
@@ -61,6 +64,11 @@ namespace Tempest.Objects
 
 		void TimerShoot(object? sender, ElapsedEventArgs e)
 		{
+			if (GameManager.StopGame)
+				return;
+
+			_bulletTimer.Interval = GameManager.Rand.Next(250, 2001);
+
 			var bullet = new BulletTanker();
 			window.Instantiate(bullet);
 			bullet.Setup(_mapPosition, transform.Position.Z);
@@ -68,7 +76,7 @@ namespace Tempest.Objects
 
 		void Split()
 		{
-			window.Destroy(this);
+			Die();
 
 			Flipper flipper1 = new Flipper();
 
@@ -88,6 +96,17 @@ namespace Tempest.Objects
 
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
+		}
+
+		void Die()
+		{
+			if (IsDead)
+				return;
+
+			((GameWindow)window).EnemyKilled(this);
+			IsDead = true;
+
+			window.Destroy(this);
 		}
 
 		public override void OnDestroy()

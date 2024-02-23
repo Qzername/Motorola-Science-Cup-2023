@@ -13,7 +13,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition)
+			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
 				return;
 
 			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
@@ -30,7 +30,7 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "Bullet",
-				Shape = new PointShape(GameManager.Configuration.Player,
+				Shape = new PointShape(GameManager.LevelConfig.Player,
 								new Point(5, 5, 0),
 								new Point(5, -5, 0),
 								new Point(-5, -5, 0),
@@ -49,9 +49,12 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
 			transform.Position.Z += ZSpeed * delta;
 
-			if (transform.Position.Z > GameManager.Configuration.LevelLength)
+			if (transform.Position.Z > GameManager.LevelConfig.Length)
 				window.Destroy(this);
 		}
 	}

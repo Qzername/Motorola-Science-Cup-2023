@@ -10,12 +10,12 @@ namespace Tempest.Objects
 		private int _mapPosition = -1;
 		private SpikerLine _spikerLine = new();
 
-		private const float ZSpeed = 350f;
 		private bool _turnAround;
+		private const float ZSpeed = 350f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition)
+			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
 				return;
 
 			if (other.Name == "Bullet" && !_turnAround)
@@ -28,7 +28,7 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
-				_mapPosition = GameManager.MapPosition;
+				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
 
 			_spikerLine.Setup(_mapPosition);
 			window.Instantiate(_spikerLine);
@@ -36,12 +36,12 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "Spiker",
-				Shape = new PointShape(GameManager.Configuration.Spiker,
+				Shape = new PointShape(GameManager.LevelConfig.Spiker,
 								new Point(0, 20, 0),
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.Configuration.LevelLength),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.LevelConfig.Length),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}
@@ -53,6 +53,12 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			if (GameManager.StopGame)
+				return;
+
+			if (GameManager.StopGame)
+				return;
+
 			if (!_turnAround)
 			{
 				transform.Position.Z -= ZSpeed * delta;
@@ -63,7 +69,7 @@ namespace Tempest.Objects
 					Tanker tanker = new();
 					tanker.Setup(_mapPosition);
 					window.Instantiate(tanker);
-					window.Destroy(this);
+					Die();
 				}
 			}
 			else
@@ -71,12 +77,27 @@ namespace Tempest.Objects
 				transform.Position.Z += ZSpeed * delta;
 
 				if (transform.Position.Z > 1600)
-					window.Destroy(this);
+					Die();
 			}
 
-			_spikerLine.Shape = new PointShape(GameManager.Configuration.Spiker,
+			_spikerLine.Shape = new PointShape(GameManager.LevelConfig.Spiker,
 				new Point(0, 0, 0),
 				new Point(0, 0, _spikerLine.Length));
+		}
+
+		void Die()
+		{
+			if (IsDead)
+				return;
+
+			((GameWindow)window).EnemyKilled(this);
+			IsDead = true;
+
+			window.Destroy(this);
+		}
+
+		public override void OnDestroy()
+		{
 		}
 	}
 }

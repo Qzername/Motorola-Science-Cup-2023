@@ -4,11 +4,11 @@ namespace Tempest
 {
 	public static class GameManager
 	{
-		private static Configuration _configuration = new();
-		public static Configuration Configuration
+		private static LevelConfiguration _levelConfig = new();
+		public static LevelConfiguration LevelConfig
 		{
-			get => _configuration;
-			set => _configuration = value;
+			get => _levelConfig;
+			set => _levelConfig = value;
 		}
 
 		private static int _mapPosition;
@@ -32,10 +32,33 @@ namespace Tempest
 			set => _lives = value;
 		}
 
+		private static bool _stopGame;
+		public static bool StopGame
+		{
+			get => _stopGame;
+			set => _stopGame = value;
+		}
+
+		private static int _enemiesToSpawn = 5;
+		public static int EnemiesToSpawn
+		{
+			get => _enemiesToSpawn;
+			set => _enemiesToSpawn = value;
+		}
+
+		private static int _enemiesKilled;
+		public static int EnemiesKilled
+		{
+			get => _enemiesKilled;
+			set => _enemiesKilled = value;
+		}
+
 		public static Random Rand = new();
 
 		public static void NextLevel()
 		{
+			_enemiesToSpawn += 5;
+
 			if (_currentLevel == Levels.Circle)
 				_currentLevel = Levels.Square;
 			else if (_currentLevel == Levels.Square)

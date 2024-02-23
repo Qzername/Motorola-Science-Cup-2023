@@ -58,7 +58,7 @@ namespace Tempest.Objects
 				_elements.Add(element);
 			}
 
-			GameManager.Configuration.IsLevelClosed = shouldClose;
+			GameManager.LevelConfig.IsClosed = shouldClose;
 			_perspectiveOffset.Y = perspectivePointY;
 			_perspectiveOffset.Z = perspectivePointZ;
 			TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
