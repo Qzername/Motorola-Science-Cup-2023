@@ -30,6 +30,9 @@ namespace Tempest.Objects
 			if (_mapPosition == -1)
 				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
 
+			if (transform.Position.Z == 0)
+				transform.Position.Z = GameManager.LevelConfig.Length;
+
 			_spikerLine.Setup(_mapPosition);
 			window.Instantiate(_spikerLine);
 
@@ -46,9 +49,10 @@ namespace Tempest.Objects
 			};
 		}
 
-		public void Setup(int mapPosition)
+		public void Setup(int mapPosition, float zPosition = 1600)
 		{
 			_mapPosition = mapPosition;
+			transform.Position.Z = zPosition;
 		}
 
 		public override void Update(float delta)
@@ -90,8 +94,8 @@ namespace Tempest.Objects
 			if (IsDead)
 				return;
 
-			((GameWindow)window).EnemyKilled(this);
-			IsDead = true;
+			IsDead = true;			
+			((GameWindow)window).EnemyDestroyed(this);
 
 			window.Destroy(this);
 		}

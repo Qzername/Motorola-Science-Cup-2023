@@ -39,6 +39,20 @@ namespace Tempest
 			set => _stopGame = value;
 		}
 
+		private static bool _changingMap;
+		public static bool ChangingMap
+		{
+			get => _changingMap;
+			set => _changingMap = value;
+		}
+		
+		private static bool _spawningEnemies;
+		public static bool SpawningEnemies
+		{
+			get => _spawningEnemies;
+			set => _spawningEnemies = value;
+		}
+
 		private static int _enemiesToSpawn = 5;
 		public static int EnemiesToSpawn
 		{
@@ -46,11 +60,11 @@ namespace Tempest
 			set => _enemiesToSpawn = value;
 		}
 
-		private static int _enemiesKilled;
-		public static int EnemiesKilled
+		private static int _enemiesOnScreen;
+		public static int EnemiesOnScreen
 		{
-			get => _enemiesKilled;
-			set => _enemiesKilled = value;
+			get => _enemiesOnScreen;
+			set => _enemiesOnScreen = value;
 		}
 
 		public static Random Rand = new();

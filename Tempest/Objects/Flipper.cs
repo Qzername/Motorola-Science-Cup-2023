@@ -10,6 +10,7 @@ namespace Tempest.Objects
 	{
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition = -1;
+		private readonly Timer _bulletTimer = new();
 		private readonly Timer _moveTimer = new();
 		private int _mapChangeCount;
 
@@ -33,6 +34,10 @@ namespace Tempest.Objects
 
 			if (transform.Position.Z == 0)
 				transform.Position.Z = GameManager.LevelConfig.Length;
+
+			_bulletTimer.Elapsed += TimerShoot;
+			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+			_bulletTimer.Enabled = true;
 
 			_moveTimer.Elapsed += TimerMove;
 			_moveTimer.Interval = GameManager.Rand.Next(250, 2001);
@@ -65,11 +70,19 @@ namespace Tempest.Objects
 			if (transform.Position.Z > 400)
 				transform.Position.Z -= ZSpeed * delta;
 			else if (!_atTheEnd)
-			{
-				_atTheEnd = true;
-				_chance = 0;
-				_moveTimer.Interval = GameManager.Rand.Next(100, 501);
-			}
+				AtTheEnd();
+		}
+
+		void TimerShoot(object? sender, ElapsedEventArgs e)
+		{
+			if (GameManager.StopGame)
+				return;
+
+			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+
+			var bullet = new BulletFlipper();
+			bullet.Setup(_mapPosition, transform.Position.Z);			
+			window.Instantiate(bullet);
 		}
 
 		void TimerMove(object? snder, ElapsedEventArgs e)
@@ -132,19 +145,35 @@ namespace Tempest.Objects
 			}
 		}
 
+		void AtTheEnd()
+		{
+			_atTheEnd = true;
+			_chance = 0;
+			_bulletTimer.Close();
+			_bulletTimer.Enabled = false;
+			_moveTimer.Interval = GameManager.Rand.Next(100, 501);
+			((GameWindow)window).EnemyDestroyed(this);
+			// Jezeli Flipper jest na koncu to zaczyna sie szybciej poruszac
+		}
+
 		void Die()
 		{
 			if (IsDead)
 				return;
+			
+			IsDead = true;			
 
-			((GameWindow)window).EnemyKilled(this);
-			IsDead = true;
+			if (!_atTheEnd)
+				((GameWindow)window).EnemyDestroyed(this);
 
 			window.Destroy(this);
 		}
 
 		public override void OnDestroy()
 		{
+			_bulletTimer.Close();
+			_bulletTimer.Enabled = false;
+			
 			_moveTimer.Close();
 			_moveTimer.Enabled = false;
 		}

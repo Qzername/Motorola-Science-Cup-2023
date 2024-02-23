@@ -14,15 +14,11 @@ namespace Tempest.Objects
 			if (other.PhysicsLayer != GameManager.MapPosition || GameManager.StopGame)
 				return;
 
-			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "Fuseball" };
-
-			foreach (string name in names)
+			// Jesli obiekt nie jest pociskiem (czyli wrogiem lub pociskiem wroga), to gracz traci zycie i zaczyna poziom od nowa
+			if (other.Name != "Bullet")
 			{
-				if (name == other.Name)
-				{
-					GameManager.Lives--;
-					((GameWindow)window).StartLevel();
-				}
+				GameManager.Lives--;
+				((GameWindow)window).StartLevel();
 			}
 		}
 

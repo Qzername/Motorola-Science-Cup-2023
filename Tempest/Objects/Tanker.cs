@@ -27,9 +27,12 @@ namespace Tempest.Objects
 		{
 			if (_mapPosition == -1)
 				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
+			
+			if (transform.Position.Z == 0)
+				transform.Position.Z = GameManager.LevelConfig.Length;
 
 			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = GameManager.Rand.Next(250, 2001); // Strzelaj co 0.5 do 2 sekund
+			_bulletTimer.Interval = GameManager.Rand.Next(500, 2001); // Strzelaj co 0.5 do 2 sekund
 			_bulletTimer.Enabled = true;
 
 			return new Setup()
@@ -67,11 +70,11 @@ namespace Tempest.Objects
 			if (GameManager.StopGame)
 				return;
 
-			_bulletTimer.Interval = GameManager.Rand.Next(250, 2001);
+			_bulletTimer.Interval = GameManager.Rand.Next(500, 2001);
 
 			var bullet = new BulletTanker();
+			bullet.Setup(_mapPosition, transform.Position.Z);			
 			window.Instantiate(bullet);
-			bullet.Setup(_mapPosition, transform.Position.Z);
 		}
 
 		void Split()
@@ -85,6 +88,7 @@ namespace Tempest.Objects
 				flipper1MapPosition += 1;
 
 			flipper1.Setup(flipper1MapPosition, transform.Position.Z);
+			GameManager.EnemiesOnScreen++;
 
 			Flipper flipper2 = new Flipper();
 
@@ -92,7 +96,8 @@ namespace Tempest.Objects
 			if (_mapPosition > 0)
 				flipper2MapPosition -= 1;
 
-			flipper2.Setup(flipper2MapPosition, transform.Position.Z - 50);
+			flipper2.Setup(flipper2MapPosition, transform.Position.Z);
+			GameManager.EnemiesOnScreen++;
 
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
@@ -102,9 +107,9 @@ namespace Tempest.Objects
 		{
 			if (IsDead)
 				return;
-
-			((GameWindow)window).EnemyKilled(this);
+			
 			IsDead = true;
+			((GameWindow)window).EnemyDestroyed(this);
 
 			window.Destroy(this);
 		}

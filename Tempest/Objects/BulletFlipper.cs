@@ -4,7 +4,7 @@ using VGE.Physics;
 
 namespace Tempest.Objects
 {
-	public class BulletTanker : PhysicsObject
+	public class BulletFlipper : PhysicsObject
 	{
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition;
@@ -24,12 +24,12 @@ namespace Tempest.Objects
 		{
 			return new Setup()
 			{
-				Name = "BulletTanker",
-				Shape = new PointShape(GameManager.LevelConfig.Tanker,
-								new Point(5, 5, 0),
-								new Point(5, -5, 0),
-								new Point(-5, -5, 0),
-								new Point(-5, 5, 0)),
+				Name = "BulletFlipper",
+				Shape = new PointShape(GameManager.LevelConfig.Flipper,
+								new Point(10, 10, 0),
+								new Point(10, -10, 0),
+								new Point(-10, -10, 0),
+								new Point(-10, 10, 0)),
 				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = Point.Zero
 			};
@@ -48,6 +48,7 @@ namespace Tempest.Objects
 				return;
 
 			transform.Position.Z -= ZSpeed * delta;
+			Rotate(new Point(0, 0, 10));
 
 			if (transform.Position.Z < 400)
 				window.Destroy(this);

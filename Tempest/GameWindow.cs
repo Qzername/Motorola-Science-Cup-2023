@@ -18,16 +18,16 @@ namespace Tempest
 
 		async void SpawnEnemies()
 		{
+			GameManager.SpawningEnemies = true;
 			int enemiesToSpawn = GameManager.EnemiesToSpawn;
 
 			for (int i = 0; i < enemiesToSpawn; i++)
 			{
 				if (GameManager.StopGame)
 					return;
-
-				Instantiate(new Flipper());
-
-				/* Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+				
+				GameManager.EnemiesOnScreen++;
+				Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
 				switch (enemy)
 				{
@@ -55,10 +55,12 @@ namespace Tempest
 							Instantiate(new Flipper());
 
 						break;
-				} */
+				}
 
 				await Task.Delay(GameManager.Rand.Next(500, 2001));
 			}
+
+			GameManager.SpawningEnemies = false;
 		}
 
 		public async void StartLevel()
@@ -69,7 +71,8 @@ namespace Tempest
 			DestroyAll();
 			await Task.Delay(500);
 
-			GameManager.EnemiesKilled = 0;
+			GameManager.SpawningEnemies = false;
+			GameManager.EnemiesOnScreen = 0;
 			GameManager.MapPosition = 0;
 
 			if (GameManager.Lives <= 0)
@@ -84,30 +87,27 @@ namespace Tempest
 			await Task.Run(SpawnEnemies);
 		}
 
-		private bool _isChangingMap;
-
 		public override void Update(Canvas canvas)
 		{
-			if (KeyDown(Key.P) && !_isChangingMap)
-				_isChangingMap = true;
-			else if (!KeyDown(Key.P) && _isChangingMap)
+			if (KeyDown(Key.P) && !GameManager.ChangingMap)
+				GameManager.ChangingMap = true;
+			else if (!KeyDown(Key.P) && GameManager.ChangingMap)
 			{
-				_isChangingMap = false;
+				GameManager.ChangingMap = false;
 
 				GameManager.NextLevel();
 				StartLevel();
 			}
 		}
 
-		public void EnemyKilled(PhysicsObject enemy)
+		public void EnemyDestroyed(PhysicsObject enemy)
 		{
 			if (enemy.IsDead)
 				return;
 
-			GameManager.EnemiesKilled++;
-			Debug.WriteLine($"Enemy killed: {enemy.Guid}");
+			GameManager.EnemiesOnScreen--;
 
-			if (GameManager.EnemiesKilled >= GameManager.EnemiesToSpawn)
+			if (GameManager.EnemiesOnScreen <= 0 && !GameManager.SpawningEnemies)
 			{
 				GameManager.NextLevel();
 				StartLevel();
