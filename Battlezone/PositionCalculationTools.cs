@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using System.Diagnostics;
+using VGE;
 using VGE.Graphics.Scenes;
 
 namespace Battlezone
@@ -34,7 +35,7 @@ namespace Battlezone
 			if (offset.X > 0)
 				rotationDelta = angleToPlayer - transform.Rotation.Y;
 			else
-				rotationDelta = ((angleToPlayer * -1f) - transform.Rotation.Y);
+				rotationDelta = ((angleToPlayer * -1f) - transform.Rotation.Y) - 180;
 
 			//next position
 			float cNext = (delta * speed);

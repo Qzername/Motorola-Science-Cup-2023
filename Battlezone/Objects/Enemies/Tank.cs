@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using Microsoft.Win32.SafeHandles;
+using SkiaSharp;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -13,6 +15,8 @@ namespace Battlezone.Objects.Enemies
 		EnemyCollider front;
 
 		const float colliderDistance = 5f;
+
+		protected virtual Point defaultRotation =>  new Point(0, 0,0);
 
 		protected virtual PredefinedShape shape => (PredefinedShape)ResourcesHandler.Get3DShape("tank");
 
@@ -37,13 +41,18 @@ namespace Battlezone.Objects.Enemies
 			front = new EnemyCollider();
 			window.Instantiate(front);
 
+			transform = new Transform()
+			{
+				Position = startPosition
+			};
+
 			front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
 
 			return new Setup()
 			{
 				Name = "Enemy_TANK",
 				Position = startPosition,
-				Rotation = new Point(0,-90,0),
+				Rotation = new Point(0,-90,0) + defaultRotation,
 				Shape = shape
 			};
 		}
@@ -58,7 +67,8 @@ namespace Battlezone.Objects.Enemies
 				var pos = PositionCalculationTools.NextPositionTowardsPlayer(transform, Speed, delta);
 
 				transform.Position = pos.Item1;
-				Rotate(new Point(0, pos.Item2, 0));
+
+                Rotate(new Point(0, pos.Item2, 0));
 
 				//shooting
 				currentTimer += delta;
@@ -86,7 +96,7 @@ namespace Battlezone.Objects.Enemies
 			return new Transform()
 			{
 				Position = transform.Position + new Point(0,-10,0),
-				Rotation = new Point(0, 180 - transform.Rotation.Y - 90, 0)
+				Rotation = new Point(0, 180 - transform.Rotation.Y - 90 + (offset.X < 0 && offset.Z < 0 ? 180 : 0) + defaultRotation.Y, 0)
 			};
 		}
 	}

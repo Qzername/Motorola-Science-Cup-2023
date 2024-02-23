@@ -101,7 +101,7 @@ namespace Battlezone.Objects.Enemies
 			else if (enemyChance == 3)
 				return new Missle(enemyPosition);
 			else
-				return GameManager.Score <= 10000 ? new Tank(enemyPosition) : new FastTank(enemyPosition);
+				return GameManager.Score <= 10000 ? new FastTank(enemyPosition) : new FastTank(enemyPosition);
 		}
 
 		public override bool OverrideRender(Canvas canvas)

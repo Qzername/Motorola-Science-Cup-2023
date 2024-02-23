@@ -1,4 +1,5 @@
 ﻿using Battlezone.Objects.Enemies;
+using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -15,7 +16,7 @@ namespace Battlezone.Objects
 		public override int PhysicsLayer => 0;
 
 		const float speed = 40;
-		const float colliderDistance = 10f;
+		const float colliderDistance = 30f;
 
 		int magazine = 3;
 
@@ -48,6 +49,12 @@ namespace Battlezone.Objects
 
 		public override void Update(float delta)
 		{
+			if(back.IsColliding && front.IsColliding)
+			{
+				back.IsColliding = false;
+				front.IsColliding = false;
+			}
+
 			//movement
 			if (window.KeyDown(Key.W) && !front.IsColliding)
 			{
