@@ -108,8 +108,8 @@ namespace Tempest.Objects
 			if (IsDead)
 				return;
 			
-			IsDead = true;
 			((GameWindow)window).EnemyDestroyed(this);
+			IsDead = true;
 
 			window.Destroy(this);
 		}

@@ -74,7 +74,10 @@ namespace Tempest
 			_enemiesToSpawn += 5;
 
 			if (_currentLevel == Levels.Circle)
+			{
+				LevelConfig.MoveFlipper = true;
 				_currentLevel = Levels.Square;
+			}
 			else if (_currentLevel == Levels.Square)
 				_currentLevel = Levels.Plus;
 			else if (_currentLevel == Levels.Plus)

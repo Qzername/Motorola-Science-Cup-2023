@@ -87,7 +87,7 @@ namespace Tempest.Objects
 
 		void TimerMove(object? snder, ElapsedEventArgs e)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.StopGame || !GameManager.LevelConfig.MoveFlipper)
 				return;
 
 			if (!_atTheEnd)
@@ -160,11 +160,11 @@ namespace Tempest.Objects
 		{
 			if (IsDead)
 				return;
-			
-			IsDead = true;			
 
 			if (!_atTheEnd)
 				((GameWindow)window).EnemyDestroyed(this);
+			
+			IsDead = true;			
 
 			window.Destroy(this);
 		}

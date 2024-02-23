@@ -22,6 +22,13 @@ namespace Tempest
 			set => _isClosed = value;
 		}
 
+		private bool _moveFlipper;
+		public bool MoveFlipper
+		{
+			get => _moveFlipper;
+			set => _moveFlipper = value;
+		}
+
 		private bool _spawnTanker = true;
 		public bool SpawnTanker
 		{
