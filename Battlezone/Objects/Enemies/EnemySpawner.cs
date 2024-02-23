@@ -69,7 +69,7 @@ namespace Battlezone.Objects.Enemies
 
 			return PointManipulationTools.MovePointForward(new Transform()
 			{
-				Position = Scene3D.Camera.Position,
+				Position = Scene3D.Camera.Position - new Point(0,-10,0),
 				Rotation = rotation
 			}, distance);
 		}

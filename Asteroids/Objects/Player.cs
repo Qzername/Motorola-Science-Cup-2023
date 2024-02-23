@@ -99,8 +99,6 @@ namespace Asteroids.Objects
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
 
-                window.PlaySound("Resources/fire.wav");
-
                 lastSpaceState = true;
             }
             else if (!isSpacePressed && lastSpaceState)
@@ -206,8 +204,6 @@ namespace Asteroids.Objects
 
                 canvas.DrawLine(new Line(animation[0] + transform.Position, animation[1] + transform.Position, SKColors.Red));
                 canvas.DrawLine(new Line(animation[1] + transform.Position, animation[2] + transform.Position, SKColors.Red));
-
-                window.PlaySound("Resources/thrust.wav");
             }
 
             //chcemy by gracz dalej sie narysował, dlatego false

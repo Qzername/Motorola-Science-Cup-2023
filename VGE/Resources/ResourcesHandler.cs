@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SkiaSharp;
 using System.IO;
 using VGE.Graphics.Shapes;
 
@@ -28,6 +29,42 @@ namespace VGE.Resources
 
 			return database[shapeSetName].Set[shapeName][0];
 		}
+
+		public static IShape Get3DShape(string shapeName)
+		{
+            List<Point> pointDefinitions = [];
+            List<Point> lineDefinitions = [];
+
+            int mode = 0;
+
+            foreach (var line in File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{shapeName}.3Dshape"))
+            {
+                if (string.IsNullOrEmpty(line) || line.StartsWith('#'))
+                    continue;
+
+                if (line[0] == '[')
+                {
+                    mode++;
+                    continue;
+                }
+
+                var coordinates = line.Split([",", ", "], StringSplitOptions.RemoveEmptyEntries);
+
+                Point point;
+
+                if (coordinates.Length == 2)
+                    point = new Point(Convert.ToSingle(coordinates[0].Replace('.', ',')), Convert.ToSingle(coordinates[1].Replace('.', ',')), 0);
+                else
+                    point = new Point(Convert.ToSingle(coordinates[0].Replace('.', ',')), Convert.ToSingle(coordinates[1].Replace('.', ',')), Convert.ToSingle(coordinates[2].Replace('.', ',')));
+
+                if (mode == 1)
+                    pointDefinitions.Add(point);
+                else
+                    lineDefinitions.Add(point);
+            }
+
+			return new PredefinedShape(pointDefinitions.ToArray(), lineDefinitions.ToArray(), SKColors.Green);
+        }
 
 		static void LoadSet(string setName)
 		{

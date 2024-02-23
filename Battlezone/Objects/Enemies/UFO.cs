@@ -3,6 +3,7 @@ using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
+using VGE.Resources;
 
 namespace Battlezone.Objects.Enemies
 {
@@ -35,13 +36,13 @@ namespace Battlezone.Objects.Enemies
 		public override Setup Start()
 		{
 			//dla testu biorę kostkę
-			var shape = ObstacleShapeDefinitions.GetByIndex(0);
+			var shape = ResourcesHandler.Get3DShape("ufo");
 
 			return new Setup()
 			{
 				Name = "Enemy_UFO",
 				Position = startPosition,
-				Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Red),
+				Shape = shape,
 				Rotation = defaultRotatiion
 			};
 		}

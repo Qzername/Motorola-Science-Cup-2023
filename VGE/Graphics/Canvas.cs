@@ -3,11 +3,10 @@
 	public class Canvas
 	{
 		List<Line> lines;
-		List<Circle> circles;
+
 		public Canvas()
 		{
 			lines = new List<Line>();
-			circles = new List<Circle>();
 		}
 
 		/// <summary>
@@ -24,25 +23,11 @@
 
 			}
 		}
-
-		public void DrawCircle(Circle circle)
-		{
-			try
-			{
-				circles.Add(circle);
-			}
-			catch (Exception)
-			{
-
-			}
-		}
-
 		public void Clear()
 		{
-			circles.Clear();
 			lines.Clear();
 		}
+
 		public List<Line> GetLines() => lines;
-		public List<Circle> GetCircles() => circles;
 	}
 }

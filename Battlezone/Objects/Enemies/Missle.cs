@@ -2,6 +2,7 @@
 using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
+using VGE.Resources;
 
 namespace Battlezone.Objects.Enemies
 {
@@ -28,15 +29,14 @@ namespace Battlezone.Objects.Enemies
 			return new Setup()
 			{
 				Name = "Enemy_MISSLE",
-				Position = startPosition,
+				Position = startPosition + new Point(0,-10,0),
 				Rotation = Point.Zero,
-				Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Yellow)
-			};
+				Shape = (PredefinedShape)ResourcesHandler.Get3DShape("missle")
+        };
 		}
 
 		public override void Update(float delta)
 		{
-			return;
 			var pos = PositionCalculationTools.NextPositionTowardsPlayer(transform, speed, delta);
 
 			transform.Position = pos.Item1;

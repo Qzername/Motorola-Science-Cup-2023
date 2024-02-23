@@ -4,6 +4,7 @@ using VGE.Graphics;
 using VGE.Graphics.Scenes;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
+using VGE.Resources;
 
 namespace Battlezone.Objects.Enemies
 {
@@ -13,7 +14,9 @@ namespace Battlezone.Objects.Enemies
 
 		const float colliderDistance = 5f;
 
-		public override int Score => 1000;
+		protected virtual PredefinedShape shape => (PredefinedShape)ResourcesHandler.Get3DShape("tank");
+
+        public override int Score => 1000;
 
 		protected virtual float Speed => 10f;
 		const float bulletFrequency = 4f;
@@ -36,21 +39,19 @@ namespace Battlezone.Objects.Enemies
 
 			front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
 
-			var shape = ObstacleShapeDefinitions.GetByIndex(0);
-
 			return new Setup()
 			{
 				Name = "Enemy_TANK",
 				Position = startPosition,
-				Rotation = Point.Zero,
-				Shape = new PredefinedShape(shape.PointsDefinition, shape.LinesDefinition, SKColors.Red)
+				Rotation = new Point(0,-90,0),
+				Shape = shape
 			};
 		}
 
 		public override void Update(float delta)
 		{
 			front.UpdatePosition(PointManipulationTools.MovePointForward(RecalculateRotation(), colliderDistance));
-
+			
 			if (!front.IsColliding)
 			{
 				//position
@@ -84,8 +85,8 @@ namespace Battlezone.Objects.Enemies
 
 			return new Transform()
 			{
-				Position = transform.Position,
-				Rotation = new Point(0, 180 - transform.Rotation.Y - 90 + (offset.X < 0 && offset.Z < 0 ? 180 : 0), 0)
+				Position = transform.Position + new Point(0,-10,0),
+				Rotation = new Point(0, 180 - transform.Rotation.Y - 90, 0)
 			};
 		}
 	}

@@ -14,10 +14,7 @@ namespace VGE.WPF
 	/// </summary>
 	public partial class MainWindow : System.Windows.Window
 	{
-		string exePath = string.Empty;
-
 		List<Line> linesToDraw;
-		List<Circle> circlesToDraw;
 
 		SKPaint paint, customPaint;
 		SKPaint circlePaint, customCirclePaint;
@@ -30,11 +27,6 @@ namespace VGE.WPF
 		public MainWindow()
 		{
 			Scale = 1f;
-
-			//branie obecnego folderu z exe
-			exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
-			var files = exePath.Split('\\');
-			exePath = exePath.Replace(files[^1], string.Empty);
 
 			// Domyslna rozdzielczosc okna to 800x450
 			MinWidth = 800;
@@ -69,7 +61,6 @@ namespace VGE.WPF
 			};
 
 			linesToDraw = new List<Line>();
-			circlesToDraw = new List<Circle>();
 
 			skElement.PaintSurface += OnPaintSurface;
 		}
@@ -94,32 +85,12 @@ namespace VGE.WPF
 						canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
 					}
 				}
-
-				for (int i = 0; i < circlesToDraw.Count; i++)
-				{
-					var circle = circlesToDraw[i];
-
-					if (circle.CircleColor is null)
-						canvas.DrawCircle(circle.Position, circle.Radius, circlePaint);
-					else
-					{
-						customCirclePaint.Color = circle.CircleColor.Value;
-						canvas.DrawCircle(circle.Position, circle.Radius, customCirclePaint);
-					}
-				}
 			}
 			catch (Exception)
 			{
 
 			}
 		}
-
-		public void PlaySound(string path)
-		{
-            var mediaplayer = new MediaPlayer();
-            mediaplayer.Open(new Uri(exePath + path));
-            mediaplayer.Play();
-        }
 
 		public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
 		public void SetLines(List<Line> lines) => linesToDraw = lines;
@@ -130,7 +101,6 @@ namespace VGE.WPF
             Scale = Convert.ToSingle(source.CompositionTarget.TransformToDevice.M22);
         }
 
-        public void SetCircles(List<Circle> circles) => circlesToDraw = circles;
 		public bool GetKey(Windows.Key key)
 		{
 			bool getKey = false;

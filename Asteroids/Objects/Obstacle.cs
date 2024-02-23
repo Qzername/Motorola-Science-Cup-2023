@@ -141,9 +141,6 @@ namespace Asteroids.Objects
                 // Podziel obstacle na dwa mniejsze kawalki - jezeli jest najmniejszy, usun go
 
                 EnemySpawner.Instance.RegisterObstacle(obstacle);
-
-                //efekt dźwiękowy przy zniszczeniu
-                window.PlaySound($"Resources/bang{Type}.wav");
             }
 		}
     }

@@ -102,7 +102,6 @@ namespace Asteroids.Objects
                 // "za kazde zdobyte 10 000 punktow gracz otrzymuje dodatkowe zycie"
                 if (GameManager.Instance.Score >= GameManager.Instance.ScoreToGet)
                 {
-                    window.PlaySound("Resources/extraShip.wav");
                     GameManager.Instance.Lives++;
 					GameManager.Instance.ScoreToGet += 10000;
                 }

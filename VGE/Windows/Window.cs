@@ -19,6 +19,7 @@ namespace VGE.Windows
 
 		List<VectorObject> objects;
 		IScene scene;
+		
 		PhysicsEngine? physicsEngine;
 
 		public Window(IScene scene)
@@ -36,7 +37,6 @@ namespace VGE.Windows
 			frameTimer.Elapsed += FrameUpdate;
 
 			mainWindow.SetLines(canvas.GetLines());
-			mainWindow.SetCircles(canvas.GetCircles());
 		}
 
 		//windows do swojego okna dodaje niewidzialne obiekty, tutaj jest kompensacja za nie
@@ -137,11 +137,6 @@ namespace VGE.Windows
 				Destroy(obj);
 		}
 		#endregion
-
-		/// <summary>
-		/// Można nim puścić jakiś dzwięk
-		/// </summary>
-		public void PlaySound(string path) => mainWindow.PlaySound(path);
 
 		/// <summary>
 		/// Sprawdza czy dany przycisk jest wciśnięty.

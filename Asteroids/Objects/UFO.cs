@@ -34,8 +34,6 @@ namespace Asteroids.Objects
 	        }
 		}
 
-		float soundTimer;
-
         public override Setup Start()
         {
 	        List<Point> shapes = new();
@@ -98,18 +96,6 @@ namespace Asteroids.Objects
 
         public override void Update(float deltaTime)
         {
-			soundTimer += deltaTime;
-
-			if(soundTimer > 0.17f)
-			{
-				if(Type == UFOType.Small)
-					window.PlaySound("Resources/saucerSmall.wav");
-                else
-					window.PlaySound("Resources/saucerBig.wav");
-
-				soundTimer = 0f;
-            }
-
 			timer += deltaTime;
 
 			if(timer > 2f && GameManager.Instance.Player is not null)
@@ -122,7 +108,6 @@ namespace Asteroids.Objects
                     (playerCenter.X - transform.Position.X))
                     * MathTools.Rad2deg;
 
-                window.PlaySound("Resources/fire.wav");
                 var bullet = new BulletUFO();
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position, -rotation);

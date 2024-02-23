@@ -72,8 +72,11 @@ namespace Asteroids
             {
                 if(spaceToggled)
                 {
-                    Player = new Player();
-                    window.Instantiate(Player);
+                    if(Player is null)
+                    {
+                        Player = new Player();
+                        window.Instantiate(Player);
+                    }
 
                     CurrentScreen = Screen.Game;
                 }

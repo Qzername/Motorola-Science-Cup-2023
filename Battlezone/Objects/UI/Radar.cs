@@ -43,7 +43,6 @@ namespace Battlezone.Objects.UI
 			var finalScanner = PointManipulationTools.Rotate(new Point(0, 0, rotationOfScanner), scanner);
 
 			canvas.DrawLine(new Line(finalScanner[0] + transform.Position, finalScanner[1] + transform.Position, SKColors.Aqua));
-			canvas.DrawCircle(new Circle(transform.Position, radarHeight, SKColors.Aqua));
 
 			foreach (var enemy in EnemySpawner.Instance.Enemies)
 			{

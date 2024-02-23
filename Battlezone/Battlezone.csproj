@@ -11,4 +11,19 @@
     <ProjectReference Include="..\VGE\Vector Game Engine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\missle.3Dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\superTank.3Dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\tank.3Dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ufo.3Dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
