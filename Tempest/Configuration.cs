@@ -8,6 +8,7 @@ namespace Tempest
 		// Domyślne kolory to kolory dla pierwszych 16 poziomów
 		public SKColor Tunnel = SKColors.Blue;
 		public SKColor Player = SKColors.Yellow;
+		public SKColor Spike = SKColors.White;
 		public SKColor SuperZapper = SKColors.Yellow;
 		public SKColor Flipper = SKColors.Red;
 		public SKColor Tanker = SKColors.Purple;

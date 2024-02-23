@@ -12,6 +12,10 @@ namespace Tempest.Objects
 		private int _mapPosition = -1;
 		private readonly Timer _bulletTimer = new();
 
+		// Strzelaj co 1 do 2 sekund
+		private const int MinShootDelay = 1000;
+		private const int MaxShootDelay = 2001;
+
 		private const float ZSpeed = 200f;
 
 		public override void OnCollisionEnter(PhysicsObject other)
@@ -32,7 +36,7 @@ namespace Tempest.Objects
 				transform.Position.Z = GameManager.LevelConfig.Length;
 
 			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = GameManager.Rand.Next(500, 2001); // Strzelaj co 0.5 do 2 sekund
+			_bulletTimer.Interval = GameManager.Rand.Next(MinShootDelay, MaxShootDelay); 
 			_bulletTimer.Enabled = true;
 
 			return new Setup()
@@ -70,7 +74,7 @@ namespace Tempest.Objects
 			if (GameManager.StopGame)
 				return;
 
-			_bulletTimer.Interval = GameManager.Rand.Next(500, 2001);
+			_bulletTimer.Interval = GameManager.Rand.Next(MinShootDelay, MaxShootDelay);
 
 			var bullet = new BulletTanker();
 			bullet.Setup(_mapPosition, transform.Position.Z);			
@@ -79,8 +83,6 @@ namespace Tempest.Objects
 
 		void Split()
 		{
-			Die();
-
 			Flipper flipper1 = new Flipper();
 
 			int flipper1MapPosition = _mapPosition;
@@ -101,6 +103,8 @@ namespace Tempest.Objects
 
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
+
+			Die();
 		}
 
 		void Die()

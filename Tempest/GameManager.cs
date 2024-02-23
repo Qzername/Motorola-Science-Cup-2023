@@ -81,7 +81,10 @@ namespace Tempest
 			else if (_currentLevel == Levels.Square)
 				_currentLevel = Levels.Plus;
 			else if (_currentLevel == Levels.Plus)
-				_currentLevel = Levels.BowTie;
+			{
+				LevelConfig.SpawnSpiker = true;
+				_currentLevel = Levels.BowTie;				
+			}
 			else if (_currentLevel == Levels.BowTie)
 				_currentLevel = Levels.StylizedCross;
 			else if (_currentLevel == Levels.StylizedCross)

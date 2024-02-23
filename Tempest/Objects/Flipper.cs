@@ -80,7 +80,7 @@ namespace Tempest.Objects
 
 			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
 
-			var bullet = new BulletFlipper();
+			var bullet = new Spike();
 			bullet.Setup(_mapPosition, transform.Position.Z);			
 			window.Instantiate(bullet);
 		}

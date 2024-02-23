@@ -1,6 +1,8 @@
-﻿using VGE;
+﻿using System.Timers;
+using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
+using Timer = System.Timers.Timer;
 
 namespace Tempest.Objects
 {
@@ -8,6 +10,7 @@ namespace Tempest.Objects
 	{
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition = -1;
+		private readonly Timer _bulletTimer = new();
 		private SpikerLine _spikerLine = new();
 
 		private bool _turnAround;
@@ -33,6 +36,10 @@ namespace Tempest.Objects
 			if (transform.Position.Z == 0)
 				transform.Position.Z = GameManager.LevelConfig.Length;
 
+			_bulletTimer.Elapsed += TimerShoot;
+			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+			_bulletTimer.Enabled = true;
+
 			_spikerLine.Setup(_mapPosition);
 			window.Instantiate(_spikerLine);
 
@@ -44,7 +51,7 @@ namespace Tempest.Objects
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.LevelConfig.Length),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}
@@ -89,6 +96,18 @@ namespace Tempest.Objects
 				new Point(0, 0, _spikerLine.Length));
 		}
 
+		void TimerShoot(object? sender, ElapsedEventArgs e)
+		{
+			if (GameManager.StopGame)
+				return;
+
+			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+
+			var bullet = new Spike();
+			bullet.Setup(_mapPosition, transform.Position.Z);
+			window.Instantiate(bullet);
+		}
+
 		void Die()
 		{
 			if (IsDead)
@@ -102,6 +121,8 @@ namespace Tempest.Objects
 
 		public override void OnDestroy()
 		{
+			_bulletTimer.Close();
+			_bulletTimer.Enabled = false;
 		}
 	}
 }

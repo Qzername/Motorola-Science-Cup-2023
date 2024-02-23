@@ -34,7 +34,7 @@ namespace Tempest.Objects
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
 								new Point(-20, 0, 0)),
-				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z) + new Point(0, 0, GameManager.LevelConfig.Length),
+				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
 		}

@@ -4,7 +4,7 @@ using VGE.Physics;
 
 namespace Tempest.Objects
 {
-	public class BulletFlipper : PhysicsObject
+	public class Spike : PhysicsObject
 	{
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition;
@@ -24,8 +24,8 @@ namespace Tempest.Objects
 		{
 			return new Setup()
 			{
-				Name = "BulletFlipper",
-				Shape = new PointShape(GameManager.LevelConfig.Flipper,
+				Name = "Spike",
+				Shape = new PointShape(GameManager.LevelConfig.Spike,
 								new Point(10, 10, 0),
 								new Point(10, -10, 0),
 								new Point(-10, -10, 0),

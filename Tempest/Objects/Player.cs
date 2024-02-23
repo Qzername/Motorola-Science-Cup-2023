@@ -102,7 +102,7 @@ namespace Tempest.Objects
 
 				Bullet bullet = new Bullet();
 				window.Instantiate(bullet);
-				bullet.Setup(GameManager.MapPosition, transform.Position.Z + 50);
+				bullet.Setup(GameManager.MapPosition, transform.Position.Z + 25);
 			}
 		}
 	}
