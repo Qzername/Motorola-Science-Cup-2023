@@ -15,7 +15,7 @@ namespace Tempest.Objects
 				return;
 
 			// Jesli obiekt nie jest pociskiem (czyli wrogiem lub pociskiem wroga), to gracz traci zycie i zaczyna poziom od nowa
-			if (other.Name != "Bullet")
+			if (other.Name != "Bullet" && other.Name != "SpikerLine")
 			{
 				GameManager.Lives--;
 				((GameWindow)window).StartLevel();
@@ -102,7 +102,7 @@ namespace Tempest.Objects
 
 				Bullet bullet = new Bullet();
 				window.Instantiate(bullet);
-				bullet.Setup(GameManager.MapPosition, transform.Position.Z + 25);
+				bullet.Setup(GameManager.MapPosition, transform.Position.Z);
 			}
 		}
 	}

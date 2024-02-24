@@ -80,7 +80,7 @@ namespace Tempest.Objects
 					Tanker tanker = new();
 					tanker.Setup(_mapPosition);
 					window.Instantiate(tanker);
-					Die();
+					Die(false);
 				}
 			}
 			else
@@ -88,10 +88,11 @@ namespace Tempest.Objects
 				transform.Position.Z += ZSpeed * delta;
 
 				if (transform.Position.Z > 1600)
-					Die();
+					Die(true);
 			}
 
-			_spikerLine.Shape = new PointShape(GameManager.LevelConfig.Spiker,
+			if (!IsDead)
+				_spikerLine.Shape = new PointShape(GameManager.LevelConfig.Spiker,
 				new Point(0, 0, 0),
 				new Point(0, 0, _spikerLine.Length));
 		}
@@ -108,13 +109,17 @@ namespace Tempest.Objects
 			window.Instantiate(bullet);
 		}
 
-		void Die()
+		void Die(bool killedByPlayer)
 		{
 			if (IsDead)
 				return;
 
+			if (killedByPlayer)
+				GameManager.Score += 50;
+			
 			((GameWindow)window).EnemyDestroyed(this);
 			IsDead = true;
+			_spikerLine.IsDead = true;
 
 			window.Destroy(this);
 		}

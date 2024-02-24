@@ -44,7 +44,7 @@ namespace Tempest.Objects
 		{
 			_mapPosition = mapPosition;
 			transform.Position.Z = zPosition;
-			transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z);
+			transform.Position = MapManager.Instance.GetPosition(mapPosition, transform.Position.Z - 10);
 		}
 
 		public override void Update(float delta)

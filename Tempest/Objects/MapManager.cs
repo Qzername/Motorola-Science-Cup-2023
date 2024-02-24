@@ -29,7 +29,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-			LoadMap(GameManager.CurrentLevel);
+			LoadMap(GameManager.CurrentLevel, GameManager.LevelConfig.IsClosed);
 
 			return new Setup()
 			{
@@ -37,7 +37,7 @@ namespace Tempest.Objects
 			};
 		}
 
-		void LoadMap(Point[] layout, bool shouldClose = true, float perspectivePointY = 0, float perspectivePointZ = 400)
+		void LoadMap(Point[] layout, bool shouldClose, float perspectivePointY = 0, float perspectivePointZ = 400)
 		{
 			for (int i = 0; i < layout.Length; i++)
 			{
