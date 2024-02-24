@@ -76,7 +76,7 @@ namespace Tempest.Objects
 
 			_bulletTimer.Interval = GameManager.Rand.Next(MinShootDelay, MaxShootDelay);
 
-			var bullet = new BulletTanker();
+			var bullet = new Spike();
 			bullet.Setup(_mapPosition, transform.Position.Z);			
 			window.Instantiate(bullet);
 		}

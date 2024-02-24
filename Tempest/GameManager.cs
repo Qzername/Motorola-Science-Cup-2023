@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using SkiaSharp;
+using VGE;
 
 namespace Tempest
 {
@@ -19,11 +20,7 @@ namespace Tempest
 		}
 
 		private static Point[] _currentLevel = Levels.Circle;
-		public static Point[] CurrentLevel
-		{
-			get => _currentLevel;
-			set => _currentLevel = value;
-		}
+		public static Point[] CurrentLevel => _currentLevel;
 
 		private static int _lives = 4;
 		public static int Lives
@@ -54,11 +51,7 @@ namespace Tempest
 		}
 
 		private static int _enemiesToSpawn = 5;
-		public static int EnemiesToSpawn
-		{
-			get => _enemiesToSpawn;
-			set => _enemiesToSpawn = value;
-		}
+		public static int EnemiesToSpawn => _enemiesToSpawn;
 
 		private static int _enemiesOnScreen;
 		public static int EnemiesOnScreen
@@ -71,46 +64,92 @@ namespace Tempest
 
 		public static void NextLevel()
 		{
-			_enemiesToSpawn += 5;
+			_enemiesToSpawn += 3;
 
 			if (_currentLevel == Levels.Circle)
 			{
+				LevelConfig.IsClosed = true;
 				LevelConfig.MoveFlipper = true;
 				_currentLevel = Levels.Square;
 			}
 			else if (_currentLevel == Levels.Square)
-				_currentLevel = Levels.Plus;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Plus;				
+			}
 			else if (_currentLevel == Levels.Plus)
 			{
+				LevelConfig.IsClosed = true;
 				LevelConfig.SpawnSpiker = true;
 				_currentLevel = Levels.BowTie;				
 			}
 			else if (_currentLevel == Levels.BowTie)
-				_currentLevel = Levels.StylizedCross;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.StylizedCross;				
+			}
 			else if (_currentLevel == Levels.StylizedCross)
-				_currentLevel = Levels.Triangle;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Triangle;				
+			}
 			else if (_currentLevel == Levels.Triangle)
-				_currentLevel = Levels.Clover;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Clover;				
+			}
 			else if (_currentLevel == Levels.Clover)
-				_currentLevel = Levels.V;
+			{
+				LevelConfig.IsClosed = false;
+				_currentLevel = Levels.V;				
+			}
 			else if (_currentLevel == Levels.V)
-				_currentLevel = Levels.Steps;
+			{
+				LevelConfig.IsClosed = false;
+				_currentLevel = Levels.Steps;				
+			}
 			else if (_currentLevel == Levels.Steps)
-				_currentLevel = Levels.U;
+			{
+				LevelConfig.IsClosed = false;
+				_currentLevel = Levels.U;				
+			}
 			else if (_currentLevel == Levels.U)
+			{
+				LevelConfig.IsClosed = false;
+				LevelConfig.SpawnFuseball = true;
 				_currentLevel = Levels.CompletelyFlat;
+			}
 			else if (_currentLevel == Levels.CompletelyFlat)
-				_currentLevel = Levels.Heart;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Heart;				
+			}
 			else if (_currentLevel == Levels.Heart)
-				_currentLevel = Levels.Star;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Star;				
+			}
 			else if (_currentLevel == Levels.Star)
-				_currentLevel = Levels.W;
+			{
+				LevelConfig.IsClosed = false;
+				_currentLevel = Levels.W;				
+			}
 			else if (_currentLevel == Levels.W)
-				_currentLevel = Levels.Fan;
+			{
+				LevelConfig.IsClosed = false;
+				_currentLevel = Levels.Fan;				
+			}
 			else if (_currentLevel == Levels.Fan)
-				_currentLevel = Levels.Infinity;
+			{
+				LevelConfig.IsClosed = true;
+				_currentLevel = Levels.Infinity;				
+			}
 			else if (_currentLevel == Levels.Infinity)
-				_currentLevel = Levels.Circle;
+			{
+				LevelConfig.IsClosed = true;
+				LevelConfig.ChangeColorScheme();
+				_currentLevel = Levels.Circle;				
+			}
 		}
 	}
 }

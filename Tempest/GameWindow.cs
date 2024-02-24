@@ -57,7 +57,7 @@ namespace Tempest
 						break;
 				}
 
-				await Task.Delay(GameManager.Rand.Next(500, 1001));
+				await Task.Delay(GameManager.Rand.Next(500, 2001));
 			}
 
 			GameManager.SpawningEnemies = false;
