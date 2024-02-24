@@ -113,6 +113,7 @@ namespace Asteroids
                 CurrentScreen = Screen.GameOver;
                 gameOverTimer = 0f;
                 window.Destroy(Player);
+                Player = null;
                 return;
             }
         }
