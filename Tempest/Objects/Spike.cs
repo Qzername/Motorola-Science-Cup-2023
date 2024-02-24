@@ -17,7 +17,7 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet")
-				window.Destroy(this);
+				Die(true);
 		}
 
 		public override Setup Start()
@@ -51,7 +51,20 @@ namespace Tempest.Objects
 			Rotate(new Point(0, 0, 10));
 
 			if (transform.Position.Z < 400)
-				window.Destroy(this);
+				Die(false);
+		}
+
+		void Die(bool killedByPlayer)
+		{
+			if (IsDead)
+				return;
+
+			if (killedByPlayer)
+				GameManager.Score += 3;
+			
+			IsDead = true;
+
+			window.Destroy(this);
 		}
 	}
 }

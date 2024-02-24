@@ -24,7 +24,7 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet")
-				Die();
+				Die(true);
 		}
 
 		public override Setup Start()
@@ -140,7 +140,7 @@ namespace Tempest.Objects
 					_mapChangeCount++;
 
 					if (_mapChangeCount > 8)
-						Die();
+						Die(false);
 				}
 			}
 		}
@@ -156,11 +156,14 @@ namespace Tempest.Objects
 			// Jezeli Flipper jest na koncu to zaczyna sie szybciej poruszac
 		}
 
-		void Die()
+		void Die(bool killedByPlayer)
 		{
 			if (IsDead)
 				return;
 
+			if (killedByPlayer)
+				GameManager.Score += 150;
+			
 			if (!_atTheEnd)
 				((GameWindow)window).EnemyDestroyed(this);
 			

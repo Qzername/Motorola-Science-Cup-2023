@@ -1,24 +1,33 @@
 ﻿using System.Diagnostics;
+using System.Timers;
 using Tempest.Objects;
 using VGE.Graphics;
 using VGE.Physics;
 using VGE.Windows;
+using Timer = System.Timers.Timer;
 
 namespace Tempest
 {
 	internal class GameWindow : Window
 	{
+		private readonly Timer _checkEnemiesTimer = new();
+
 		public GameWindow() : base(new TempestScene())
 		{
 			GameManager.LevelConfig = new();
 			RegisterPhysicsEngine(new TempestPhysicsEngine());
 
 			StartLevel();
+
+			_checkEnemiesTimer.Elapsed += TimerCheckEnemies;
+			_checkEnemiesTimer.Interval = 2000;
 		}
 
 		async void SpawnEnemies()
 		{
 			GameManager.SpawningEnemies = true;
+			_checkEnemiesTimer.Close();
+			_checkEnemiesTimer.Enabled = false;
 			int enemiesToSpawn = GameManager.EnemiesToSpawn;
 
 			for (int i = 0; i < enemiesToSpawn; i++)
@@ -61,6 +70,8 @@ namespace Tempest
 			}
 
 			GameManager.SpawningEnemies = false;
+			_checkEnemiesTimer.Enabled = true;			
+			_checkEnemiesTimer.Start();
 		}
 
 		public async void StartLevel()
@@ -70,6 +81,8 @@ namespace Tempest
 			await Task.Delay(500);
 			DestroyAll();
 			await Task.Delay(500);
+			DestroyAll();
+			// Upewnij sie, czy wszystko zostalo usuniete :)
 
 			GameManager.SpawningEnemies = false;
 			GameManager.EnemiesOnScreen = 0;
@@ -83,7 +96,6 @@ namespace Tempest
 
 			GameManager.StopGame = false;
 
-			await Task.Delay(1000);
 			await Task.Run(SpawnEnemies);
 		}
 
@@ -106,12 +118,17 @@ namespace Tempest
 				return;
 
 			GameManager.EnemiesOnScreen--;
+		}
 
-			if (GameManager.EnemiesOnScreen <= 0 && !GameManager.SpawningEnemies)
+		void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
+		{
+			Debug.WriteLine(GameManager.EnemiesOnScreen);
+			
+			if (GameManager.EnemiesOnScreen <= 0 && !GameManager.SpawningEnemies && !GameManager.StopGame)
 			{
 				GameManager.NextLevel();
 				StartLevel();
-			}
+			}			
 		}
 	}
 }

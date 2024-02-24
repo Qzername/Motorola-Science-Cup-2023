@@ -24,7 +24,7 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet")
-				Split();
+				Split(true);
 		}
 
 		public override Setup Start()
@@ -66,7 +66,7 @@ namespace Tempest.Objects
 			if (transform.Position.Z > 400)
 				transform.Position.Z -= ZSpeed * delta;
 			else
-				Split();
+				Split(false);
 		}
 
 		void TimerShoot(object? sender, ElapsedEventArgs e)
@@ -81,7 +81,7 @@ namespace Tempest.Objects
 			window.Instantiate(bullet);
 		}
 
-		void Split()
+		void Split(bool killedByPlayer)
 		{
 			Flipper flipper1 = new Flipper();
 
@@ -104,14 +104,17 @@ namespace Tempest.Objects
 			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
 
-			Die();
+			Die(killedByPlayer);
 		}
 
-		void Die()
+		void Die(bool killedByPlayer)
 		{
 			if (IsDead)
 				return;
-			
+
+			if (killedByPlayer)
+				GameManager.Score += 100;
+
 			((GameWindow)window).EnemyDestroyed(this);
 			IsDead = true;
 

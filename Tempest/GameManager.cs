@@ -5,150 +5,110 @@ namespace Tempest
 {
 	public static class GameManager
 	{
-		private static LevelConfiguration _levelConfig = new();
-		public static LevelConfiguration LevelConfig
-		{
-			get => _levelConfig;
-			set => _levelConfig = value;
-		}
+		public static LevelConfiguration LevelConfig = new();
 
-		private static int _mapPosition;
-		public static int MapPosition
-		{
-			get => _mapPosition;
-			set => _mapPosition = value;
-		}
+		public static Point[] CurrentLevel = Levels.Circle;
 
-		private static Point[] _currentLevel = Levels.Circle;
-		public static Point[] CurrentLevel => _currentLevel;
+		public static int MapPosition;		
+		public static int Lives = 4;
+		public static int Score;
 
-		private static int _lives = 4;
-		public static int Lives
-		{
-			get => _lives;
-			set => _lives = value;
-		}
+		public static bool StopGame;
+		public static bool ChangingMap;
 
-		private static bool _stopGame;
-		public static bool StopGame
-		{
-			get => _stopGame;
-			set => _stopGame = value;
-		}
-
-		private static bool _changingMap;
-		public static bool ChangingMap
-		{
-			get => _changingMap;
-			set => _changingMap = value;
-		}
-		
-		private static bool _spawningEnemies;
-		public static bool SpawningEnemies
-		{
-			get => _spawningEnemies;
-			set => _spawningEnemies = value;
-		}
-
-		private static int _enemiesToSpawn = 5;
-		public static int EnemiesToSpawn => _enemiesToSpawn;
-
-		private static int _enemiesOnScreen;
-		public static int EnemiesOnScreen
-		{
-			get => _enemiesOnScreen;
-			set => _enemiesOnScreen = value;
-		}
+		public static bool SpawningEnemies;
+		public static int EnemiesToSpawn = 5;
+		public static int EnemiesOnScreen;
 
 		public static Random Rand = new();
 
 		public static void NextLevel()
 		{
-			_enemiesToSpawn += 3;
+			EnemiesToSpawn += 3;
 
-			if (_currentLevel == Levels.Circle)
+			if (CurrentLevel == Levels.Circle) // Square
 			{
 				LevelConfig.IsClosed = true;
 				LevelConfig.MoveFlipper = true;
-				_currentLevel = Levels.Square;
+				CurrentLevel = Levels.Square;
 			}
-			else if (_currentLevel == Levels.Square)
+			else if (CurrentLevel == Levels.Square) // Plus
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Plus;				
+				CurrentLevel = Levels.Plus;				
 			}
-			else if (_currentLevel == Levels.Plus)
+			else if (CurrentLevel == Levels.Plus) // BowTie
 			{
 				LevelConfig.IsClosed = true;
 				LevelConfig.SpawnSpiker = true;
-				_currentLevel = Levels.BowTie;				
+				CurrentLevel = Levels.BowTie;				
 			}
-			else if (_currentLevel == Levels.BowTie)
+			else if (CurrentLevel == Levels.BowTie) // StylizedCross
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.StylizedCross;				
+				CurrentLevel = Levels.StylizedCross;				
 			}
-			else if (_currentLevel == Levels.StylizedCross)
+			else if (CurrentLevel == Levels.StylizedCross) // Triangle
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Triangle;				
+				CurrentLevel = Levels.Triangle;				
 			}
-			else if (_currentLevel == Levels.Triangle)
+			else if (CurrentLevel == Levels.Triangle) // Clover
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Clover;				
+				CurrentLevel = Levels.Clover;				
 			}
-			else if (_currentLevel == Levels.Clover)
+			else if (CurrentLevel == Levels.Clover) // V
 			{
 				LevelConfig.IsClosed = false;
-				_currentLevel = Levels.V;				
+				CurrentLevel = Levels.V;				
 			}
-			else if (_currentLevel == Levels.V)
+			else if (CurrentLevel == Levels.V) // Steps
 			{
 				LevelConfig.IsClosed = false;
-				_currentLevel = Levels.Steps;				
+				CurrentLevel = Levels.Steps;				
 			}
-			else if (_currentLevel == Levels.Steps)
+			else if (CurrentLevel == Levels.Steps) // U
 			{
 				LevelConfig.IsClosed = false;
-				_currentLevel = Levels.U;				
+				CurrentLevel = Levels.U;				
 			}
-			else if (_currentLevel == Levels.U)
+			else if (CurrentLevel == Levels.U) // CompletelyFlat
 			{
 				LevelConfig.IsClosed = false;
 				LevelConfig.SpawnFuseball = true;
-				_currentLevel = Levels.CompletelyFlat;
+				CurrentLevel = Levels.CompletelyFlat;
 			}
-			else if (_currentLevel == Levels.CompletelyFlat)
+			else if (CurrentLevel == Levels.CompletelyFlat) // Heart
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Heart;				
+				CurrentLevel = Levels.Heart;				
 			}
-			else if (_currentLevel == Levels.Heart)
+			else if (CurrentLevel == Levels.Heart) // Star
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Star;				
+				CurrentLevel = Levels.Star;				
 			}
-			else if (_currentLevel == Levels.Star)
+			else if (CurrentLevel == Levels.Star) // W
 			{
 				LevelConfig.IsClosed = false;
-				_currentLevel = Levels.W;				
+				CurrentLevel = Levels.W;				
 			}
-			else if (_currentLevel == Levels.W)
+			else if (CurrentLevel == Levels.W) // Fan
 			{
 				LevelConfig.IsClosed = false;
-				_currentLevel = Levels.Fan;				
+				CurrentLevel = Levels.Fan;				
 			}
-			else if (_currentLevel == Levels.Fan)
+			else if (CurrentLevel == Levels.Fan) // Infinity
 			{
 				LevelConfig.IsClosed = true;
-				_currentLevel = Levels.Infinity;				
+				CurrentLevel = Levels.Infinity;				
 			}
-			else if (_currentLevel == Levels.Infinity)
+			else if (CurrentLevel == Levels.Infinity) // Circle
 			{
 				LevelConfig.IsClosed = true;
 				LevelConfig.ChangeColorScheme();
-				_currentLevel = Levels.Circle;				
+				CurrentLevel = Levels.Circle;				
 			}
 		}
 	}

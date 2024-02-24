@@ -15,7 +15,7 @@ namespace Tempest.Objects
 				return;
 
 			if (other.Name == "Bullet")
-				Die();
+				Die(true);
 		}
 
 		public override Setup Start()
@@ -47,14 +47,18 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
+			// WIP
 			if (GameManager.StopGame)
 				return;
 		}
 
-		void Die()
+		void Die(bool killedByPlayer)
 		{
 			if (IsDead)
 				return;
+			
+			if (killedByPlayer)
+				GameManager.Score += 500;
 			
 			((GameWindow)window).EnemyDestroyed(this);
 			IsDead = true;				
