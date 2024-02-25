@@ -35,7 +35,6 @@ namespace Battlezone.Objects.Enemies
 
 		public override Setup Start()
 		{
-			//dla testu biorę kostkę
 			var shape = ResourcesHandler.Get3DShape("ufo");
 
 			return new Setup()

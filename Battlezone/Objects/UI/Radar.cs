@@ -1,5 +1,6 @@
 ﻿using Battlezone.Objects.Enemies;
 using SkiaSharp;
+using System.Runtime;
 using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
@@ -11,17 +12,23 @@ namespace Battlezone.Objects.UI
 	{
 		const float radarDistance = 400f;
 		const float radarHeight = 40f;
-		const float scannerSpeed = 10f;
+		const float scannerSpeed = 140f;
 
 		float rotationOfScanner = 0f;
 
 		Point[] scanner;
 		PointShape enemyOnRadar;
 
+		Point FOVlinePosition;
+
 		public override Setup Start()
 		{
 			scanner = [new(0, radarHeight, 0), new(0, 0, 0)];
 			enemyOnRadar = new PointShape([new(-1, -1), new(-1, 1), new(1, 1), new(1, -1)]);
+
+			var a = MathF.Sqrt(MathF.Pow(radarHeight, 2)/2);
+
+			FOVlinePosition = new Point(a,-a);
 
 			return new()
 			{
@@ -42,7 +49,26 @@ namespace Battlezone.Objects.UI
 		{
 			var finalScanner = PointManipulationTools.Rotate(new Point(0, 0, rotationOfScanner), scanner);
 
-			canvas.DrawLine(new Line(finalScanner[0] + transform.Position, finalScanner[1] + transform.Position, SKColors.Aqua));
+			// --- te cztery kreski po wszystkich bokach radaru ---
+			//prawo
+			var right = transform.Position +new Point(radarHeight,0);
+            canvas.DrawLine(new Line(right +new Point(-2,0), right + new Point(2,0), SKColors.Aqua));
+            //dół
+            var down = transform.Position + new Point(0, radarHeight);
+            canvas.DrawLine(new Line(down + new Point(0, -2), down + new Point(0, 2), SKColors.Aqua));
+            //lewo
+            var left = transform.Position + new Point(-radarHeight,0);
+            canvas.DrawLine(new Line(left + new Point(-2,0), left + new Point(2,0), SKColors.Aqua));
+            //góra
+            var up = transform.Position + new Point(0, -radarHeight);
+            canvas.DrawLine(new Line(up + new Point(0, -2), up + new Point(0, 2), SKColors.Aqua));
+
+			// --- linie które wskazują FOV ---
+			canvas.DrawLine(new Line(transform.Position, transform.Position + FOVlinePosition, SKColors.Aqua));
+			canvas.DrawLine(new Line(transform.Position, transform.Position+ new Point(-FOVlinePosition.X, FOVlinePosition.Y), SKColors.Aqua));
+
+            //skaner
+            canvas.DrawLine(new Line(finalScanner[0] + transform.Position, finalScanner[1] + transform.Position, SKColors.Aqua));
 
 			foreach (var enemy in EnemySpawner.Instance.Enemies)
 			{

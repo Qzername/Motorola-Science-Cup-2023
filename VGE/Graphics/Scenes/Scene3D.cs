@@ -19,7 +19,12 @@ namespace VGE.Graphics.Scenes
 
 		public Scene3D(float renderDistance)
 		{
-			Camera = new Transform();
+			Camera = new Transform()
+			{
+				Position = Point.Zero,
+				Rotation = Point.Zero
+			};
+
 			renderDistanceSquared = MathF.Pow(renderDistance, 2);
 		}
 

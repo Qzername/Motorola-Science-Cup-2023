@@ -10,7 +10,7 @@ namespace Battlezone
 		/// Kalkulacja następnej pozycji kiedy chcielibiśmy kierować sie do gracza
 		/// </summary>
 		/// <returns>Pierwsze pozycja, drugie rotacja w jaką obiekt powinien sie obróć</returns>
-		public static (Point, float) NextPositionTowardsPlayer(Transform transform, float speed, float delta)
+		public static (Point, float) NextPositionTowardsPoint(Transform transform, Point point, float speed)
 		{
 			/* 
              * dlaczego to nie jest w silniku?
@@ -23,7 +23,7 @@ namespace Battlezone
              */
 
 			//angle
-			Point offset = transform.Position - Scene3D.Camera.Position;
+			Point offset = transform.Position - point;
 
 			float c = MathF.Sqrt(MathF.Pow(offset.X, 2) + MathF.Pow(offset.Z, 2));
 
@@ -32,13 +32,14 @@ namespace Battlezone
 
 			float rotationDelta;
 
-			if (offset.X > 0)
+            rotationDelta = angleToPlayer - transform.Rotation.Y;
+            if (offset.X > 0)
 				rotationDelta = angleToPlayer - transform.Rotation.Y;
 			else
 				rotationDelta = ((angleToPlayer * -1f) - transform.Rotation.Y) - 180;
 
 			//next position
-			float cNext = (delta * speed);
+			float cNext = speed;
 
 			float z = sinAngleToPlayer * cNext;
 			float x = (offset.X / c) * cNext;

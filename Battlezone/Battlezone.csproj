@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resources\battlezone_shapes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\missle.3Dshape">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

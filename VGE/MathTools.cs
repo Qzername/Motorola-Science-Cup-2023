@@ -31,5 +31,11 @@
 
 			return kHasil;
 		}
+
+		/// <summary>
+		/// Kalkulacja dystansu od siebie dwóch punktów
+		/// </summary>
+		//Pitagoras
+		public static float CalculateDistance(Point p1, Point p2) => MathF.Sqrt(MathF.Pow(p1.X - p2.X, 2) + MathF.Pow(p1.Y - p2.Y, 2) + MathF.Pow(p1.Z - p2.Z, 2));
 	}
 }

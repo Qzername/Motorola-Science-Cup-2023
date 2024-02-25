@@ -40,6 +40,8 @@ namespace VGE
 
 		public static Point operator *(Point p, float v) => new Point(p.X * v, p.Y * v, p.Z * v);
 
+		public static Point operator /(Point p, float v) => new Point(p.X / v, p.Y / v, p.Z / v);
+
 		public static implicit operator string(Point p) => $"X: {p.X}, Y: {p.Y}, Z: {p.Z}";
 	}
 }

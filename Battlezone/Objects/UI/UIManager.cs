@@ -2,6 +2,7 @@
 using VGE;
 using VGE.Graphics;
 using VGE.Objects;
+using VGE.Windows;
 
 namespace Battlezone.Objects.UI
 {
@@ -9,20 +10,26 @@ namespace Battlezone.Objects.UI
 	{
 		public static UIManager Instance;
 
-		Text score, lives, reloading;
+		Text score;
+		WeaponScope reloading;
+		LiveCounter lives; 
+
+		Resolution currentResolution;
 
 		public override Setup Start()
 		{
 			Instance = this;
 
-			score = new Text("Score: 0000", 2, new SKPoint(10, 10));
+			score = new Text("Score: 0000", 2, new SKPoint(10, 42));
 			window.Instantiate(score);
 
-			lives = new Text("Lives: 3", 2, new SKPoint(10, 37));
+			lives = new LiveCounter();
 			window.Instantiate(lives);
 
-			reloading = new Text("", 2, new Point(10, 64));
+			reloading = new WeaponScope();
 			window.Instantiate(reloading);
+
+			RefreshUI();
 
 			return new()
 			{
@@ -32,15 +39,27 @@ namespace Battlezone.Objects.UI
 
 		public override void Update(float delta)
 		{
+			var resolution = window.GetResolution();
+
+			if (resolution != currentResolution)
+			{
+				currentResolution = resolution;
+				RefreshUI();
+			}
 		}
 
-
+		/// <summary>
+		/// Odświeżenie UI, wszystkich statystyk
+		/// </summary>
 		public void RefreshUI()
 		{
-			score.SetText($"Score: {GameManager.Score}");
-			lives.SetText($"Lives: {GameManager.Lives}");
+			score.SetText($"Score      {GameManager.Score}");
 
-			reloading.SetText(GameManager.IsReloading ? "RELOADING" : "");
+			reloading.IsReloading = GameManager.IsReloading;
+
+			//ustawianie pozycji
+			score.SetPosition(new Point(currentResolution.Width * 0.75f-104, score.Transform.Position.Y));
+			lives.SetPosition(new Point(currentResolution.Width * 0.75f-104, lives.Transform.Position.Y));
 		}
 
 		public override bool OverrideRender(Canvas canvas)

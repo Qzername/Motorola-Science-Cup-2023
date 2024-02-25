@@ -99,7 +99,7 @@ namespace Battlezone.Objects.Enemies
 			if (enemyChance == 2) //25% na szybki czołg
 				return new FastTank(enemyPosition);
 			else if (enemyChance == 3)
-				return new Missle(enemyPosition);
+				return new Missle();
 			else
 				return GameManager.Score <= 10000 ? new FastTank(enemyPosition) : new FastTank(enemyPosition);
 		}
