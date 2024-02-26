@@ -1,11 +1,9 @@
 ﻿using Asteroids.Objects;
 using Asteroids.Objects.UI;
 using HML;
-using SkiaSharp;
-using System.Diagnostics;
+using HML.Objects;
 using VGE;
 using VGE.Graphics;
-using VGE.Objects;
 using VGE.Windows;
 
 namespace Asteroids
@@ -95,7 +93,7 @@ namespace Asteroids
                 {
                     CurrentScreen = Screen.Highscore;
 
-                    nameSetter = new NameSetter();
+                    nameSetter = new NameSetter(FinishedWritingName);
                     window.Instantiate(nameSetter);
                 }
                 else

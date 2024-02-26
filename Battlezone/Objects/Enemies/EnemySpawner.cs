@@ -8,7 +8,9 @@ namespace Battlezone.Objects.Enemies
 	{
 		public static EnemySpawner Instance;
 
-		Random rng;
+        public bool SpawnEnemies;
+
+        Random rng;
 		public List<Enemy> Enemies;
 
 		//na początku przeciwnicy będą się spawnić co 5sek
@@ -32,6 +34,9 @@ namespace Battlezone.Objects.Enemies
 
 		public override void Update(float delta)
 		{
+			if (!SpawnEnemies)
+				return;
+
 			currentTimer += delta;
 
 			if (currentTimer < timerMax)
@@ -101,7 +106,7 @@ namespace Battlezone.Objects.Enemies
 			else if (enemyChance == 3)
 				return new Missle();
 			else
-				return GameManager.Score <= 10000 ? new FastTank(enemyPosition) : new FastTank(enemyPosition);
+				return GameManager.Instance.Score <= 10000 ? new FastTank(enemyPosition) : new FastTank(enemyPosition);
 		}
 
 		public override bool OverrideRender(Canvas canvas)

@@ -3,7 +3,7 @@ using VGE.Graphics;
 using VGE.Objects;
 using VGE.Windows;
 
-namespace Asteroids.Objects.UI
+namespace HML.Objects
 {
     public class NameSetter : VectorObject
     {
@@ -14,6 +14,13 @@ namespace Asteroids.Objects.UI
         int currentLetter = 0, currentIndex = 0;
 
         Text text, underline;
+
+        Action<string> nameSet;
+
+        public NameSetter(Action<string> nameSet)
+        {
+            this.nameSet = nameSet;
+        }
 
         public override Setup Start()
         {
@@ -49,14 +56,17 @@ namespace Asteroids.Objects.UI
 
                 if(currentIndex == 3)
                 {
-                    GameManager.Instance.FinishedWritingName(name);
+                    nameSet?.Invoke(name);
                     window.Destroy(underline);
                     window.Destroy(text);
                     window.Destroy(this);
                     return;
                 }
 
-                text.SetText(name + alphabet[0]);
+                currentLetter = 0;
+
+                if (currentIndex < 3)
+                    text.SetText(name + alphabet[0]);
             }
 
             bool currentIsWpressed = window.KeyDown(Key.W);

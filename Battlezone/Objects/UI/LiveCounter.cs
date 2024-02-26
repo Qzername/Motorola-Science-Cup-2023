@@ -10,6 +10,8 @@ namespace Battlezone.Objects.UI
     {
         IShape tankShape;
 
+        public bool IsEnabled;
+
         public override Setup Start()
         {
             tankShape = ResourcesHandler.GetShape("battlezone_shapes", "tank_icon");
@@ -32,7 +34,10 @@ namespace Battlezone.Objects.UI
 
         public override bool OverrideRender(Canvas canvas)
         {
-            for(int i = 0; i < GameManager.Lives; i++)
+            if (!IsEnabled)
+                return true;
+
+            for(int i = 0; i < GameManager.Instance.Lives; i++)
             {
                 Point offset = new Point(i * (tankShape.BottomRight.X + 5),0);
 

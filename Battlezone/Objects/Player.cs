@@ -1,4 +1,5 @@
 ﻿using Battlezone.Objects.Enemies;
+using Battlezone.Objects.UI;
 using System.Diagnostics;
 using VGE;
 using VGE.Graphics;
@@ -24,9 +25,11 @@ namespace Battlezone.Objects
 		const float shootCooldownTime = 1f;
 		float reloadingTimer = 0f, shootCooldownTimer = 1f;
 
+		bool IsDead = false;
+
 		public override Setup Start()
-		{
-			back = new PlayerCollider();
+        {
+            back = new PlayerCollider();
 			window.Instantiate(back);
 
 			front = new PlayerCollider();
@@ -49,6 +52,9 @@ namespace Battlezone.Objects
 
 		public override void Update(float delta)
 		{
+			if (IsDead)
+				return;
+
 			if(back.IsColliding && front.IsColliding)
 			{
 				back.IsColliding = false;
@@ -84,7 +90,7 @@ namespace Battlezone.Objects
 			//bullet
 			if (magazine == 0)
 			{
-				GameManager.IsReloading = true;
+				GameManager.Instance.IsReloading = true;
 				reloadingTimer += delta;
 
 				if (reloadingTime < reloadingTimer)
@@ -92,7 +98,7 @@ namespace Battlezone.Objects
 					magazine = 3;
 					reloadingTimer = 0;
 					shootCooldownTimer = 10f;
-					GameManager.IsReloading = false;
+					GameManager.Instance.IsReloading = false;
 				}
 
 				return;
@@ -131,27 +137,38 @@ namespace Battlezone.Objects
 
 			window.Destroy(other);
 
-			GameManager.Lives--;
+			IsDead = true;
 
-			if (GameManager.Lives == 0)
-				window.Close();
-
-			EnemySpawner.Instance.DestroyAllObjects();
-			Scene3D.Camera = new Transform()
-			{
-				Position = Point.Zero,
-				Rotation = Point.Zero
-			};
-
-			front.IsColliding = false;
-			back.IsColliding = false;
-
-			//shooting
-			GameManager.IsReloading = false;
-			shootCooldownTimer = shootCooldownTime;
-			reloadingTimer = 0f;
-			magazine = 3;
+			//animacja śmierci
+			window.Instantiate(new DeathAnimation(this));
 		}
+
+		/// <summary>
+		/// Ustawienia pozwalające na respawn gracza
+		/// </summary>
+		public void Respawn()
+		{
+			EnemySpawner.Instance.SpawnEnemies = true;
+
+            Scene3D.Camera = new Transform()
+            {
+                Position = Point.Zero,
+                Rotation = Point.Zero
+            };
+
+            EnemySpawner.Instance.DestroyAllObjects();
+
+			IsDead = false;
+
+            front.IsColliding = false;
+            back.IsColliding = false;
+
+            //shooting
+            GameManager.Instance.IsReloading = false;
+            shootCooldownTimer = shootCooldownTime;
+            reloadingTimer = 0f;
+            magazine = 3;
+        }
 
 		void RefreshCollidersPosition()
 		{

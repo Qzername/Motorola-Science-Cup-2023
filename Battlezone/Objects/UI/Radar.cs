@@ -21,6 +21,8 @@ namespace Battlezone.Objects.UI
 
 		Point FOVlinePosition;
 
+		public bool IsEnabled;
+
 		public override Setup Start()
 		{
 			scanner = [new(0, radarHeight, 0), new(0, 0, 0)];
@@ -47,6 +49,9 @@ namespace Battlezone.Objects.UI
 
 		public override bool OverrideRender(Canvas canvas)
 		{
+			if (!IsEnabled)
+				return true;
+
 			var finalScanner = PointManipulationTools.Rotate(new Point(0, 0, rotationOfScanner), scanner);
 
 			// --- te cztery kreski po wszystkich bokach radaru ---

@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using System.Diagnostics;
+using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
@@ -10,13 +11,10 @@ namespace Battlezone.Objects
 	/// </summary>
 	public class PlayerCollider : PhysicsObject
 	{
-		public bool IsColliding = false;
-
 		public override int PhysicsLayer => 0;
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			IsColliding = true;
 		}
 
 		public override Setup Start()

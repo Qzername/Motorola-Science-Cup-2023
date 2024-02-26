@@ -10,6 +10,7 @@ namespace Battlezone.Objects.UI
     public class WeaponScope : VectorObject
     {
         public bool IsReloading;
+        public bool IsEnabled;
 
         const float reloadingAnimationMax = 0.5f;
         float reloadingAnimationCurrent;
@@ -47,6 +48,9 @@ namespace Battlezone.Objects.UI
 
         public override bool OverrideRender(Canvas canvas)
         {
+            if(!IsEnabled)
+                return true;
+
             if (reloadingAnimationCurrent > 0.25f)
                 return true;
 

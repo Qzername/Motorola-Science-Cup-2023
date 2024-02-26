@@ -9,7 +9,7 @@ using VGE.Graphics;
 using VGE.Objects;
 using VGE.Windows;
 
-namespace Asteroids.Objects.UI
+namespace HML.Objects
 {
     public class Scoreboard : VectorObject
     {

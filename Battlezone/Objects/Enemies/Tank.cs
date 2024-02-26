@@ -50,7 +50,7 @@ namespace Battlezone.Objects.Enemies
 
 			//gra będzie coraz cięższa gdy gracz będzie miał więcej punktów
 			//czołgi będą bardziej agresywne
-			var lateGameOffset = GameManager.Score / 10000 *1.5f;
+			var lateGameOffset = GameManager.Instance.Score / 10000 *1.5f;
 
 			if (20 - lateGameOffset < 0)
 				lateGameOffset = 19;
