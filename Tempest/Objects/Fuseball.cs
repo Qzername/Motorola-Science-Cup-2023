@@ -9,6 +9,8 @@ namespace Tempest.Objects
 		public override int PhysicsLayer => _mapPosition;
 		private int _mapPosition = -1;
 
+		private const float ZSpeed = 400f;
+
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
 			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
@@ -47,9 +49,13 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			// WIP
 			if (GameManager.StopGame)
 				return;
+
+			if (transform.Position.Z > 400)
+				transform.Position.Z -= ZSpeed * delta;
+			else
+				Die(false);
 		}
 
 		void Die(bool killedByPlayer)

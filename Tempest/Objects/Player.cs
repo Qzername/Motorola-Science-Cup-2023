@@ -8,6 +8,7 @@ namespace Tempest.Objects
 	public class Player : PhysicsObject
 	{
 		public override int PhysicsLayer => GameManager.MapPosition;
+		public SuperZapper SuperZapper = new();
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
@@ -24,6 +25,8 @@ namespace Tempest.Objects
 
 		public override Setup Start()
 		{
+			window.Instantiate(SuperZapper);
+
 			return new Setup()
 			{
 				Name = "Player",
@@ -37,18 +40,18 @@ namespace Tempest.Objects
 			};
 		}
 
-		private bool _wasLeftPressed, _wasRightPressed, _wasSpacePressed;
+		private bool _isLeftPressed, _isRightPressed, _isSpacePressed;
 
 		public override void Update(float delta)
 		{
 			if (GameManager.StopGame)
 				return;
 
-			if ((window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && !_wasLeftPressed)
-				_wasLeftPressed = true;
-			else if (!(window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && _wasLeftPressed)
+			if ((window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && !_isLeftPressed)
+				_isLeftPressed = true;
+			else if (!(window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && _isLeftPressed)
 			{
-				_wasLeftPressed = false;
+				_isLeftPressed = false;
 
 				if (GameManager.MapPosition != 0)
 				{
@@ -69,11 +72,11 @@ namespace Tempest.Objects
 				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
 			}
 
-			if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !_wasRightPressed)
-				_wasRightPressed = true;
-			else if (!(window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && _wasRightPressed)
+			if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !_isRightPressed)
+				_isRightPressed = true;
+			else if (!(window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && _isRightPressed)
 			{
-				_wasRightPressed = false;
+				_isRightPressed = false;
 
 				if (GameManager.MapPosition != MapManager.Instance.Elements.Count - 1)
 				{
@@ -94,11 +97,11 @@ namespace Tempest.Objects
 				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
 			}
 
-			if (window.KeyDown(Key.Space) && !_wasSpacePressed)
-				_wasSpacePressed = true;
-			else if (!window.KeyDown(Key.Space) && _wasSpacePressed)
+			if (window.KeyDown(Key.Space) && !_isSpacePressed)
+				_isSpacePressed = true;
+			else if (!window.KeyDown(Key.Space) && _isSpacePressed)
 			{
-				_wasSpacePressed = false;
+				_isSpacePressed = false;
 
 				Bullet bullet = new Bullet();
 				window.Instantiate(bullet);

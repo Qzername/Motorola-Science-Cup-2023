@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Timers;
 using Tempest.Objects;
+using VGE;
 using VGE.Graphics;
 using VGE.Physics;
 using VGE.Windows;
@@ -34,7 +35,7 @@ namespace Tempest
 			{
 				if (GameManager.StopGame)
 					return;
-				
+
 				GameManager.EnemiesOnScreen++;
 				Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
@@ -70,7 +71,7 @@ namespace Tempest
 			}
 
 			GameManager.SpawningEnemies = false;
-			_checkEnemiesTimer.Enabled = true;			
+			_checkEnemiesTimer.Enabled = true;
 			_checkEnemiesTimer.Start();
 		}
 
@@ -112,6 +113,18 @@ namespace Tempest
 			}
 		}
 
+		public void DestroyEnemies()
+		{
+			if (Objects.Count == 0)
+				return;
+
+			VectorObject[] objectsCopy = Objects.ToArray();
+
+			foreach (VectorObject obj in objectsCopy)
+				if (obj is Flipper || obj is Fuseball || obj is Spiker || obj is Tanker)
+					Destroy(obj);
+		}
+
 		public void EnemyDestroyed(PhysicsObject enemy)
 		{
 			if (enemy.IsDead)
@@ -122,8 +135,6 @@ namespace Tempest
 
 		void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
 		{
-			Debug.WriteLine(GameManager.EnemiesOnScreen);
-			
 			if (GameManager.EnemiesOnScreen <= 0 && !GameManager.SpawningEnemies && !GameManager.StopGame)
 			{
 				GameManager.NextLevel();
