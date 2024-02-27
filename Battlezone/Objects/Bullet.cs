@@ -30,7 +30,7 @@ namespace Battlezone.Objects
 
 			if (other is Enemy)
 			{
-				GameManager.Score += ((Enemy)other).Score;
+				GameManager.Instance.Score += ((Enemy)other).Score;
 				window.Destroy(other);
 			}
 

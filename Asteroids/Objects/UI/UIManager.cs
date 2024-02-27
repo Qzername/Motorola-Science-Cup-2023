@@ -1,10 +1,6 @@
 ﻿using HML;
+using HML.Objects;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VGE;
 using VGE.Graphics;
 using VGE.Objects;

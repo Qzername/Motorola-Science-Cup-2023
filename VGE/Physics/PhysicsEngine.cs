@@ -97,17 +97,24 @@ namespace VGE.Physics
 
 					//faktycznie sprawdzanie kolizji
 					foreach (var obj1 in objectsInCurrentLayer)
-						foreach (var obj2 in objectsInCollidingLayer)
-							if (PhysicsTools.CheckCollisionAABB(
-								obj1.Transform.Position + obj1.Shape.TopLeft,
-								obj1.Transform.Position + obj1.Shape.BottomRight,
-								obj2.Transform.Position + obj2.Shape.TopLeft,
-								obj2.Transform.Position + obj2.Shape.BottomRight))
-							{
-								CollisionDetected?.Invoke(obj1, obj2);
-								obj1.OnCollisionEnter(obj2);
-								obj2.OnCollisionEnter(obj1);
-							}
+					{
+						obj1.IsColliding = false;
+						
+                        foreach (var obj2 in objectsInCollidingLayer)
+                            if (PhysicsTools.CheckCollisionAABB(
+                                obj1.Transform.Position + obj1.Shape.TopLeft,
+                                obj1.Transform.Position + obj1.Shape.BottomRight,
+                                obj2.Transform.Position + obj2.Shape.TopLeft,
+                                obj2.Transform.Position + obj2.Shape.BottomRight))
+                            {
+                                CollisionDetected?.Invoke(obj1, obj2);
+
+                                obj1.OnCollisionEnter(obj2);
+								obj1.IsColliding = true;
+                                obj2.OnCollisionEnter(obj1);
+                            }
+                    }
+						
 
 				}
 			}

@@ -24,15 +24,14 @@ namespace Battlezone
 
 			RegisterPhysicsEngine(new PhysicsEngine(configuration));
 
-			Instantiate(new Background());
-			Instantiate(new Player());
+            Instantiate(new EnemySpawner());
+
+            Instantiate(new Background());
 			Instantiate(new ObstacleGenerator());
 
-			Instantiate(new EnemySpawner());
+            Instantiate(new UIManager());
 
-			//UI
-			Instantiate(new UIManager());
-			Instantiate(new Radar());
+            Instantiate(new GameManager());
 		}
 
 		public override void Update(Canvas canvas)

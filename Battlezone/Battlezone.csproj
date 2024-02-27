@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Highscore Managing Library\Highscore Managing Library.csproj" />
     <ProjectReference Include="..\VGE\Vector Game Engine.csproj" />
   </ItemGroup>
 

@@ -31,7 +31,7 @@ namespace Battlezone.Objects.Enemies
 		public override Setup Start()
 		{
 			//gra sie staje szybsza wraz z progresją gracza
-			speed += 50 * (GameManager.Score / 10000);
+			speed += 50 * (GameManager.Instance.Score / 10000);
 
 			//ustawienia
 			int rotationOffset = 25;
