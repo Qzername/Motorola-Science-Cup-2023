@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using SkiaSharp;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
-using VGE.Graphics.Shapes;
 using VGE.Windows;
 
 namespace Tempest.Objects
@@ -16,18 +13,13 @@ namespace Tempest.Objects
 		{
 			return new Setup()
 			{
-				Name = "SuperZapper",
-				Shape = new PointShape(SKColors.Empty,
-					new Point(0, 0, 0),
-					new Point(0, 0, 0)),
-				Position = Point.Zero,
-				Rotation = Point.Zero
+				Name = "SuperZapper"
 			};
 		}
 
 		public override void Update(float delta)
 		{
-			if (GameManager.StopGame || IsUsed)
+			if (GameManager.Instance.StopGame || IsUsed)
 				return;
 
 			if (window.KeyDown(Key.Z) && !_isZPressed)
@@ -36,7 +28,7 @@ namespace Tempest.Objects
 			{
 				IsUsed = true;
 				_isZPressed = false;
-				((GameWindow)window).DestroyEnemies();
+				EnemyManager.Instance.DestroyEnemies();
 			}
 		}
 

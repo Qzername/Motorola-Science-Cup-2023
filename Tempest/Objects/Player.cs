@@ -7,19 +7,20 @@ namespace Tempest.Objects
 {
 	public class Player : PhysicsObject
 	{
-		public override int PhysicsLayer => GameManager.MapPosition;
+		public override int PhysicsLayer => GameManager.Instance.MapPosition;
 		public SuperZapper SuperZapper = new();
+		public List<VectorObject> Bullets = new();
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != GameManager.MapPosition || GameManager.StopGame)
+			if (other.PhysicsLayer != GameManager.Instance.MapPosition || GameManager.Instance.StopGame)
 				return;
 
 			// Jesli obiekt nie jest pociskiem (czyli wrogiem lub pociskiem wroga), to gracz traci zycie i zaczyna poziom od nowa
 			if (other.Name != "Bullet" && other.Name != "SpikerLine")
 			{
-				GameManager.Lives--;
-				((GameWindow)window).StartLevel();
+				GameManager.Instance.Lives--;
+				GameManager.Instance.StartLevel();
 			}
 		}
 
@@ -30,13 +31,13 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "Player",
-				Shape = new PointShape(GameManager.LevelConfig.Player,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Player,
 								new Point(0, -20, 0),
-								new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
-								new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
+								new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / 2, 0, 0),
+								new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / -2, 0, 0),
 								new Point(0, -20, 0)),
-				Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z) + new Point(0, 0, 400),
-				Rotation = MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation
+				Position = MapManager.Instance.GetPosition(GameManager.Instance.MapPosition, transform.Position.Z) + new Point(0, 0, 400),
+				Rotation = MapManager.Instance.Elements[GameManager.Instance.MapPosition].Transform.Rotation
 			};
 		}
 
@@ -44,7 +45,7 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
 			if ((window.KeyDown(Key.A) || window.KeyDown(Key.Left)) && !_isLeftPressed)
@@ -53,23 +54,23 @@ namespace Tempest.Objects
 			{
 				_isLeftPressed = false;
 
-				if (GameManager.MapPosition != 0)
+				if (GameManager.Instance.MapPosition != 0)
 				{
-					GameManager.MapPosition--;
-					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
+					GameManager.Instance.MapPosition--;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.Instance.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.LevelConfig.IsClosed)
+				else if (GameManager.Instance.LevelConfig.IsClosed)
 				{
-					GameManager.MapPosition = MapManager.Instance.Elements.Count - 1;
-					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
+					GameManager.Instance.MapPosition = MapManager.Instance.Elements.Count - 1;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.Instance.MapPosition, transform.Position.Z);
 				}
 
-				Shape = new PointShape(GameManager.LevelConfig.Player,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Player,
 					new Point(0, -20, 0),
-					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
-					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / 2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / -2, 0, 0),
 					new Point(0, -20, 0));
-				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
+				Rotate(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Transform.Rotation);
 			}
 
 			if ((window.KeyDown(Key.D) || window.KeyDown(Key.Right)) && !_isRightPressed)
@@ -78,23 +79,23 @@ namespace Tempest.Objects
 			{
 				_isRightPressed = false;
 
-				if (GameManager.MapPosition != MapManager.Instance.Elements.Count - 1)
+				if (GameManager.Instance.MapPosition != MapManager.Instance.Elements.Count - 1)
 				{
-					GameManager.MapPosition++;
-					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
+					GameManager.Instance.MapPosition++;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.Instance.MapPosition, transform.Position.Z);
 				}
-				else if (GameManager.LevelConfig.IsClosed)
+				else if (GameManager.Instance.LevelConfig.IsClosed)
 				{
-					GameManager.MapPosition = 0;
-					transform.Position = MapManager.Instance.GetPosition(GameManager.MapPosition, transform.Position.Z);
+					GameManager.Instance.MapPosition = 0;
+					transform.Position = MapManager.Instance.GetPosition(GameManager.Instance.MapPosition, transform.Position.Z);
 				}
 
-				Shape = new PointShape(GameManager.LevelConfig.Player,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Player,
 					new Point(0, -20, 0),
-					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / 2, 0, 0),
-					new Point(MapManager.Instance.Elements[GameManager.MapPosition].Length / -2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / 2, 0, 0),
+					new Point(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Length / -2, 0, 0),
 					new Point(0, -20, 0));
-				Rotate(MapManager.Instance.Elements[GameManager.MapPosition].Transform.Rotation);
+				Rotate(MapManager.Instance.Elements[GameManager.Instance.MapPosition].Transform.Rotation);
 			}
 
 			if (window.KeyDown(Key.Space) && !_isSpacePressed)
@@ -104,9 +105,20 @@ namespace Tempest.Objects
 				_isSpacePressed = false;
 
 				Bullet bullet = new Bullet();
+				Bullets.Add(bullet);
 				window.Instantiate(bullet);
-				bullet.Setup(GameManager.MapPosition, transform.Position.Z);
+				bullet.Setup(GameManager.Instance.MapPosition, transform.Position.Z);
 			}
+		}
+
+		public override void OnDestroy()
+		{
+			window.Destroy(SuperZapper);
+
+			foreach (VectorObject bullet in Bullets.ToArray())
+				window.Destroy(bullet);
+
+			Bullets.Clear();
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace Tempest.Objects
 			{
 				Name = "MapElement",
 				Position = transform.Position,
-				Shape = new PointShape(GameManager.LevelConfig.Tunnel,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Tunnel,
 									new Point(0, 0, 950),
 									new Point(_length, 0, 950),
 									new Point(_length, 0, -350),

@@ -20,7 +20,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
+			if (other.PhysicsLayer != _mapPosition || GameManager.Instance.StopGame)
 				return;
 
 			if (other.Name == "Bullet")
@@ -30,19 +30,19 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
-				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
-			
+				_mapPosition = GameManager.Instance.Rand.Next(0, MapManager.Instance.Elements.Count);
+
 			if (transform.Position.Z == 0)
-				transform.Position.Z = GameManager.LevelConfig.Length;
+				transform.Position.Z = GameManager.Instance.LevelConfig.Length;
 
 			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = GameManager.Rand.Next(MinShootDelay, MaxShootDelay); 
+			_bulletTimer.Interval = GameManager.Instance.Rand.Next(MinShootDelay, MaxShootDelay);
 			_bulletTimer.Enabled = true;
 
 			return new Setup()
 			{
 				Name = "Tanker",
-				Shape = new PointShape(GameManager.LevelConfig.Tanker,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Tanker,
 								new Point(0, 20, 0),
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
@@ -60,7 +60,7 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
 			if (transform.Position.Z > 400)
@@ -71,39 +71,19 @@ namespace Tempest.Objects
 
 		void TimerShoot(object? sender, ElapsedEventArgs e)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
-			_bulletTimer.Interval = GameManager.Rand.Next(MinShootDelay, MaxShootDelay);
+			_bulletTimer.Interval = GameManager.Instance.Rand.Next(MinShootDelay, MaxShootDelay);
 
 			var bullet = new Spike();
-			bullet.Setup(_mapPosition, transform.Position.Z);			
+			bullet.Setup(_mapPosition, transform.Position.Z);
 			window.Instantiate(bullet);
 		}
 
 		void Split(bool killedByPlayer)
 		{
-			Flipper flipper1 = new Flipper();
-
-			int flipper1MapPosition = _mapPosition;
-			if (_mapPosition < MapManager.Instance.Elements.Count - 1)
-				flipper1MapPosition += 1;
-
-			flipper1.Setup(flipper1MapPosition, transform.Position.Z);
-			GameManager.EnemiesOnScreen++;
-
-			Flipper flipper2 = new Flipper();
-
-			int flipper2MapPosition = _mapPosition;
-			if (_mapPosition > 0)
-				flipper2MapPosition -= 1;
-
-			flipper2.Setup(flipper2MapPosition, transform.Position.Z);
-			GameManager.EnemiesOnScreen++;
-
-			window.Instantiate(flipper1);
-			window.Instantiate(flipper2);
-
+			EnemyManager.Instance.SplitTanker(this);
 			Die(killedByPlayer);
 		}
 
@@ -113,9 +93,9 @@ namespace Tempest.Objects
 				return;
 
 			if (killedByPlayer)
-				GameManager.Score += 100;
+				GameManager.Instance.Score += 100;
 
-			((GameWindow)window).EnemyDestroyed(this);
+			EnemyManager.Instance.EnemyDestroyed(this);
 			IsDead = true;
 
 			window.Destroy(this);

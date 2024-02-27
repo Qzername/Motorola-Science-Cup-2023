@@ -18,7 +18,7 @@ namespace Tempest
 
 		public bool IsClosed = true;
 		public bool MoveFlipper = false;
-		
+
 		public bool SpawnTanker = true;
 		public bool SpawnSpiker;
 		public bool SpawnFuseball;

@@ -13,7 +13,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
+			if (other.PhysicsLayer != _mapPosition || GameManager.Instance.StopGame)
 				return;
 
 			if (other.Name == "Bullet")
@@ -22,10 +22,12 @@ namespace Tempest.Objects
 
 		public override Setup Start()
 		{
+			EnemyManager.Instance.Spikes.Add(this);
+
 			return new Setup()
 			{
 				Name = "Spike",
-				Shape = new PointShape(GameManager.LevelConfig.Spike,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Spike,
 								new Point(10, 10, 0),
 								new Point(10, -10, 0),
 								new Point(-10, -10, 0),
@@ -44,7 +46,7 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
 			transform.Position.Z -= ZSpeed * delta;
@@ -60,8 +62,8 @@ namespace Tempest.Objects
 				return;
 
 			if (killedByPlayer)
-				GameManager.Score += 3;
-			
+				GameManager.Instance.Score += 3;
+
 			IsDead = true;
 
 			window.Destroy(this);

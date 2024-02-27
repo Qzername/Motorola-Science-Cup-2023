@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using System.Diagnostics;
+using VGE;
 using VGE.Graphics;
 using VGE.Windows;
 
@@ -25,11 +26,11 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			_elements = new List<MapElement>();
-			_perspectiveOffset = new Point(0, 0, 400);
+			_perspectiveOffset = new Point(0, 0, 300);
 
 			Instance = this;
 
-			LoadMap(GameManager.CurrentLevel, GameManager.LevelConfig.IsClosed);
+			LoadMap(GameManager.Instance.CurrentLevel, GameManager.Instance.LevelConfig.IsClosed);
 
 			return new Setup()
 			{
@@ -37,7 +38,7 @@ namespace Tempest.Objects
 			};
 		}
 
-		void LoadMap(Point[] layout, bool shouldClose, float perspectivePointY = 0, float perspectivePointZ = 400)
+		void LoadMap(Point[] layout, bool shouldClose)
 		{
 			for (int i = 0; i < layout.Length; i++)
 			{
@@ -58,9 +59,7 @@ namespace Tempest.Objects
 				_elements.Add(element);
 			}
 
-			GameManager.LevelConfig.IsClosed = shouldClose;
-			_perspectiveOffset.Y = perspectivePointY;
-			_perspectiveOffset.Z = perspectivePointZ;
+			GameManager.Instance.LevelConfig.IsClosed = shouldClose;
 			TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
 		}
 
@@ -91,6 +90,14 @@ namespace Tempest.Objects
 			p.Z = Z;
 
 			return p;
+		}
+
+		public override void OnDestroy()
+		{
+			foreach (var element in Elements)
+				window.Destroy(element);
+
+			Elements.Clear();
 		}
 	}
 }

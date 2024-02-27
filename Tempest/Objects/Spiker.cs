@@ -18,7 +18,7 @@ namespace Tempest.Objects
 
 		public override void OnCollisionEnter(PhysicsObject other)
 		{
-			if (other.PhysicsLayer != _mapPosition || GameManager.StopGame)
+			if (other.PhysicsLayer != _mapPosition || GameManager.Instance.StopGame)
 				return;
 
 			if (other.Name == "Bullet" && !_turnAround)
@@ -31,13 +31,13 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			if (_mapPosition == -1)
-				_mapPosition = GameManager.Rand.Next(0, MapManager.Instance.Elements.Count);
+				_mapPosition = GameManager.Instance.Rand.Next(0, MapManager.Instance.Elements.Count);
 
 			if (transform.Position.Z == 0)
-				transform.Position.Z = GameManager.LevelConfig.Length;
+				transform.Position.Z = GameManager.Instance.LevelConfig.Length;
 
 			_bulletTimer.Elapsed += TimerShoot;
-			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+			_bulletTimer.Interval = GameManager.Instance.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
 			_bulletTimer.Enabled = true;
 
 			_spikerLine.Setup(_mapPosition);
@@ -46,7 +46,7 @@ namespace Tempest.Objects
 			return new Setup()
 			{
 				Name = "Spiker",
-				Shape = new PointShape(GameManager.LevelConfig.Spiker,
+				Shape = new PointShape(GameManager.Instance.LevelConfig.Spiker,
 								new Point(0, 20, 0),
 								new Point(20, 0, 0),
 								new Point(0, -20, 0),
@@ -64,10 +64,7 @@ namespace Tempest.Objects
 
 		public override void Update(float delta)
 		{
-			if (GameManager.StopGame)
-				return;
-
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
 			if (!_turnAround)
@@ -92,17 +89,17 @@ namespace Tempest.Objects
 			}
 
 			if (!IsDead)
-				_spikerLine.Shape = new PointShape(GameManager.LevelConfig.Spiker,
+				_spikerLine.Shape = new PointShape(GameManager.Instance.LevelConfig.Spiker,
 				new Point(0, 0, 0),
 				new Point(0, 0, _spikerLine.Length));
 		}
 
 		void TimerShoot(object? sender, ElapsedEventArgs e)
 		{
-			if (GameManager.StopGame)
+			if (GameManager.Instance.StopGame)
 				return;
 
-			_bulletTimer.Interval = GameManager.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
+			_bulletTimer.Interval = GameManager.Instance.Rand.Next(1000, 3001); // Strzelaj co 1 do 3 sekund
 
 			var bullet = new Spike();
 			bullet.Setup(_mapPosition, transform.Position.Z);
@@ -115,9 +112,9 @@ namespace Tempest.Objects
 				return;
 
 			if (killedByPlayer)
-				GameManager.Score += 50;
-			
-			((GameWindow)window).EnemyDestroyed(this);
+				GameManager.Instance.Score += 50;
+
+			EnemyManager.Instance.EnemyDestroyed(this);
 			IsDead = true;
 			_spikerLine.IsDead = true;
 
@@ -126,6 +123,7 @@ namespace Tempest.Objects
 
 		public override void OnDestroy()
 		{
+			window.Destroy(_spikerLine);
 			_bulletTimer.Close();
 			_bulletTimer.Enabled = false;
 		}

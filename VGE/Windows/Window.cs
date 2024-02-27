@@ -109,6 +109,9 @@ namespace VGE.Windows
 
 		public void Destroy(VectorObject objToDestroy)
 		{
+			if (objToDestroy == null)
+				return;
+
 			VectorObject? obj = objects.SingleOrDefault(x => x.Guid == objToDestroy.Guid);
 
 			if (obj == null)
