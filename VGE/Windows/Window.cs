@@ -18,12 +18,6 @@ namespace VGE.Windows
 		const int framerate = 60;
 
 		List<VectorObject> objects;
-		public List<VectorObject> Objects
-		{
-			get => objects;
-			set => objects = value;
-		}
-
 		IScene scene;
 		
 		PhysicsEngine? physicsEngine;

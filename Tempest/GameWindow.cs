@@ -12,6 +12,7 @@ namespace Tempest
 	internal class GameWindow : Window
 	{
 		private readonly Timer _checkEnemiesTimer = new();
+		private List<VectorObject> _enemies = new();
 
 		public GameWindow() : base(new TempestScene())
 		{
@@ -37,35 +38,31 @@ namespace Tempest
 					return;
 
 				GameManager.EnemiesOnScreen++;
-				Enemies enemy = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+				Enemies enemyChoice = (Enemies)GameManager.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
-				switch (enemy)
+				VectorObject enemy = new Flipper();
+
+				switch (enemyChoice)
 				{
-					case Enemies.Flipper:
-						Instantiate(new Flipper());
-						break;
 					case Enemies.Tanker:
 						if (GameManager.LevelConfig.SpawnTanker)
-							Instantiate(new Tanker());
-						else
-							Instantiate(new Flipper());
+							enemy = new Tanker();
 
 						break;
 					case Enemies.Spiker:
 						if (GameManager.LevelConfig.SpawnSpiker)
-							Instantiate(new Spiker());
-						else
-							Instantiate(new Flipper());
+							enemy = new Spiker();
 
 						break;
 					case Enemies.Fuseball:
 						if (GameManager.LevelConfig.SpawnFuseball)
-							Instantiate(new Fuseball());
-						else
-							Instantiate(new Flipper());
+							enemy = new Fuseball();
 
 						break;
 				}
+
+				_enemies.Add(enemy);
+				Instantiate(enemy);
 
 				await Task.Delay(GameManager.Rand.Next(500, 2001));
 			}
@@ -115,14 +112,14 @@ namespace Tempest
 
 		public void DestroyEnemies()
 		{
-			if (Objects.Count == 0)
+			if (_enemies.Count == 0)
 				return;
 
-			VectorObject[] objectsCopy = Objects.ToArray();
+			VectorObject[] enemies = _enemies.ToArray();
 
-			foreach (VectorObject obj in objectsCopy)
-				if (obj is Flipper || obj is Fuseball || obj is Spiker || obj is Tanker)
-					Destroy(obj);
+			foreach (VectorObject enemy in enemies)
+				if (enemy is Flipper || enemy is Fuseball || enemy is Spiker || enemy is Tanker)
+					Destroy(enemy);
 		}
 
 		public void EnemyDestroyed(PhysicsObject enemy)
@@ -131,6 +128,7 @@ namespace Tempest
 				return;
 
 			GameManager.EnemiesOnScreen--;
+			_enemies.Remove(enemy);
 		}
 
 		void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
