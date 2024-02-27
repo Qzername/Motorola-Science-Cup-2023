@@ -50,7 +50,7 @@ namespace Battlezone
 
 		Screen currentScreen;
 
-		Player player;
+		public Player Player;
 
         public override Setup Start()
         {
@@ -86,8 +86,8 @@ namespace Battlezone
 
 					EnemySpawner.Instance.SpawnEnemies = true;
 
-					player = new Player();
-					window.Instantiate(player);
+					Player = new Player();
+					window.Instantiate(Player);
 
 					UIManager.Instance.ChangeUIStatus(currentScreen);
 				}
@@ -99,8 +99,8 @@ namespace Battlezone
                 EnemySpawner.Instance.SpawnEnemies = false;
                 EnemySpawner.Instance.DestroyAllObjects();
 
-                window.Destroy(player);
-				player = null;
+                window.Destroy(Player);
+				Player = null;
 
 				UIManager.Instance.ChangeUIStatus(currentScreen);
 				lastSpaceStatus = false;

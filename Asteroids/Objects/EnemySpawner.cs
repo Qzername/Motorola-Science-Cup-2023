@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -25,13 +26,16 @@ namespace Asteroids.Objects
         const int obstacleRotationOffset = 30;
 
         float ufoMax = 15;
+        float sinusMax = 10;
         float asteroidsPerLevel = 2;
         float speedboost = 0f;
 
         float ufoTimer = 0f;
+        float sinusTimer = 0f;
 
         List<Obstacle> obstacles;
         List<UFO> ufos;
+        List<Sinus> sinuses;
 
         bool isWaveGenerating;
 
@@ -39,6 +43,7 @@ namespace Asteroids.Objects
         {
             obstacles = new();
             ufos = new();
+            sinuses = new();
 
             Instance = this;
 
@@ -54,8 +59,9 @@ namespace Asteroids.Objects
                 return;
 
             ufoTimer += delta;
+            sinusTimer += delta;
 
-            if (obstacles.Count == 0 && ufos.Count == 0 && !isWaveGenerating &&
+            if (obstacles.Count == 0 && ufos.Count == 0 && sinuses.Count == 0 && !isWaveGenerating &&
                 GameManager.Instance.CurrentScreen != Screen.GameOver &&
                 GameManager.Instance.CurrentScreen != Screen.Highscore)
                 NextWave();
@@ -64,6 +70,12 @@ namespace Asteroids.Objects
             {
                 ufoTimer = 0f;
                 TimerSpawnUfo();
+            }
+
+            if(sinusTimer > sinusMax)
+            {
+                sinusTimer = 0f;
+                TimerSpawnSinus();
             }
         }
 
@@ -90,12 +102,21 @@ namespace Asteroids.Objects
                     ufos[i] = null;
                 }
 
+            for(int i = 0; i < sinuses.Count;i++)
+                if (sinuses[i] is not null)
+                {
+                    window.Destroy(sinuses[i]);
+                    sinuses[i] = null;
+                }
+
             obstacles.Clear();
             ufos.Clear();
+            sinuses.Clear();
         }
 
         public void RemoveObstacle(Obstacle obs) => obstacles.Remove(obs);
         public void RemoveUFO(UFO ufo) => ufos.Remove(ufo);
+        public void RemoveSinus(Sinus sinus) => sinuses.Remove(sinus);
 
         public void RegisterObstacle(Obstacle obs) => obstacles.Add(obs);
 
@@ -134,6 +155,17 @@ namespace Asteroids.Objects
             // 0 -> x, 1 -> y, 2 -> rotation
 
             obstacles.Add(obstacle);
+        }
+
+        void TimerSpawnSinus()
+        {
+            if (obstacles.Count == 0)
+                return;
+
+            if (GameManager.Instance.CurrentScreen == Screen.GameOver || GameManager.Instance.CurrentScreen == Screen.Highscore)
+                return;
+
+            window.Instantiate(new Sinus());
         }
 
         void TimerSpawnUfo()

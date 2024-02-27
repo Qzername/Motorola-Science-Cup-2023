@@ -19,6 +19,15 @@
     <None Update="Resources\missle.3Dshape">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Obstacles\barrier.3dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Obstacles\dragonsTeeth.3dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Obstacles\rhombus.3dshape">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\superTank.3Dshape">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

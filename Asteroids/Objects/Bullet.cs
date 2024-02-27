@@ -98,6 +98,12 @@ namespace Asteroids.Objects
 
                     EnemySpawner.Instance.RemoveUFO((UFO)other);
                 }
+				else if (other is Sinus)
+				{
+					GameManager.Instance.Score += 1500;
+
+                    EnemySpawner.Instance.RemoveSinus((Sinus)other);
+                }
 
                 // "za kazde zdobyte 10 000 punktow gracz otrzymuje dodatkowe zycie"
                 if (GameManager.Instance.Score >= GameManager.Instance.ScoreToGet)

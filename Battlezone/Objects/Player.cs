@@ -16,13 +16,14 @@ namespace Battlezone.Objects
 
 		public override int PhysicsLayer => 0;
 
-		const float speed = 40;
+		public float Speed = 40;
 		const float colliderDistance = 30f;
 
+		public int MagazineMax = 3;
 		int magazine = 3;
 
-		const float reloadingTime = 3f;
-		const float shootCooldownTime = 1f;
+		public float ReloadingTime = 3f;
+		public float ShootCooldownTime = 1f;
 		float reloadingTimer = 0f, shootCooldownTimer = 1f;
 
 		bool IsDead = false;
@@ -64,7 +65,7 @@ namespace Battlezone.Objects
 			//movement
 			if (window.KeyDown(Key.W) && !front.IsColliding)
 			{
-				Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, speed * delta);
+				Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, Speed * delta);
 				RefreshCollidersPosition();
 
 				if (back.IsColliding)
@@ -72,7 +73,7 @@ namespace Battlezone.Objects
 			}
 			else if (window.KeyDown(Key.S) && !back.IsColliding)
 			{
-				Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, -speed * delta);
+				Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, -Speed * delta);
 				RefreshCollidersPosition();
 
 				if (front.IsColliding)
@@ -83,9 +84,9 @@ namespace Battlezone.Objects
 
 			//rotation
 			if (window.KeyDown(Key.A))
-				Scene3D.Camera.Rotation += new Point(0, -speed * delta, 0);
+				Scene3D.Camera.Rotation += new Point(0, -Speed * delta, 0);
 			else if (window.KeyDown(Key.D))
-				Scene3D.Camera.Rotation += new Point(0, speed * delta, 0);
+				Scene3D.Camera.Rotation += new Point(0, Speed * delta, 0);
 
 			//bullet
 			if (magazine == 0)
@@ -93,9 +94,9 @@ namespace Battlezone.Objects
 				GameManager.Instance.IsReloading = true;
 				reloadingTimer += delta;
 
-				if (reloadingTime < reloadingTimer)
+				if (ReloadingTime < reloadingTimer)
 				{
-					magazine = 3;
+					magazine = MagazineMax;
 					reloadingTimer = 0;
 					shootCooldownTimer = 10f;
 					GameManager.Instance.IsReloading = false;
@@ -104,7 +105,7 @@ namespace Battlezone.Objects
 				return;
 			}
 
-			if (shootCooldownTimer < shootCooldownTime)
+			if (shootCooldownTimer < ShootCooldownTime)
 			{
 				shootCooldownTimer += delta;
 				return;
@@ -165,9 +166,9 @@ namespace Battlezone.Objects
 
             //shooting
             GameManager.Instance.IsReloading = false;
-            shootCooldownTimer = shootCooldownTime;
+            shootCooldownTimer = ShootCooldownTime;
             reloadingTimer = 0f;
-            magazine = 3;
+            magazine = MagazineMax;
         }
 
 		void RefreshCollidersPosition()

@@ -37,6 +37,8 @@ namespace VGE.Resources
 
             int mode = 0;
 
+			SKColor color = SKColors.Green;
+
             foreach (var line in File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{shapeName}.3Dshape"))
             {
                 if (string.IsNullOrEmpty(line) || line.StartsWith('#'))
@@ -59,11 +61,13 @@ namespace VGE.Resources
 
                 if (mode == 1)
                     pointDefinitions.Add(point);
-                else
+                else if(mode == 2)
                     lineDefinitions.Add(point);
-            }
+				else
+					color = new SKColor(Convert.ToByte(coordinates[0].Replace('.', ',')), Convert.ToByte(coordinates[1].Replace('.', ',')), Convert.ToByte(coordinates[2].Replace('.', ',')));
+			}
 
-			return new PredefinedShape(pointDefinitions.ToArray(), lineDefinitions.ToArray(), SKColors.Green);
+			return new PredefinedShape(pointDefinitions.ToArray(), lineDefinitions.ToArray(), color);
         }
 
 		static void LoadSet(string setName)

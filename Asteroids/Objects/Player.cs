@@ -30,7 +30,7 @@ namespace Asteroids.Objects
                 Jesli gracz nie ma juz zyc, okno sie zamyka
             */
 
-	        if (other.Name == "Obstacle" || other.Name == "UFO" || other.Name == "BulletUFO")
+	        if (other.Name == "Obstacle" || other.Name == "UFO" || other.Name == "BulletUFO" || other.Name=="Sinus")
 	        {
                 // Jesli 5-sekundowa tarcza jest aktywna, zniszcz obiekt zamiast gracza
 		        if (respawnShield)

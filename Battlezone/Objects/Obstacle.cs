@@ -21,14 +21,12 @@ namespace Battlezone.Objects
 
 		public override Setup Start()
 		{
-			var definition = ObstacleShapeDefinitions.GetRandom();
-
 			return new Setup()
 			{
 				Name = "Cube",
 				Position = startPosition,
 				Rotation = Point.Zero,
-				Shape = new PredefinedShape(definition.PointsDefinition, definition.LinesDefinition),
+				Shape = ObstacleShapeDefinitions.GetRandom()
 			};
 		}
 

@@ -1,14 +1,18 @@
 ﻿using VGE;
+using VGE.Graphics.Shapes;
+using VGE.Resources;
 
 namespace Battlezone
 {
 	public static class ObstacleShapeDefinitions
 	{
 		static List<ShapeDefinition> obstacles;
+		static List<IShape> shapes;
 
 		static ObstacleShapeDefinitions()
 		{
 			obstacles = new List<ShapeDefinition>();
+			shapes = new List<IShape>();
 
 			//Cube
 			obstacles.Add(new ShapeDefinition()
@@ -65,11 +69,24 @@ namespace Battlezone
 					new Point(3, 4),
 				]
 			});
+
+			// --- FROM FILES ---
+			//barrier
+			shapes.Add(ResourcesHandler.Get3DShape("Obstacles/barrier"));
+			shapes.Add(ResourcesHandler.Get3DShape("Obstacles/dragonsTeeth"));
 		}
 
-		public static ShapeDefinition GetRandom()
+		public static IShape GetRandom()
 		{
-			return obstacles[new Random().Next(0, obstacles.Count)];
+			var obstacleId = new Random().Next(0, obstacles.Count + shapes.Count);
+
+			if (obstacleId < obstacles.Count)
+			{
+				var definition = obstacles[obstacleId];
+				return new PredefinedShape(definition.PointsDefinition, definition.LinesDefinition);	
+			}
+			else
+				return shapes[obstacleId-obstacles.Count];
 		}
 
 		public static ShapeDefinition GetByIndex(int index)
