@@ -32,10 +32,16 @@ namespace Tempest.Objects
 			{
 				Name = "Fuseball",
 				Shape = new PointShape(GameManager.LevelConfig.Fuseball,
-								new Point(0, 20, 0),
-								new Point(20, 0, 0),
-								new Point(0, -20, 0),
-								new Point(-20, 0, 0)),
+								new Point(-20, -20),
+								new Point(0, 0),
+								new Point(20, -20),
+								new Point(0, 0),
+								new Point(20, 20),
+								new Point(0, 0),
+								new Point(0, 20),
+								new Point(-20, 20),
+								new Point(0, 0)
+								),
 				Position = MapManager.Instance.GetPosition(_mapPosition, transform.Position.Z),
 				Rotation = MapManager.Instance.Elements[_mapPosition].Transform.Rotation
 			};
