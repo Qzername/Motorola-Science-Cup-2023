@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using Battlezone.Objects.UI;
+using System.Security.Cryptography;
 using VGE;
 using VGE.Physics;
 using VGE.Resources;
@@ -32,6 +33,10 @@ namespace Battlezone.Objects
                 case 2: GameManager.Instance.Player.Speed += 20; break;
                 case 3: GameManager.Instance.Player.ShootCooldownTime /= 2; break;
             }
+
+            window.Instantiate(new PowerUpAnimation());
+
+            window.Destroy(this);
         }
 
         public override Setup Start()
