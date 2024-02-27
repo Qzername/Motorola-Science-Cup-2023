@@ -3,6 +3,7 @@ using SkiaSharp;
 using System.Diagnostics;
 using System.Timers;
 using VGE;
+using VGE.Audio;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
@@ -13,7 +14,7 @@ namespace Asteroids.Objects
 	public enum UFOType
 	{
 		Small,
-		Large,
+		Big,
 		Random
 	}
 	
@@ -23,12 +24,16 @@ namespace Asteroids.Objects
 		const float speed = 150f;
         float setRotationRadians;
 
-		public override int PhysicsLayer => (int)PhysicsLayers.Other;
+        Sound mainSound;
+
+        public override int PhysicsLayer => (int)PhysicsLayers.Other;
 
         public override void OnCollisionEnter(PhysicsObject other)
         {
 	        if (other.Name == "Bullet")
             {
+                SoundRegistry.Instance.Database["bangMedium"].PlayFromStart();
+
                 window.Instantiate(new Explosion(transform.Position));
                 window.Destroy(this);             
 	        }
@@ -43,7 +48,7 @@ namespace Asteroids.Objects
 
 			switch (Type)
 			{
-				case UFOType.Large:
+				case UFOType.Big:
 					shapes.Add(new Point(32.5f, 0));
 					shapes.Add(new Point(40, 10));
 					shapes.Add(new Point(50, 15));
@@ -87,8 +92,12 @@ namespace Asteroids.Objects
         }
 
 		public void Setup(Point position, float rotation)
-		{
-			transform.Position = position;
+        {
+			mainSound = SoundRegistry.Instance.Database[$"saucer{Type}"];
+			mainSound.IsLooped = true;
+			mainSound.Play();
+
+            transform.Position = position;
 			setRotationRadians = rotation * MathTools.Deg2rad;
 		}
 
@@ -109,6 +118,7 @@ namespace Asteroids.Objects
                     * MathTools.Rad2deg;
 
                 var bullet = new BulletUFO();
+                SoundRegistry.Instance.Database["fire"].PlayFromStart();
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position, -rotation);
 				timer = 0f;
@@ -134,7 +144,11 @@ namespace Asteroids.Objects
 				transform.Position = new Point(transform.Position.X, res.Height);
 			else if (transform.Position.Y > res.Height)
 				transform.Position = new Point(transform.Position.X, 0);
-			// Jesli UFO wyleci poza ekran, przenies je na przeciwna krawedz
-		}
+            // Jesli UFO wyleci poza ekran, przenies je na przeciwna krawedz
+        }
+        public override void OnDestroy()
+        {
+            mainSound.Pause();
+        }
     }
 }

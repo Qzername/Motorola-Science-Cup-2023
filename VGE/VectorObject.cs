@@ -1,4 +1,5 @@
-﻿using VGE.Graphics;
+﻿using VGE.Audio;
+using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Windows;
 

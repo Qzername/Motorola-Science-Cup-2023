@@ -13,6 +13,8 @@ namespace Asteroids
 {
     internal class GameWindow : Window
     {
+        SoundRegistry soundRegistry;
+
 		public GameWindow() : base(new Scene2D())
         {
             var physicsEngine = new PhysicsEngine(new PhysicsConfiguration()
@@ -24,6 +26,9 @@ namespace Asteroids
                 }
             });
             RegisterPhysicsEngine(physicsEngine);
+
+            soundRegistry = new SoundRegistry();
+            soundRegistry.InitializeSounds(this);
 
             Instantiate(new EnemySpawner());
 

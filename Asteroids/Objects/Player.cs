@@ -2,6 +2,7 @@
 using SkiaSharp;
 using System.Diagnostics;
 using VGE;
+using VGE.Audio;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
@@ -23,6 +24,8 @@ namespace Asteroids.Objects
 
         public override int PhysicsLayer => (int)PhysicsLayers.Player;
 
+        Sound movementSound;
+
         public override void OnCollisionEnter(PhysicsObject other)
         {
             /*
@@ -38,6 +41,10 @@ namespace Asteroids.Objects
                     window.Destroy(other);
 					return;                    
 		        }
+                
+                movementSound.Pause();
+
+                SoundRegistry.Instance.Database["bangMedium"].PlayFromStart();
 
                 window.Instantiate(new Explosion(transform.Position));
                 window.Destroy(this);
@@ -70,6 +77,9 @@ namespace Asteroids.Objects
         {
 	        Resolution res = window.GetResolution();
 
+            movementSound = SoundRegistry.Instance.Database["thrust"];
+            movementSound.IsLooped = true;
+
             return new Setup()
             {
                 Name = "Player",
@@ -83,6 +93,8 @@ namespace Asteroids.Objects
         }
 
         float exhaustAnimationTimer =1f;
+
+        bool lastWpressed;
 
         public override void Update(float deltaTime)
         {
@@ -98,6 +110,8 @@ namespace Asteroids.Objects
                 var bullet = new Bullet();
                 window.Instantiate(bullet);
                 bullet.Setup(transform.Position + Shape.CompiledShape[0].EndPosition, transform.Rotation.Z);
+
+                SoundRegistry.Instance.Database["fire"].PlayFromStart();
 
                 lastSpaceState = true;
             }
@@ -120,9 +134,16 @@ namespace Asteroids.Objects
             else if (window.KeyDown(Key.Right) || window.KeyDown(Key.D))
                 Rotate(new Point(0,0, rotationDelta * -1f));
 
+            var currentWpreesed = window.KeyDown(Key.Up) || window.KeyDown(Key.W);
+
+            if (lastWpressed && !currentWpreesed)
+                movementSound.Pause();
+
             // Poruszanie do przodu/Hamowanie (jesli gracz nie porusza sie do przodu ORAZ nie hamuje, zwolnij - 2x wolniej niz manualne hamowanie)
-            if (window.KeyDown(Key.Up) || window.KeyDown(Key.W))
+            if (currentWpreesed)
             {
+                movementSound.Play();
+
                 exhaustAnimationTimer += deltaTime;
 
                 if (exhaustAnimationTimer > 0.2f)
@@ -177,6 +198,8 @@ namespace Asteroids.Objects
                 else
                     speed = minSpeed;
             }
+
+            lastWpressed = currentWpreesed;
 
             Resolution res = window.GetResolution();
 

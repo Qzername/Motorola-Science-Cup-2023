@@ -88,7 +88,7 @@ namespace Asteroids.Objects
 	            {
 					switch ((other as UFO).Type)
 					{
-						case UFOType.Large:
+						case UFOType.Big:
 							GameManager.Instance.Score += 200;
 							break;
 						case UFOType.Small:
@@ -110,6 +110,7 @@ namespace Asteroids.Objects
                 {
                     GameManager.Instance.Lives++;
 					GameManager.Instance.ScoreToGet += 10000;
+                    SoundRegistry.Instance.Database["extraShip"].PlayFromStart();
                 }
 				
 				Destroy();

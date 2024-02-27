@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Timers;
+using VGE.Audio;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
 using VGE.Physics;
@@ -21,12 +22,15 @@ namespace VGE.Windows
 		IScene scene;
 		
 		PhysicsEngine? physicsEngine;
+		public AudioEngine AudioEngine;
 
 		public Window(IScene scene)
 		{
 			this.scene = scene;
 
 			mainWindow = new MainWindow();
+
+			AudioEngine = new AudioEngine();
 
 			objects = new List<VectorObject>();
 

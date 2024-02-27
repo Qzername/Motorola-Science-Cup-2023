@@ -16,6 +16,7 @@ namespace Asteroids.Objects
         {
             if (other.Name == "Bullet")
             {
+                SoundRegistry.Instance.Database[$"bangMedium"].PlayFromStart();
                 window.Instantiate(new Explosion(transform.Position));
                 window.Destroy(this);
             }
