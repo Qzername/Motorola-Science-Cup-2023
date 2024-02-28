@@ -10,6 +10,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Highscore Managing Library\Highscore Managing Library.csproj" />
     <ProjectReference Include="..\VGE\Vector Game Engine.csproj" />
+    <None Update="Resources\Sounds\alert.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\destroy.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\fire.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

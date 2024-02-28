@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using System.Diagnostics;
+using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
 
@@ -27,6 +28,8 @@ namespace Tempest.Objects
 
 		public override Setup Start()
 		{
+			SoundRegistry.Instance.Database["fire"].PlayFromStart();
+
 			return new Setup()
 			{
 				Name = "Bullet",
