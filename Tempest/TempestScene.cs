@@ -16,6 +16,8 @@ namespace Tempest
 
 		Point perspectivePoint = new Point(400, 225);
 
+		public Point PerspectiveOffset = new Point(0, 0, 0);
+
 		public void ChangePerspectivePoint(Point perspectivePoint)
 		{
 			this.perspectivePoint = perspectivePoint;
@@ -34,8 +36,8 @@ namespace Tempest
 			foreach (var l in shape.CompiledShape)
 			{
 				//Długość Z jest inna dla każdego punktu, tutaj obliczenia na nowy:
-				var startPosition = transform.Position + l.StartPosition;
-				var endPosition = transform.Position + l.EndPosition;
+				var startPosition = transform.Position + l.StartPosition + PerspectiveOffset;
+				var endPosition = transform.Position + l.EndPosition + PerspectiveOffset;
 
 				float deltaSP = perspectivePoint.Z / startPosition.Z;
 				float deltaEP = perspectivePoint.Z / endPosition.Z;
