@@ -6,6 +6,8 @@ namespace Tempest.Objects.UI
 {
 	public class LifeCounter : VectorObject
 	{
+		public bool IsEnabled = true;
+
 		Point startPosition;
 
 		PointShape playerShape;
@@ -37,7 +39,7 @@ namespace Tempest.Objects.UI
 
 		public override bool OverrideRender(Canvas canvas)
 		{
-			if (GameManager.Instance is null)
+			if (GameManager.Instance is null || !IsEnabled)
 				return true;
 
 			Point offset = Point.Zero;

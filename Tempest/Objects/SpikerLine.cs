@@ -33,6 +33,8 @@ namespace Tempest.Objects
 
 		public override Setup Start()
 		{
+			EnemyManager.Instance.OtherEnemies.Add(this);
+
 			return new Setup()
 			{
 				Name = "SpikerLine",

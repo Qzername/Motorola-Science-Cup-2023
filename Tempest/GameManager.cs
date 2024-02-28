@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using HML;
+﻿using HML;
 using HML.Objects;
 using Tempest.Objects;
 using Tempest.Objects.UI;
@@ -16,7 +15,17 @@ namespace Tempest
 		public Random Rand = new();
 
 		public LevelConfiguration LevelConfig = new();
-		public Point[] CurrentLevel = Levels.Circle;
+		public Level CurrentLevel = Levels.Circle;
+		private int _currentLevelIndex = 1;
+		public int CurrentLevelIndex
+		{
+			get => _currentLevelIndex;
+			set
+			{
+				_currentLevelIndex = value;
+				UIManager.Instance.RefreshUI();
+			}
+		}
 		public Player Player;
 		public MapManager MapManager;
 
@@ -104,6 +113,8 @@ namespace Tempest
 					CurrentScreen = Screen.MainMenu;
 					Score = 0;
 					Lives = 4;
+					CurrentLevelIndex = 1;
+					CurrentLevel = Levels.Circle;
 				}
 
 				return;
@@ -133,6 +144,8 @@ namespace Tempest
 			CurrentScreen = Screen.MainMenu;
 			Score = 0;
 			Lives = 4;
+			CurrentLevelIndex = 1;
+			CurrentLevel = Levels.Circle;
 		}
 
 		public override bool OverrideRender(Canvas canvas) => true;
@@ -143,6 +156,9 @@ namespace Tempest
 
 			await Task.Delay(1000);
 			DestroyEverything();
+
+			if (CurrentScreen == Screen.GameOver)
+				return;
 
 			SpawningEnemies = false;
 			MapPosition = 0;
@@ -170,90 +186,52 @@ namespace Tempest
 		{
 			EnemiesToSpawn += 3;
 
-			if (CurrentLevel == Levels.Circle) // Square
-			{
-				LevelConfig.IsClosed = true;
-				LevelConfig.MoveFlipper = true;
+			if (Levels.Circle.Indexes.Contains(CurrentLevelIndex)) // Square
 				CurrentLevel = Levels.Square;
-			}
-			else if (CurrentLevel == Levels.Square) // Plus
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.Square.Indexes.Contains(CurrentLevelIndex)) // Plus
 				CurrentLevel = Levels.Plus;
-			}
-			else if (CurrentLevel == Levels.Plus) // BowTie
-			{
-				LevelConfig.IsClosed = true;
-				LevelConfig.SpawnSpiker = true;
+			else if (Levels.Plus.Indexes.Contains(CurrentLevelIndex)) // BowTie
 				CurrentLevel = Levels.BowTie;
-			}
-			else if (CurrentLevel == Levels.BowTie) // StylizedCross
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.BowTie.Indexes.Contains(CurrentLevelIndex)) // StylizedCross
 				CurrentLevel = Levels.StylizedCross;
-			}
-			else if (CurrentLevel == Levels.StylizedCross) // Triangle
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.StylizedCross.Indexes.Contains(CurrentLevelIndex)) // Triangle
 				CurrentLevel = Levels.Triangle;
-			}
-			else if (CurrentLevel == Levels.Triangle) // Clover
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.Triangle.Indexes.Contains(CurrentLevelIndex)) // Clover
 				CurrentLevel = Levels.Clover;
-			}
-			else if (CurrentLevel == Levels.Clover) // V
-			{
-				LevelConfig.IsClosed = false;
+			else if (Levels.Clover.Indexes.Contains(CurrentLevelIndex)) // V
 				CurrentLevel = Levels.V;
-			}
-			else if (CurrentLevel == Levels.V) // Steps
-			{
-				LevelConfig.IsClosed = false;
+			else if (Levels.V.Indexes.Contains(CurrentLevelIndex)) // Steps
 				CurrentLevel = Levels.Steps;
-			}
-			else if (CurrentLevel == Levels.Steps) // U
-			{
-				LevelConfig.IsClosed = false;
+			else if (Levels.Steps.Indexes.Contains(CurrentLevelIndex)) // U
 				CurrentLevel = Levels.U;
-			}
-			else if (CurrentLevel == Levels.U) // CompletelyFlat
-			{
-				LevelConfig.IsClosed = false;
-				LevelConfig.SpawnFuseball = true;
+			else if (Levels.U.Indexes.Contains(CurrentLevelIndex)) // CompletelyFlat
 				CurrentLevel = Levels.CompletelyFlat;
-			}
-			else if (CurrentLevel == Levels.CompletelyFlat) // Heart
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.CompletelyFlat.Indexes.Contains(CurrentLevelIndex)) // Heart
 				CurrentLevel = Levels.Heart;
-			}
-			else if (CurrentLevel == Levels.Heart) // Star
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.Heart.Indexes.Contains(CurrentLevelIndex)) // Star
 				CurrentLevel = Levels.Star;
-			}
-			else if (CurrentLevel == Levels.Star) // W
-			{
-				LevelConfig.IsClosed = false;
+			else if (Levels.Star.Indexes.Contains(CurrentLevelIndex)) // W
 				CurrentLevel = Levels.W;
-			}
-			else if (CurrentLevel == Levels.W) // Fan
-			{
-				LevelConfig.IsClosed = false;
+			else if (Levels.W.Indexes.Contains(CurrentLevelIndex)) // Fan
 				CurrentLevel = Levels.Fan;
-			}
-			else if (CurrentLevel == Levels.Fan) // Infinity
-			{
-				LevelConfig.IsClosed = true;
+			else if (Levels.Fan.Indexes.Contains(CurrentLevelIndex)) // Infinity
 				CurrentLevel = Levels.Infinity;
-			}
-			else if (CurrentLevel == Levels.Infinity) // Circle
+			else if (Levels.Infinity.Indexes.Contains(CurrentLevelIndex)) // Circle
 			{
-				LevelConfig.IsClosed = true;
 				LevelConfig.ChangeColorScheme();
 				CurrentLevel = Levels.Circle;
 			}
+			else
+				CurrentLevel = Levels.List[Rand.Next(0, Levels.List.Count + 1)];
+
+			CurrentLevelIndex++;
+
+			if (CurrentLevelIndex == 2)
+				LevelConfig.MoveFlipper = true;
+			else if (CurrentLevelIndex == 4)
+				LevelConfig.SpawnSpiker = true;
+			else if (CurrentLevelIndex == 11)
+				LevelConfig.SpawnFuseball = true;
 		}
 	}
 }

@@ -16,7 +16,6 @@ namespace Tempest
 		public SKColor Pulsar = SKColors.Empty; // Pojawiają się dopiero później w grze
 		public readonly SKColor Fuseball = SKColors.White; // Fuseball nie zmienia koloru
 
-		public bool IsClosed = true;
 		public bool MoveFlipper = false;
 
 		public bool SpawnTanker = true;

@@ -30,7 +30,7 @@ namespace Tempest.Objects
 
 			Instance = this;
 
-			LoadMap(GameManager.Instance.CurrentLevel, GameManager.Instance.LevelConfig.IsClosed);
+			LoadMap(GameManager.Instance.CurrentLevel);
 
 			return new Setup()
 			{
@@ -38,28 +38,27 @@ namespace Tempest.Objects
 			};
 		}
 
-		void LoadMap(Point[] layout, bool shouldClose)
+		void LoadMap(Level level)
 		{
-			for (int i = 0; i < layout.Length; i++)
+			for (int i = 0; i < level.Layout.Length; i++)
 			{
-				if (!shouldClose && i + 1 == layout.Length)
+				if (!level.IsClosed && i + 1 == level.Layout.Length)
 					continue;
 
 				// Nastepny punkt, jezeli nie istnieje - uzyj pierwszego (aby figura miala koniec)
-				Point nextPoint = i + 1 < layout.Length ? layout[i + 1] : layout[0];
+				Point nextPoint = i + 1 < level.Layout.Length ? level.Layout[i + 1] : level.Layout[0];
 
 				// Oblicz odleglosc i kat miedzy punktami
-				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - layout[i].X), 2) + MathF.Pow((nextPoint.Y - layout[i].Y), 2));
-				float tan = MathF.Atan2(nextPoint.Y - layout[i].Y, nextPoint.X - layout[i].X);
+				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - level.Layout[i].X), 2) + MathF.Pow((nextPoint.Y -level.Layout[i].Y), 2));
+				float tan = MathF.Atan2(nextPoint.Y - level.Layout[i].Y, nextPoint.X - level.Layout[i].X);
 				float rotation = -1 * ((tan * MathTools.Rad2deg) % 360);
 
 				MapElement element = new MapElement();
-				element.Setup(layout[i], distance, rotation);
+				element.Setup(level.Layout[i], distance, rotation);
 				window.Instantiate(element);
 				_elements.Add(element);
 			}
 
-			GameManager.Instance.LevelConfig.IsClosed = shouldClose;
 			TempestScene.Instance.ChangePerspectivePoint(PerspectivePoint);
 		}
 

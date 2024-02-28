@@ -123,7 +123,6 @@ namespace Tempest.Objects
 
 		public override void OnDestroy()
 		{
-			window.Destroy(_spikerLine);
 			_bulletTimer.Close();
 			_bulletTimer.Enabled = false;
 		}

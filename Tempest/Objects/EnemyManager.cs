@@ -5,6 +5,7 @@ using VGE.Graphics;
 using VGE.Physics;
 using VGE.Windows;
 using Timer = System.Timers.Timer;
+using EnemiesEnum = Tempest.Enemies;
 
 namespace Tempest.Objects
 {
@@ -13,8 +14,8 @@ namespace Tempest.Objects
 		public static EnemyManager Instance;
 
 		private readonly Timer _checkEnemiesTimer = new();
-		private List<VectorObject> _enemies = new();
-		private List<VectorObject> _flippersAtTheEnd = new();
+		public List<VectorObject> Enemies = new();
+		public List<VectorObject> OtherEnemies = new();
 		public List<VectorObject> Spikes = new();
 
 		public override Setup Start()
@@ -42,30 +43,30 @@ namespace Tempest.Objects
 				if (GameManager.Instance.StopGame)
 					return;
 
-				Enemies enemyChoice = (Enemies)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+				EnemiesEnum enemyChoice = (EnemiesEnum)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
 
 				VectorObject enemy = new Flipper();
 
 				switch (enemyChoice)
 				{
-					case Enemies.Tanker:
+					case EnemiesEnum.Tanker:
 						if (GameManager.Instance.LevelConfig.SpawnTanker)
 							enemy = new Tanker();
 
 						break;
-					case Enemies.Spiker:
+					case EnemiesEnum.Spiker:
 						if (GameManager.Instance.LevelConfig.SpawnSpiker)
 							enemy = new Spiker();
 
 						break;
-					case Enemies.Fuseball:
+					case EnemiesEnum.Fuseball:
 						if (GameManager.Instance.LevelConfig.SpawnFuseball)
 							enemy = new Fuseball();
 
 						break;
 				}
 
-				_enemies.Add(enemy);
+				Enemies.Add(enemy);
 				window.Instantiate(enemy);
 
 				await Task.Delay(GameManager.Instance.Rand.Next(500, 2001));
@@ -94,10 +95,10 @@ namespace Tempest.Objects
 
 			flipper2.Setup(flipper2MapPosition, tanker.Transform.Position.Z);
 
-			_enemies.Add(flipper1);
+			OtherEnemies.Add(flipper1);
 			window.Instantiate(flipper1);
 
-			_enemies.Add(flipper2);
+			OtherEnemies.Add(flipper2);
 			window.Instantiate(flipper2);
 		}
 
@@ -118,17 +119,15 @@ namespace Tempest.Objects
 
 		public void DestroyEnemies(bool destroySpikes = false)
 		{
-			Debug.WriteLine(_enemies.Count);
-
-			foreach (VectorObject enemy in _enemies.ToArray())
+			foreach (VectorObject enemy in Enemies.ToArray())
 				window.Destroy(enemy);
 
-			_enemies.Clear();
+			Enemies.Clear();
 
-			foreach (VectorObject enemy in _flippersAtTheEnd.ToArray())
+			foreach (VectorObject enemy in OtherEnemies.ToArray())
 				window.Destroy(enemy);
 
-			_flippersAtTheEnd.Clear();
+			OtherEnemies.Clear();
 
 			if (destroySpikes)
 			{
@@ -146,14 +145,14 @@ namespace Tempest.Objects
 
 			if (enemy is Flipper)
 				if (((Flipper)enemy).AtTheEnd)
-					_flippersAtTheEnd.Add(enemy);
+					OtherEnemies.Add(enemy);
 
-			_enemies.Remove(enemy);
+			Enemies.Remove(enemy);
 		}
 
 		void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
 		{
-			if (_enemies.Count <= 0 && !GameManager.Instance.SpawningEnemies && !GameManager.Instance.StopGame)
+			if (Enemies.Count <= 0 && !GameManager.Instance.SpawningEnemies && !GameManager.Instance.StopGame)
 			{
 				GameManager.Instance.NextLevel();
 				GameManager.Instance.StartLevel();

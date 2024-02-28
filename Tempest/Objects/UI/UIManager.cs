@@ -14,8 +14,8 @@ namespace Tempest.Objects.UI
 
 		private Resolution _resolution;
 
-		private Text _scoreText, _highestScore, _copyright, _startInfo, _gameOver, _newHighScore;
-
+		private Text _scoreText, _levelText, _highestScore, _copyright, _startInfo, _gameOver, _newHighScore;
+		private LifeCounter _lifeCounter;
 		private Scoreboard _scoreboard;
 
 		public override Setup Start()
@@ -25,7 +25,11 @@ namespace Tempest.Objects.UI
 			_scoreText = new Text("00", 2, new SKPoint(140, 10), Text.TextAlignment.Right);
 			window.Instantiate(_scoreText);
 
-			window.Instantiate(new LifeCounter(new Point(60, 60)));
+			_lifeCounter = new LifeCounter(new Point(60, 60));
+			window.Instantiate(_lifeCounter);
+
+			_levelText = new Text($"Level {GameManager.Instance.CurrentLevelIndex}", 2, new SKPoint(165, 70), Text.TextAlignment.Right);
+			window.Instantiate(_levelText);
 
 			_resolution = window.GetResolution();
 			_copyright = new Text("COPYRIGHT WBRT:TS 2024", 1, new Point(_resolution.Width / 2f - 120, _resolution.Height - 30));
@@ -56,7 +60,9 @@ namespace Tempest.Objects.UI
 
 		public void RefreshUI()
 		{
+			_levelText.SetText($"Level {GameManager.Instance.CurrentLevelIndex}");
 			_scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());
+
 		}
 
 		public override void Update(float delta)
@@ -84,6 +90,9 @@ namespace Tempest.Objects.UI
 
 		public void ChangeScreen(Screen screen)
 		{
+			_scoreText.IsEnabled = false;
+			_lifeCounter.IsEnabled = false;
+			_levelText.IsEnabled = false;
 			_gameOver.IsEnabled = false;
 			_newHighScore.IsEnabled = false;
 			_scoreboard.ShowScoreboard = false;
@@ -98,6 +107,9 @@ namespace Tempest.Objects.UI
 					_startInfo.IsEnabled = true;
 					break;
 				case Screen.Game:
+					_scoreText.IsEnabled = true;
+					_lifeCounter.IsEnabled = true;
+					_levelText.IsEnabled = true;
 					break;
 				case Screen.GameOver:
 					_gameOver.IsEnabled = true;
