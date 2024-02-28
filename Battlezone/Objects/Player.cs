@@ -2,6 +2,7 @@
 using Battlezone.Objects.UI;
 using System.Diagnostics;
 using VGE;
+using VGE.Audio;
 using VGE.Graphics;
 using VGE.Graphics.Scenes;
 using VGE.Graphics.Shapes;
@@ -28,8 +29,16 @@ namespace Battlezone.Objects
 
 		bool IsDead = false;
 
+		Sound engineIdle, engineMove;
+
 		public override Setup Start()
         {
+			engineIdle = SoundRegistry.Instance.Database["engineidle"];
+			engineIdle.IsLooped = true;
+
+			engineMove = SoundRegistry.Instance.Database["engine"];
+			engineMove.IsLooped = true;
+
             back = new PlayerCollider();
 			window.Instantiate(back);
 
@@ -70,7 +79,10 @@ namespace Battlezone.Objects
 
 				if (back.IsColliding)
 					back.IsColliding = false;
-			}
+
+                engineIdle.Pause();
+                engineMove.Play();
+            }
 			else if (window.KeyDown(Key.S) && !back.IsColliding)
 			{
 				Scene3D.Camera.Position = PointManipulationTools.MovePointForward(Scene3D.Camera, -Speed * delta);
@@ -78,6 +90,14 @@ namespace Battlezone.Objects
 
 				if (front.IsColliding)
 					front.IsColliding = false;
+
+                engineIdle.Pause();
+                engineMove.Play();
+            }
+			else
+			{
+				engineIdle.Play();
+				engineMove.Pause();
 			}
 
 			transform.Position = Scene3D.Camera.Position;

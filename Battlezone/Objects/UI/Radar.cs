@@ -1,5 +1,6 @@
 ﻿using Battlezone.Objects.Enemies;
 using SkiaSharp;
+using System.Diagnostics;
 using System.Runtime;
 using VGE;
 using VGE.Graphics;
@@ -39,9 +40,20 @@ namespace Battlezone.Objects.UI
 			};
 		}
 
+		bool playSound;
+
 		public override void Update(float delta)
 		{
 			transform.Position.X = window.GetResolution().Width / 2;
+
+			if(playSound && rotationOfScanner > 90f)
+			{
+				SoundRegistry.Instance.Database["radar"].PlayFromStart();
+				playSound = false;
+			}
+
+			if (rotationOfScanner < 40 && !playSound)
+				playSound = true;
 
 			rotationOfScanner += scannerSpeed * delta;
 			rotationOfScanner %= 360;

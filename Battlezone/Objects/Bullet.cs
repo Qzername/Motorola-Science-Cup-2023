@@ -28,7 +28,10 @@ namespace Battlezone.Objects
 			if (other.Name == "Player" || other.Name == "Collider")
 				return;
 
-			if (other is Enemy)
+			if(other.PhysicsLayer != 2)
+	            SoundRegistry.Instance.Database["boom"].PlayFromStart();
+
+            if (other is Enemy)
 			{
 				GameManager.Instance.Score += ((Enemy)other).Score;
 				window.Destroy(other);
@@ -39,6 +42,8 @@ namespace Battlezone.Objects
 
 		public override Setup Start()
 		{
+			SoundRegistry.Instance.Database["shoot"].PlayFromStart();
+
 			Point[] pointsDefinition =
 			[
 				new Point(1, 1, 2),

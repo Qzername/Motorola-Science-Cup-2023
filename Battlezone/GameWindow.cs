@@ -10,6 +10,8 @@ namespace Battlezone
 {
 	internal class GameWindow : Window
 	{
+		SoundRegistry soundRegistry;
+
 		public GameWindow() : base(new Scene3D(Settings.RenderDistance))
 		{
 			PhysicsConfiguration configuration = new PhysicsConfiguration()
@@ -23,6 +25,9 @@ namespace Battlezone
 			};
 
 			RegisterPhysicsEngine(new PhysicsEngine(configuration));
+
+			soundRegistry = new SoundRegistry();
+			soundRegistry.InitializeSounds(this);
 
             Instantiate(new EnemySpawner());
 

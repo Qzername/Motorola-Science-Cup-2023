@@ -29,9 +29,11 @@ namespace Battlezone.Objects.Enemies
 		}
 
 		public override Setup Start()
-		{
-			//gra sie staje szybsza wraz z progresją gracza
-			speed += 50 * (GameManager.Instance.Score / 10000);
+        {
+			SoundRegistry.Instance.Database["alert"].Play();
+
+            //gra sie staje szybsza wraz z progresją gracza
+            speed += 50 * (GameManager.Instance.Score / 10000);
 
 			//ustawienia
 			int rotationOffset = 25;
@@ -64,7 +66,7 @@ namespace Battlezone.Objects.Enemies
 			};
 		}
 
-		public override void Update(float delta)
+        public override void Update(float delta)
 		{
 			(Point, float) pos;
 
