@@ -150,12 +150,15 @@ namespace Tempest
 
 		public override bool OverrideRender(Canvas canvas) => true;
 
-		public async void StartLevel()
+		public async void StartLevel(bool wait = false)
 		{
 			StopGame = true;
 
-			await Task.Delay(1000);
+			if (wait)
+				await Task.Delay(3000);
 			DestroyEverything();
+
+			TempestScene.Instance.PerspectiveOffset = new(0, 0, 0);
 
 			if (CurrentScreen == Screen.GameOver)
 				return;
@@ -182,8 +185,14 @@ namespace Tempest
 			MapManager = null;
 		}
 
-		public void NextLevel()
+		public async Task NextLevel()
 		{
+			for (int i = 1; i <= 10; i++)
+			{
+				TempestScene.Instance.PerspectiveOffset = new(0, 0, 1000 * i);
+				await Task.Delay(50);
+			}
+			
 			EnemiesToSpawn += 3;
 
 			if (Levels.Circle.Indexes.Contains(CurrentLevelIndex)) // Square

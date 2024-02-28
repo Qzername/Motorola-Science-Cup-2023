@@ -1,6 +1,4 @@
-﻿using VGE;
-
-namespace Tempest
+﻿namespace Tempest
 {
 	public static class Levels
 	{

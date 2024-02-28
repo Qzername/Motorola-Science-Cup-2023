@@ -20,7 +20,7 @@ namespace Tempest.Objects
 			if (other.Name != "Bullet" && other.Name != "SpikerLine")
 			{
 				GameManager.Instance.Lives--;
-				GameManager.Instance.StartLevel();
+				GameManager.Instance.StartLevel(true);
 			}
 		}
 

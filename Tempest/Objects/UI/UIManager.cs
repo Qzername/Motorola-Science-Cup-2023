@@ -14,7 +14,7 @@ namespace Tempest.Objects.UI
 
 		private Resolution _resolution;
 
-		private Text _scoreText, _levelText, _highestScore, _copyright, _startInfo, _gameOver, _newHighScore;
+		private Text _scoreText, _levelText, _zapperText, _highestScore, _copyright, _startInfo, _gameOver, _newHighScore;
 		private LifeCounter _lifeCounter;
 		private Scoreboard _scoreboard;
 
@@ -28,8 +28,11 @@ namespace Tempest.Objects.UI
 			_lifeCounter = new LifeCounter(new Point(60, 60));
 			window.Instantiate(_lifeCounter);
 
-			_levelText = new Text($"Level {GameManager.Instance.CurrentLevelIndex}", 2, new SKPoint(165, 70), Text.TextAlignment.Right);
+			_levelText = new Text("Level 1", 2, new SKPoint(40, 70));
 			window.Instantiate(_levelText);
+
+			_zapperText = new Text("Zapper: Yes", 2, new SKPoint(40, 100));
+			window.Instantiate(_zapperText);
 
 			_resolution = window.GetResolution();
 			_copyright = new Text("COPYRIGHT WBRT:TS 2024", 1, new Point(_resolution.Width / 2f - 120, _resolution.Height - 30));
@@ -60,9 +63,9 @@ namespace Tempest.Objects.UI
 
 		public void RefreshUI()
 		{
+			_scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());			
 			_levelText.SetText($"Level {GameManager.Instance.CurrentLevelIndex}");
-			_scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());
-
+			_zapperText.SetText($"Zapper: {(GameManager.Instance.Player.SuperZapper.IsUsed ? "No" : "Yes")}");
 		}
 
 		public override void Update(float delta)
@@ -93,6 +96,7 @@ namespace Tempest.Objects.UI
 			_scoreText.IsEnabled = false;
 			_lifeCounter.IsEnabled = false;
 			_levelText.IsEnabled = false;
+			_zapperText.IsEnabled = false;
 			_gameOver.IsEnabled = false;
 			_newHighScore.IsEnabled = false;
 			_scoreboard.ShowScoreboard = false;
@@ -110,6 +114,7 @@ namespace Tempest.Objects.UI
 					_scoreText.IsEnabled = true;
 					_lifeCounter.IsEnabled = true;
 					_levelText.IsEnabled = true;
+					_zapperText.IsEnabled = true;
 					break;
 				case Screen.GameOver:
 					_gameOver.IsEnabled = true;

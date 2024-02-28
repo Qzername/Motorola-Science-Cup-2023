@@ -31,12 +31,14 @@ namespace Tempest.Objects
 			};
 		}
 
-		public async void SpawnEnemies()
+		public async Task SpawnEnemies()
 		{
 			GameManager.Instance.SpawningEnemies = true;
 			_checkEnemiesTimer.Close();
 			_checkEnemiesTimer.Enabled = false;
 			int enemiesToSpawn = GameManager.Instance.EnemiesToSpawn;
+			
+			await Task.Delay(1000);
 
 			for (int i = 0; i < enemiesToSpawn; i++)
 			{
@@ -95,16 +97,24 @@ namespace Tempest.Objects
 
 			flipper2.Setup(flipper2MapPosition, tanker.Transform.Position.Z);
 
-			OtherEnemies.Add(flipper1);
-			window.Instantiate(flipper1);
+			if (tanker.Transform.Position.Z < 400)
+			{
+				OtherEnemies.Add(flipper1);
+				OtherEnemies.Add(flipper2);
+			}
+			else
+			{
+				Enemies.Add(flipper1);
+				Enemies.Add(flipper2);
+			}
 
-			OtherEnemies.Add(flipper2);
+			window.Instantiate(flipper1);
 			window.Instantiate(flipper2);
 		}
 
 		public override bool OverrideRender(Canvas canvas) => true;
 
-		public override void Update(float delta)
+		public override async void Update(float delta)
 		{
 			if (window.KeyDown(Key.P) && !GameManager.Instance.ChangingMap)
 				GameManager.Instance.ChangingMap = true;
@@ -112,7 +122,7 @@ namespace Tempest.Objects
 			{
 				GameManager.Instance.ChangingMap = false;
 
-				GameManager.Instance.NextLevel();
+				await GameManager.Instance.NextLevel();
 				GameManager.Instance.StartLevel();
 			}
 		}
@@ -150,11 +160,11 @@ namespace Tempest.Objects
 			Enemies.Remove(enemy);
 		}
 
-		void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
+		async void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
 		{
 			if (Enemies.Count <= 0 && !GameManager.Instance.SpawningEnemies && !GameManager.Instance.StopGame)
 			{
-				GameManager.Instance.NextLevel();
+				await GameManager.Instance.NextLevel();
 				GameManager.Instance.StartLevel();
 			}
 		}

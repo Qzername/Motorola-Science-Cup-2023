@@ -1,4 +1,5 @@
-﻿using VGE;
+﻿using Tempest.Objects.UI;
+using VGE;
 using VGE.Graphics;
 using VGE.Windows;
 
@@ -7,10 +8,21 @@ namespace Tempest.Objects
 	public class SuperZapper : VectorObject
 	{
 		private bool _isZPressed;
-		public bool IsUsed;
+		private bool _isUsed;
+		public bool IsUsed
+		{
+			get => _isUsed;
+			private set
+			{
+				_isUsed = value;
+				UIManager.Instance.RefreshUI();
+			}
+		}
 
 		public override Setup Start()
 		{
+			UIManager.Instance.RefreshUI();
+			
 			return new Setup()
 			{
 				Name = "SuperZapper"
