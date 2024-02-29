@@ -158,7 +158,7 @@ namespace Tempest.Objects
 					OtherEnemies.Add(enemy);
 
 			Enemies.Remove(enemy);
-			SoundRegistry.Instance.Database["fire"].PlayFromStart();
+			SoundRegistry.Instance.Database["destroy"].PlayFromStart();
 		}
 
 		async void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
