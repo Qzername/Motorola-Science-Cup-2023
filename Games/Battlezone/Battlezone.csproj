@@ -5,11 +5,12 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>logo_vge.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Highscore Managing Library\Highscore Managing Library.csproj" />
-    <ProjectReference Include="..\VGE\Vector Game Engine.csproj" />
+    <ProjectReference Include="..\..\Highscore Managing Library\Highscore Managing Library.csproj" />
+    <ProjectReference Include="..\..\VGE\Vector Game Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>

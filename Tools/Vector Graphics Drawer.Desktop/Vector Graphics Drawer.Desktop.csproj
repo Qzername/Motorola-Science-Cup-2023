@@ -15,6 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vector Graphics Drawer\Vector Graphics Drawer.csproj" />
+    <ProjectReference Include="..\..\VGE\Vector Game Engine.csproj" />
   </ItemGroup>
 </Project>

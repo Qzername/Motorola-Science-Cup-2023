@@ -1,6 +1,7 @@
 ﻿using Tempest.Objects;
 using Tempest.Objects.UI;
 using VGE;
+using VGE.Audio.Default;
 using VGE.Graphics;
 using VGE.Windows;
 
@@ -19,6 +20,7 @@ namespace Tempest
         public GameWindow() : base(windowConfiguration, new TempestScene())
         {
             RegisterPhysicsEngine(new TempestPhysicsEngine());
+            RegisterAudioEngine(new NAudioEngine());
 
             soundRegistry = new SoundRegistry();
             soundRegistry.InitializeSounds(this);
