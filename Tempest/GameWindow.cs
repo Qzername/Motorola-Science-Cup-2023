@@ -8,7 +8,7 @@ namespace Tempest
 	internal class GameWindow : Window
 	{
 		SoundRegistry soundRegistry;
-		
+
 		public GameWindow() : base(new TempestScene())
 		{
 			RegisterPhysicsEngine(new TempestPhysicsEngine());

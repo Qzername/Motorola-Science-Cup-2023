@@ -83,7 +83,7 @@ namespace Tempest.Objects
 			if (killedByPlayer)
 				GameManager.Instance.Score += 500;
 
-			EnemyManager.Instance.EnemyDestroyed(this);
+			EnemyManager.Instance.EnemyDestroyed(this, killedByPlayer);
 			IsDead = true;
 
 			window.Destroy(this);

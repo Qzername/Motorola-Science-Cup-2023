@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using System.Timers;
+﻿using System.Timers;
 using VGE;
 using VGE.Graphics;
 using VGE.Physics;
 using VGE.Windows;
-using Timer = System.Timers.Timer;
 using EnemiesEnum = Tempest.Enemies;
+using Timer = System.Timers.Timer;
 
 namespace Tempest.Objects
 {
@@ -37,7 +36,7 @@ namespace Tempest.Objects
 			_checkEnemiesTimer.Close();
 			_checkEnemiesTimer.Enabled = false;
 			int enemiesToSpawn = GameManager.Instance.EnemiesToSpawn;
-			
+
 			await Task.Delay(1000);
 
 			for (int i = 0; i < enemiesToSpawn; i++)
@@ -45,7 +44,7 @@ namespace Tempest.Objects
 				if (GameManager.Instance.StopGame)
 					return;
 
-				EnemiesEnum enemyChoice = (EnemiesEnum)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(Enemies)).Length);
+				EnemiesEnum enemyChoice = (EnemiesEnum)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(EnemiesEnum)).Length);
 
 				VectorObject enemy = new Flipper();
 
@@ -64,6 +63,11 @@ namespace Tempest.Objects
 					case EnemiesEnum.Fuseball:
 						if (GameManager.Instance.LevelConfig.SpawnFuseball)
 							enemy = new Fuseball();
+
+						break;
+					case EnemiesEnum.Fire:
+						if (GameManager.Instance.LevelConfig.SpawnFire)
+							enemy = new Fire();
 
 						break;
 				}
@@ -148,7 +152,7 @@ namespace Tempest.Objects
 			}
 		}
 
-		public void EnemyDestroyed(PhysicsObject enemy)
+		public void EnemyDestroyed(PhysicsObject enemy, bool killedByPlayer)
 		{
 			if (enemy.IsDead)
 				return;
@@ -158,7 +162,8 @@ namespace Tempest.Objects
 					OtherEnemies.Add(enemy);
 
 			Enemies.Remove(enemy);
-			SoundRegistry.Instance.Database["destroy"].PlayFromStart();
+			if (killedByPlayer)
+				SoundRegistry.Instance.Database["destroy"].PlayFromStart();
 		}
 
 		async void TimerCheckEnemies(object? sender, ElapsedEventArgs e)

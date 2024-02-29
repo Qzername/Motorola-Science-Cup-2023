@@ -152,7 +152,7 @@ namespace Tempest.Objects
 			_bulletTimer.Close();
 			_bulletTimer.Enabled = false;
 			_moveTimer.Interval = GameManager.Instance.Rand.Next(100, 501);
-			EnemyManager.Instance.EnemyDestroyed(this);
+			EnemyManager.Instance.EnemyDestroyed(this, false);
 			// Jezeli Flipper jest na koncu to zaczyna sie szybciej poruszac
 		}
 
@@ -165,7 +165,7 @@ namespace Tempest.Objects
 				GameManager.Instance.Score += 150;
 
 			if (!AtTheEnd)
-				EnemyManager.Instance.EnemyDestroyed(this);
+				EnemyManager.Instance.EnemyDestroyed(this, killedByPlayer);
 
 			IsDead = true;
 

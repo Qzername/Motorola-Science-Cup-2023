@@ -22,7 +22,7 @@ namespace Tempest.Objects
 		public override Setup Start()
 		{
 			UIManager.Instance.RefreshUI();
-			
+
 			return new Setup()
 			{
 				Name = "SuperZapper"

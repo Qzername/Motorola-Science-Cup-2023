@@ -63,7 +63,7 @@ namespace Tempest.Objects.UI
 
 		public void RefreshUI()
 		{
-			_scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());			
+			_scoreText.SetText(GameManager.Instance.Score == 0 ? "00" : GameManager.Instance.Score.ToString());
 			_levelText.SetText($"Level {GameManager.Instance.CurrentLevelIndex}");
 			_zapperText.SetText($"Zapper: {(GameManager.Instance.Player.SuperZapper.IsUsed ? "No" : "Yes")}");
 		}

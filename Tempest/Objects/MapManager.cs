@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
 using VGE.Windows;
 
@@ -49,7 +48,7 @@ namespace Tempest.Objects
 				Point nextPoint = i + 1 < level.Layout.Length ? level.Layout[i + 1] : level.Layout[0];
 
 				// Oblicz odleglosc i kat miedzy punktami
-				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - level.Layout[i].X), 2) + MathF.Pow((nextPoint.Y -level.Layout[i].Y), 2));
+				float distance = MathF.Sqrt(MathF.Pow((nextPoint.X - level.Layout[i].X), 2) + MathF.Pow((nextPoint.Y - level.Layout[i].Y), 2));
 				float tan = MathF.Atan2(nextPoint.Y - level.Layout[i].Y, nextPoint.X - level.Layout[i].X);
 				float rotation = -1 * ((tan * MathTools.Rad2deg) % 360);
 

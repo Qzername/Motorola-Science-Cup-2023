@@ -192,7 +192,7 @@ namespace Tempest
 				TempestScene.Instance.PerspectiveOffset = new(0, 0, 1000 * i);
 				await Task.Delay(50);
 			}
-			
+
 			EnemiesToSpawn += 3;
 
 			if (Levels.Circle.Indexes.Contains(CurrentLevelIndex)) // Square
@@ -237,8 +237,12 @@ namespace Tempest
 
 			if (CurrentLevelIndex == 2)
 				LevelConfig.MoveFlipper = true;
+			else if (CurrentLevelIndex == 3)
+				LevelConfig.SpawnTanker = true;
 			else if (CurrentLevelIndex == 4)
 				LevelConfig.SpawnSpiker = true;
+			else if (CurrentLevelIndex == 5)
+				LevelConfig.SpawnFire = true;
 			else if (CurrentLevelIndex == 11)
 				LevelConfig.SpawnFuseball = true;
 		}

@@ -5,6 +5,7 @@
 		Flipper,
 		Tanker,
 		Spiker,
-		Fuseball
+		Fuseball,
+		Fire
 	}
 }

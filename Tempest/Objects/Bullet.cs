@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using VGE;
+﻿using VGE;
 using VGE.Graphics.Shapes;
 using VGE.Physics;
 
@@ -20,10 +19,8 @@ namespace Tempest.Objects
 			string[] names = { "BulletTanker", "Flipper", "Tanker", "Spiker", "SpikerLine", "Fuseball" };
 
 			foreach (string name in names)
-			{
 				if (name == other.Name)
 					window.Destroy(this);
-			}
 		}
 
 		public override Setup Start()
