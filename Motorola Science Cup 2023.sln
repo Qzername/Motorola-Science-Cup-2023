@@ -5,29 +5,27 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Game Engine", "VGE\Vector Game Engine.csproj", "{13F3D802-967D-42F4-ADB6-4FCE54148A4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Asteroids\Asteroids.csproj", "{6E3D07C4-DDFC-43E4-B20B-11A011A5F36A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asteroids", "Games\Asteroids\Asteroids.csproj", "{6E3D07C4-DDFC-43E4-B20B-11A011A5F36A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{DBA423B9-0A5C-4C6E-80BA-1A60604CDB61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Graphics Drawer", "Vector Graphics Drawer\Vector Graphics Drawer.csproj", "{22525A69-691A-4C9C-9514-D31CED362C95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Graphics Drawer", "Tools\Vector Graphics Drawer\Vector Graphics Drawer.csproj", "{22525A69-691A-4C9C-9514-D31CED362C95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Graphics Drawer.Desktop", "Vector Graphics Drawer.Desktop\Vector Graphics Drawer.Desktop.csproj", "{BF1CE904-3F4F-4054-854B-BEE4EF698359}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vector Graphics Drawer.Desktop", "Tools\Vector Graphics Drawer.Desktop\Vector Graphics Drawer.Desktop.csproj", "{BF1CE904-3F4F-4054-854B-BEE4EF698359}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A2A47981-1754-4695-9A6B-7F785ECBFA63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tempest", "Tempest\Tempest.csproj", "{CC0F1435-EF0F-4A8B-818B-17FAD2E84E18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tempest", "Games\Tempest\Tempest.csproj", "{CC0F1435-EF0F-4A8B-818B-17FAD2E84E18}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battlezone", "Battlezone\Battlezone.csproj", "{B5CD88A9-D64B-4BDB-91DD-2028C513DDE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Battlezone", "Games\Battlezone\Battlezone.csproj", "{B5CD88A9-D64B-4BDB-91DD-2028C513DDE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3D Shape Renderer", "3D Shape Renderer\3D Shape Renderer.csproj", "{358F0C98-5619-452F-815B-2FC5590A6628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3D Shape Renderer", "Tools\3D Shape Renderer\3D Shape Renderer.csproj", "{358F0C98-5619-452F-815B-2FC5590A6628}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Highscore Managing Library", "Highscore Managing Library\Highscore Managing Library.csproj", "{6FFE3572-8712-48E1-826A-706BB7D14C42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{551158AA-E5EA-48A4-9423-1AE159E87616}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TESTS - Highscore Managing Library", "TESTS - Highscore Managing Library\TESTS - Highscore Managing Library.csproj", "{EFA5A542-18EF-46C7-80F2-F37B223D4A04}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TESTS - Vector Game Engine", "TESTS - Vector Game Engine\TESTS - Vector Game Engine.csproj", "{4C49C21D-DFF3-4F74-833B-8E8A92901EE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TESTS - Vector Game Engine", "Tests\TESTS - Vector Game Engine\TESTS - Vector Game Engine.csproj", "{4C49C21D-DFF3-4F74-833B-8E8A92901EE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +65,6 @@ Global
 		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FFE3572-8712-48E1-826A-706BB7D14C42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFA5A542-18EF-46C7-80F2-F37B223D4A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFA5A542-18EF-46C7-80F2-F37B223D4A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFA5A542-18EF-46C7-80F2-F37B223D4A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFA5A542-18EF-46C7-80F2-F37B223D4A04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C49C21D-DFF3-4F74-833B-8E8A92901EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C49C21D-DFF3-4F74-833B-8E8A92901EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C49C21D-DFF3-4F74-833B-8E8A92901EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,7 +80,6 @@ Global
 		{CC0F1435-EF0F-4A8B-818B-17FAD2E84E18} = {DBA423B9-0A5C-4C6E-80BA-1A60604CDB61}
 		{B5CD88A9-D64B-4BDB-91DD-2028C513DDE2} = {DBA423B9-0A5C-4C6E-80BA-1A60604CDB61}
 		{358F0C98-5619-452F-815B-2FC5590A6628} = {A2A47981-1754-4695-9A6B-7F785ECBFA63}
-		{EFA5A542-18EF-46C7-80F2-F37B223D4A04} = {551158AA-E5EA-48A4-9423-1AE159E87616}
 		{4C49C21D-DFF3-4F74-833B-8E8A92901EE1} = {551158AA-E5EA-48A4-9423-1AE159E87616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
