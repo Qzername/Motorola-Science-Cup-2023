@@ -1,5 +1,4 @@
 ﻿using Battlezone.Objects.UI;
-using System.Security.Cryptography;
 using VGE;
 using VGE.Physics;
 using VGE.Resources;
@@ -16,7 +15,7 @@ namespace Battlezone.Objects
 
         public PowerUp(Point startPosition)
         {
-            this.startPosition = startPosition; 
+            this.startPosition = startPosition;
         }
 
         public override void OnCollisionEnter(PhysicsObject other)
@@ -26,7 +25,7 @@ namespace Battlezone.Objects
 
             int type = new Random().Next(0, 4);
 
-            switch(type)
+            switch (type)
             { //potężne te powerupy wiem, ale będą też rzadkie
                 case 0: GameManager.Instance.Player.MagazineMax *= 2; break;
                 case 1: GameManager.Instance.Player.ReloadingTime /= 2; break;
@@ -45,7 +44,7 @@ namespace Battlezone.Objects
             {
                 Name = "PowerUp",
                 Shape = ResourcesHandler.Get3DShape("Obstacles/rhombus"),
-                Position = startPosition - new Point(0,5,0)
+                Position = startPosition - new Point(0, 5, 0)
             };
         }
 

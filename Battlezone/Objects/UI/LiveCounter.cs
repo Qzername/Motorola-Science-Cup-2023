@@ -19,7 +19,7 @@ namespace Battlezone.Objects.UI
             return new Setup()
             {
                 Name = "LiveCounter",
-                Position =  new Point(0,10)
+                Position = new Point(0, 10)
             };
         }
 
@@ -37,9 +37,9 @@ namespace Battlezone.Objects.UI
             if (!IsEnabled)
                 return true;
 
-            for(int i = 0; i < GameManager.Instance.Lives; i++)
+            for (int i = 0; i < GameManager.Instance.Lives; i++)
             {
-                Point offset = new Point(i * (tankShape.BottomRight.X + 5),0);
+                Point offset = new Point(i * (tankShape.BottomRight.X + 5), 0);
 
                 foreach (var line in tankShape.CompiledShape)
                     canvas.DrawLine(new Line(transform.Position + line.StartPosition + offset, transform.Position + line.EndPosition + offset, SKColors.Green));

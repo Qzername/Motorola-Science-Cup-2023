@@ -29,16 +29,16 @@ namespace Asteroids.Objects.UI
             window.Instantiate(new LifeCounter(new Point(140, 60)));
 
             resolution = window.GetResolution();
-            copyright = new Text("COPYRIGHT WBRT:TS 2024", 1, new Point(resolution.Width/2-120, resolution.Height -30));
+            copyright = new Text("COPYRIGHT WBRT:TS 2024", 1, new Point(resolution.Width / 2 - 120, resolution.Height - 30));
             window.Instantiate(copyright);
 
-            startInfo = new Text("PRESS SPACE TO START", 2, new Point(resolution.Width/2-212, resolution.Height - 65f));
+            startInfo = new Text("PRESS SPACE TO START", 2, new Point(resolution.Width / 2 - 212, resolution.Height - 65f));
             window.Instantiate(startInfo);
 
             gameOver = new Text("GAME OVER", 2f, new Point(resolution.Width / 2 - 85, resolution.Height / 2));
             window.Instantiate(gameOver);
 
-            newHighscore = new Text("your score is\namong the best scores\nWrite your name\nUse W and S to choose letter\nSpace to confirm letter", 2f, new Point(resolution.Width / 2 - 288f, resolution.Height / 2-120f));
+            newHighscore = new Text("your score is\namong the best scores\nWrite your name\nUse W and S to choose letter\nSpace to confirm letter", 2f, new Point(resolution.Width / 2 - 288f, resolution.Height / 2 - 120f));
             window.Instantiate(newHighscore);
 
             higestscore = new Text("00", 1.5f, new Point(resolution.Width / 2 - 19, 10));
@@ -46,7 +46,7 @@ namespace Asteroids.Objects.UI
 
             scoreboard = new Scoreboard();
             window.Instantiate(scoreboard);
-            
+
             ChangeScreen(Screen.MainMenu);
 
             return new Setup()
@@ -69,7 +69,7 @@ namespace Asteroids.Objects.UI
 
             resolution = currRes;
 
-            copyright.SetPosition(new Point(resolution.Width / 2-120, resolution.Height - 30));
+            copyright.SetPosition(new Point(resolution.Width / 2 - 120, resolution.Height - 30));
             gameOver.SetPosition(new Point(resolution.Width / 2 - 85, resolution.Height / 2));
             startInfo.SetPosition(new Point(resolution.Width / 2 - 212, resolution.Height - 65f));
 

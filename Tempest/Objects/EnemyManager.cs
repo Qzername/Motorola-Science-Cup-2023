@@ -8,171 +8,171 @@ using Timer = System.Timers.Timer;
 
 namespace Tempest.Objects
 {
-	public class EnemyManager : VectorObject
-	{
-		public static EnemyManager Instance;
+    public class EnemyManager : VectorObject
+    {
+        public static EnemyManager Instance;
 
-		private readonly Timer _checkEnemiesTimer = new();
-		public List<VectorObject> Enemies = new();
-		public List<VectorObject> OtherEnemies = new();
-		public List<VectorObject> Spikes = new();
+        private readonly Timer _checkEnemiesTimer = new();
+        public List<VectorObject> Enemies = new();
+        public List<VectorObject> OtherEnemies = new();
+        public List<VectorObject> Spikes = new();
 
-		public override Setup Start()
-		{
-			_checkEnemiesTimer.Elapsed += TimerCheckEnemies;
-			_checkEnemiesTimer.Interval = 2000;
+        public override Setup Start()
+        {
+            _checkEnemiesTimer.Elapsed += TimerCheckEnemies;
+            _checkEnemiesTimer.Interval = 2000;
 
-			Instance = this;
+            Instance = this;
 
-			return new()
-			{
-				Name = "EnemyManager"
-			};
-		}
+            return new()
+            {
+                Name = "EnemyManager"
+            };
+        }
 
-		public async Task SpawnEnemies()
-		{
-			GameManager.Instance.SpawningEnemies = true;
-			_checkEnemiesTimer.Close();
-			_checkEnemiesTimer.Enabled = false;
-			int enemiesToSpawn = GameManager.Instance.EnemiesToSpawn;
+        public async Task SpawnEnemies()
+        {
+            GameManager.Instance.SpawningEnemies = true;
+            _checkEnemiesTimer.Close();
+            _checkEnemiesTimer.Enabled = false;
+            int enemiesToSpawn = GameManager.Instance.EnemiesToSpawn;
 
-			await Task.Delay(1000);
+            await Task.Delay(1000);
 
-			for (int i = 0; i < enemiesToSpawn; i++)
-			{
-				if (GameManager.Instance.StopGame)
-					return;
+            for (int i = 0; i < enemiesToSpawn; i++)
+            {
+                if (GameManager.Instance.StopGame)
+                    return;
 
-				EnemiesEnum enemyChoice = (EnemiesEnum)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(EnemiesEnum)).Length);
+                EnemiesEnum enemyChoice = (EnemiesEnum)GameManager.Instance.Rand.Next(0, Enum.GetNames(typeof(EnemiesEnum)).Length);
 
-				VectorObject enemy = new Flipper();
+                VectorObject enemy = new Flipper();
 
-				switch (enemyChoice)
-				{
-					case EnemiesEnum.Tanker:
-						if (GameManager.Instance.LevelConfig.SpawnTanker)
-							enemy = new Tanker();
+                switch (enemyChoice)
+                {
+                    case EnemiesEnum.Tanker:
+                        if (GameManager.Instance.LevelConfig.SpawnTanker)
+                            enemy = new Tanker();
 
-						break;
-					case EnemiesEnum.Spiker:
-						if (GameManager.Instance.LevelConfig.SpawnSpiker)
-							enemy = new Spiker();
+                        break;
+                    case EnemiesEnum.Spiker:
+                        if (GameManager.Instance.LevelConfig.SpawnSpiker)
+                            enemy = new Spiker();
 
-						break;
-					case EnemiesEnum.Fuseball:
-						if (GameManager.Instance.LevelConfig.SpawnFuseball)
-							enemy = new Fuseball();
+                        break;
+                    case EnemiesEnum.Fuseball:
+                        if (GameManager.Instance.LevelConfig.SpawnFuseball)
+                            enemy = new Fuseball();
 
-						break;
-					case EnemiesEnum.Fire:
-						if (GameManager.Instance.LevelConfig.SpawnFire)
-							enemy = new Fire();
+                        break;
+                    case EnemiesEnum.Fire:
+                        if (GameManager.Instance.LevelConfig.SpawnFire)
+                            enemy = new Fire();
 
-						break;
-				}
+                        break;
+                }
 
-				Enemies.Add(enemy);
-				window.Instantiate(enemy);
+                Enemies.Add(enemy);
+                window.Instantiate(enemy);
 
-				await Task.Delay(GameManager.Instance.Rand.Next(500, 2001));
-			}
+                await Task.Delay(GameManager.Instance.Rand.Next(500, 2001));
+            }
 
-			GameManager.Instance.SpawningEnemies = false;
-			_checkEnemiesTimer.Enabled = true;
-			_checkEnemiesTimer.Start();
-		}
+            GameManager.Instance.SpawningEnemies = false;
+            _checkEnemiesTimer.Enabled = true;
+            _checkEnemiesTimer.Start();
+        }
 
-		public void SplitTanker(Tanker tanker)
-		{
-			Flipper flipper1 = new Flipper();
+        public void SplitTanker(Tanker tanker)
+        {
+            Flipper flipper1 = new Flipper();
 
-			int flipper1MapPosition = tanker.PhysicsLayer;
-			if (tanker.PhysicsLayer < MapManager.Instance.Elements.Count - 1)
-				flipper1MapPosition += 1;
+            int flipper1MapPosition = tanker.PhysicsLayer;
+            if (tanker.PhysicsLayer < MapManager.Instance.Elements.Count - 1)
+                flipper1MapPosition += 1;
 
-			flipper1.Setup(flipper1MapPosition, tanker.Transform.Position.Z);
+            flipper1.Setup(flipper1MapPosition, tanker.Transform.Position.Z);
 
-			Flipper flipper2 = new Flipper();
+            Flipper flipper2 = new Flipper();
 
-			int flipper2MapPosition = tanker.PhysicsLayer;
-			if (tanker.PhysicsLayer > 0)
-				flipper2MapPosition -= 1;
+            int flipper2MapPosition = tanker.PhysicsLayer;
+            if (tanker.PhysicsLayer > 0)
+                flipper2MapPosition -= 1;
 
-			flipper2.Setup(flipper2MapPosition, tanker.Transform.Position.Z);
+            flipper2.Setup(flipper2MapPosition, tanker.Transform.Position.Z);
 
-			if (tanker.Transform.Position.Z < 400)
-			{
-				OtherEnemies.Add(flipper1);
-				OtherEnemies.Add(flipper2);
-			}
-			else
-			{
-				Enemies.Add(flipper1);
-				Enemies.Add(flipper2);
-			}
+            if (tanker.Transform.Position.Z < 400)
+            {
+                OtherEnemies.Add(flipper1);
+                OtherEnemies.Add(flipper2);
+            }
+            else
+            {
+                Enemies.Add(flipper1);
+                Enemies.Add(flipper2);
+            }
 
-			window.Instantiate(flipper1);
-			window.Instantiate(flipper2);
-		}
+            window.Instantiate(flipper1);
+            window.Instantiate(flipper2);
+        }
 
-		public override bool OverrideRender(Canvas canvas) => true;
+        public override bool OverrideRender(Canvas canvas) => true;
 
-		public override async void Update(float delta)
-		{
-			if (window.KeyDown(Key.P) && !GameManager.Instance.ChangingMap)
-				GameManager.Instance.ChangingMap = true;
-			else if (!window.KeyDown(Key.P) && GameManager.Instance.ChangingMap)
-			{
-				GameManager.Instance.ChangingMap = false;
+        public override async void Update(float delta)
+        {
+            if (window.KeyDown(Key.P) && !GameManager.Instance.ChangingMap)
+                GameManager.Instance.ChangingMap = true;
+            else if (!window.KeyDown(Key.P) && GameManager.Instance.ChangingMap)
+            {
+                GameManager.Instance.ChangingMap = false;
 
-				await GameManager.Instance.NextLevel();
-				GameManager.Instance.StartLevel();
-			}
-		}
+                await GameManager.Instance.NextLevel();
+                GameManager.Instance.StartLevel();
+            }
+        }
 
-		public void DestroyEnemies(bool destroySpikes = false)
-		{
-			foreach (VectorObject enemy in Enemies.ToArray())
-				window.Destroy(enemy);
+        public void DestroyEnemies(bool destroySpikes = false)
+        {
+            foreach (VectorObject enemy in Enemies.ToArray())
+                window.Destroy(enemy);
 
-			Enemies.Clear();
+            Enemies.Clear();
 
-			foreach (VectorObject enemy in OtherEnemies.ToArray())
-				window.Destroy(enemy);
+            foreach (VectorObject enemy in OtherEnemies.ToArray())
+                window.Destroy(enemy);
 
-			OtherEnemies.Clear();
+            OtherEnemies.Clear();
 
-			if (destroySpikes)
-			{
-				foreach (VectorObject spike in Spikes.ToArray())
-					window.Destroy(spike);
+            if (destroySpikes)
+            {
+                foreach (VectorObject spike in Spikes.ToArray())
+                    window.Destroy(spike);
 
-				Spikes.Clear();
-			}
-		}
+                Spikes.Clear();
+            }
+        }
 
-		public void EnemyDestroyed(PhysicsObject enemy, bool killedByPlayer)
-		{
-			if (enemy.IsDead)
-				return;
+        public void EnemyDestroyed(PhysicsObject enemy, bool killedByPlayer)
+        {
+            if (enemy.IsDead)
+                return;
 
-			if (enemy is Flipper)
-				if (((Flipper)enemy).AtTheEnd)
-					OtherEnemies.Add(enemy);
+            if (enemy is Flipper)
+                if (((Flipper)enemy).AtTheEnd)
+                    OtherEnemies.Add(enemy);
 
-			Enemies.Remove(enemy);
-			if (killedByPlayer)
-				SoundRegistry.Instance.Database["destroy"].PlayFromStart();
-		}
+            Enemies.Remove(enemy);
+            if (killedByPlayer)
+                SoundRegistry.Instance.Database["destroy"].PlayFromStart();
+        }
 
-		async void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
-		{
-			if (Enemies.Count <= 0 && !GameManager.Instance.SpawningEnemies && !GameManager.Instance.StopGame)
-			{
-				await GameManager.Instance.NextLevel();
-				GameManager.Instance.StartLevel();
-			}
-		}
-	}
+        async void TimerCheckEnemies(object? sender, ElapsedEventArgs e)
+        {
+            if (Enemies.Count <= 0 && !GameManager.Instance.SpawningEnemies && !GameManager.Instance.StopGame)
+            {
+                await GameManager.Instance.NextLevel();
+                GameManager.Instance.StartLevel();
+            }
+        }
+    }
 }

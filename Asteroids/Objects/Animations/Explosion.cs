@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.Xml;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
 
 namespace Asteroids.Objects.Animations
@@ -18,7 +17,7 @@ namespace Asteroids.Objects.Animations
 
         public Explosion(Point startPosition)
         {
-            this.startPosition  = startPosition;
+            this.startPosition = startPosition;
         }
 
         public override Setup Start()
@@ -26,10 +25,10 @@ namespace Asteroids.Objects.Animations
             points = new Point[10];
             var rng = new Random();
 
-            for(int i = 0; i < points.Length;i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 //X = distance, Z = rotation
-                points[i] = new Point(rng.Next(5, 15), 0,rng.Next(0,360));
+                points[i] = new Point(rng.Next(5, 15), 0, rng.Next(0, 360));
             }
 
             return new Setup()
@@ -50,7 +49,7 @@ namespace Asteroids.Objects.Animations
 
         public override bool OverrideRender(Canvas canvas)
         {
-            foreach(var point in points)
+            foreach (var point in points)
             {
                 float sin = MathF.Sin(-point.Z * MathTools.Deg2rad);
                 float cos = MathF.Cos(-point.Z * MathTools.Deg2rad);
@@ -61,7 +60,7 @@ namespace Asteroids.Objects.Animations
                 float x2 = cos * (distance + point.X + 5);
                 float y2 = sin * (distance + point.X + 5);
 
-                canvas.DrawLine(new Line(new Point(x, y)  +  transform.Position, 
+                canvas.DrawLine(new Line(new Point(x, y) + transform.Position,
                                          new Point(x2, y2) + transform.Position));
             }
 

@@ -2,6 +2,9 @@
 
 namespace HML
 {
+    /// <summary>
+    /// Narzędzie do zapisu i odczytu highscorów
+    /// </summary>
     public static class HighscoreManager
     {
         static List<Highscore> highscores;
@@ -23,12 +26,12 @@ namespace HML
             if (!IsNewHighscore(score))
                 return;
 
-            if(highscores.Count == 10)
+            if (highscores.Count == 10)
                 highscores.RemoveAt(9);
-    
+
             highscores.Add(score);
 
-            highscores = highscores.OrderByDescending(x=>x.Score).ToList();
+            highscores = highscores.OrderByDescending(x => x.Score).ToList();
 
             SaveHighscores();
         }
@@ -57,7 +60,7 @@ namespace HML
             if (string.IsNullOrEmpty(file))
                 file = "[]";
 
-            highscores.AddRange(JsonConvert.DeserializeObject<Highscore[]>(file)!.OrderByDescending(x=>x.Score).ToArray());  
+            highscores.AddRange(JsonConvert.DeserializeObject<Highscore[]>(file)!.OrderByDescending(x => x.Score).ToArray());
         }
     }
 }

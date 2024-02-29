@@ -5,6 +5,9 @@ using VGE.Windows;
 
 namespace HML.Objects
 {
+    /// <summary>
+    /// obiekt pomocniczy, wzięcie trzyliterowego inicjału gracza
+    /// </summary>
     public class NameSetter : VectorObject
     {
         const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -44,8 +47,8 @@ namespace HML.Objects
         {
             var res = window.GetResolution();
 
-            text.SetPosition(new Point(res.Width / 2-92, res.Height / 2+30f));
-            underline.SetPosition(new Point(res.Width / 2-92, res.Height / 2+30f + 5f));
+            text.SetPosition(new Point(res.Width / 2 - 92, res.Height / 2 + 30f));
+            underline.SetPosition(new Point(res.Width / 2 - 92, res.Height / 2 + 30f + 5f));
 
             bool currentIsSpacePressed = window.KeyDown(Key.Space);
 
@@ -54,7 +57,7 @@ namespace HML.Objects
                 name += alphabet[currentLetter];
                 currentIndex++;
 
-                if(currentIndex == 3)
+                if (currentIndex == 3)
                 {
                     nameSet?.Invoke(name);
                     window.Destroy(underline);
@@ -72,7 +75,7 @@ namespace HML.Objects
             bool currentIsWpressed = window.KeyDown(Key.W);
             bool currentIsSpressed = window.KeyDown(Key.S);
 
-            if(!currentIsWpressed && lastIsWpressed)
+            if (!currentIsWpressed && lastIsWpressed)
             {
                 currentLetter++;
 
@@ -81,12 +84,12 @@ namespace HML.Objects
 
                 text.SetText(name + alphabet[currentLetter]);
             }
-            else if(!currentIsSpressed && lastIsSpressed)
+            else if (!currentIsSpressed && lastIsSpressed)
             {
                 currentLetter--;
 
-                if(currentLetter == -1)
-                    currentLetter = alphabet.Length-1;
+                if (currentLetter == -1)
+                    currentLetter = alphabet.Length - 1;
 
                 text.SetText(name + alphabet[currentLetter]);
             }

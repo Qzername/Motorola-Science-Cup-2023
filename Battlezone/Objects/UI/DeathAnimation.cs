@@ -1,9 +1,4 @@
 ﻿using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VGE;
 using VGE.Graphics;
 
@@ -90,8 +85,8 @@ namespace Battlezone.Objects.UI
         public override void Update(float delta)
         {
             animationTimer += delta;
-           
-            if(animationTimer > animationMax)
+
+            if (animationTimer > animationMax)
             {
                 GameManager.Instance.Lives--;
 
@@ -107,7 +102,7 @@ namespace Battlezone.Objects.UI
 
             int framesToRender = Convert.ToInt32(animationTimer / (animationMax / frames));
 
-            for(int i = 0; i<framesToRender;i++)
+            for (int i = 0; i < framesToRender; i++)
             {
                 foreach (var line in deathFrames[i])
                     canvas.DrawLine(new Line(centerOfScreen + new Point(line.StartPosition.X * res.Width, line.StartPosition.Y * res.Height),

@@ -1,19 +1,16 @@
-﻿using HML;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
 using VGE.Objects;
 using VGE.Windows;
 
 namespace HML.Objects
 {
+    /// <summary>
+    /// tabela wyników
+    /// </summary>
     public class Scoreboard : VectorObject
     {
-        const int yLetterOffset =35, yOffset = -185, xOffset = -150;
+        const int yLetterOffset = 35, yOffset = -185, xOffset = -150;
 
         Text[] scoreboardTexts;
 
@@ -21,7 +18,7 @@ namespace HML.Objects
         {
             set
             {
-                for(int i = 0; i < scoreboardTexts.Length; i++)
+                for (int i = 0; i < scoreboardTexts.Length; i++)
                     scoreboardTexts[i].IsEnabled = value;
             }
         }
@@ -32,7 +29,7 @@ namespace HML.Objects
         {
             scoreboardTexts = new Text[11];
 
-            for (int i = 0; i< scoreboardTexts.Length; i++)
+            for (int i = 0; i < scoreboardTexts.Length; i++)
             {
                 var text = new Text("", 2f, new());
                 window.Instantiate(text);
@@ -81,7 +78,7 @@ namespace HML.Objects
                 for (int j = score.Length; j < 5; j++)
                     score += "  ";
 
-                scoreboardTexts[i].SetText($"{i}. " + (i==10?"":"  ") + $"{score}   {highscores[i - 1].Name}");
+                scoreboardTexts[i].SetText($"{i}. " + (i == 10 ? "" : "  ") + $"{score}   {highscores[i - 1].Name}");
                 scoreboardTexts[i].SetPosition(basePosition + new Point(0, yLetterOffset * i, 0));
             }
         }

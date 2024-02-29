@@ -5,39 +5,53 @@ using VGE.Graphics.Shapes;
 
 namespace VGE.Resources
 {
-	public static class ResourcesHandler
-	{
-		static Dictionary<string, ShapeSet> database;
+    /// <summary>
+    /// Narzędzie służące do wczytywania assetów
+    /// </summary>
+    public static class ResourcesHandler
+    {
+        static Dictionary<string, ShapeSet> database;
 
-		static ResourcesHandler()
-		{
-			database = new Dictionary<string, ShapeSet>();
-		}
+        static ResourcesHandler()
+        {
+            database = new Dictionary<string, ShapeSet>();
+        }
 
-		public static ShapeSet GetShapeSet(string name)
-		{
-			if (!database.ContainsKey(name))
-				LoadSet(name);
+        /// <summary>
+        /// Wzięcie wszystkich kształtów z danego setu. 
+        /// 
+        /// Zwraca wszystkie shapepy
+        /// </summary>
+        public static ShapeSet GetShapeSet(string name)
+        {
+            if (!database.ContainsKey(name))
+                LoadSet(name);
 
-			return database[name];
-		}
+            return database[name];
+        }
 
-		public static IShape GetShape(string shapeSetName, string shapeName)
-		{
-			if (!database.ContainsKey(shapeSetName))
-				LoadSet(shapeSetName);
+        /// <summary>
+        /// Wzięcie konkretnego shape'pa
+        /// </summary>
+        public static IShape GetShape(string shapeSetName, string shapeName)
+        {
+            if (!database.ContainsKey(shapeSetName))
+                LoadSet(shapeSetName);
 
-			return database[shapeSetName].Set[shapeName][0];
-		}
+            return database[shapeSetName].Set[shapeName][0];
+        }
 
-		public static IShape Get3DShape(string shapeName)
-		{
+        /// <summary>
+        /// Wczytanie i przygotowanie shape'pa trójwymiarowego
+        /// </summary>
+        public static IShape Get3DShape(string shapeName)
+        {
             List<Point> pointDefinitions = [];
             List<Point> lineDefinitions = [];
 
             int mode = 0;
 
-			SKColor color = SKColors.Green;
+            SKColor color = SKColors.Green;
 
             foreach (var line in File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{shapeName}.3Dshape"))
             {
@@ -61,49 +75,49 @@ namespace VGE.Resources
 
                 if (mode == 1)
                     pointDefinitions.Add(point);
-                else if(mode == 2)
+                else if (mode == 2)
                     lineDefinitions.Add(point);
-				else
-					color = new SKColor(Convert.ToByte(coordinates[0].Replace('.', ',')), Convert.ToByte(coordinates[1].Replace('.', ',')), Convert.ToByte(coordinates[2].Replace('.', ',')));
-			}
+                else
+                    color = new SKColor(Convert.ToByte(coordinates[0].Replace('.', ',')), Convert.ToByte(coordinates[1].Replace('.', ',')), Convert.ToByte(coordinates[2].Replace('.', ',')));
+            }
 
-			return new PredefinedShape(pointDefinitions.ToArray(), lineDefinitions.ToArray(), color);
+            return new PredefinedShape(pointDefinitions.ToArray(), lineDefinitions.ToArray(), color);
         }
 
-		static void LoadSet(string setName)
-		{
-			string setJson = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{setName}.json");
-			var rawSet = JsonConvert.DeserializeObject<RawShapeSet>(setJson);
+        static void LoadSet(string setName)
+        {
+            string setJson = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + $"Resources/{setName}.json");
+            var rawSet = JsonConvert.DeserializeObject<RawShapeSet>(setJson);
 
-			Dictionary<string, IShape[]> set = new Dictionary<string, IShape[]>();
+            Dictionary<string, IShape[]> set = new Dictionary<string, IShape[]>();
 
-			foreach (var shapeArray in rawSet.Set)
-			{
-				set[shapeArray.Key] = new IShape[shapeArray.Value.Length];
+            foreach (var shapeArray in rawSet.Set)
+            {
+                set[shapeArray.Key] = new IShape[shapeArray.Value.Length];
 
-				for (int i = 0; i < shapeArray.Value.Length; i++)
-				{
-					List<Point> points = new List<Point>();
+                for (int i = 0; i < shapeArray.Value.Length; i++)
+                {
+                    List<Point> points = new List<Point>();
 
-					foreach (var point in shapeArray.Value[i].Points)
-						points.Add(new Point(point.X, point.Y));
+                    foreach (var point in shapeArray.Value[i].Points)
+                        points.Add(new Point(point.X, point.Y));
 
-					if (points.Count == 0)
-						continue;
+                    if (points.Count == 0)
+                        continue;
 
-					set[shapeArray.Key][i] = new PointShape(points.ToArray());
-				}
-			}
+                    set[shapeArray.Key][i] = new PointShape(points.ToArray());
+                }
+            }
 
-			ShapeSet shapeSet = new ShapeSet()
-			{
-				Name = rawSet.Name,
-				Set = set,
-			};
+            ShapeSet shapeSet = new ShapeSet()
+            {
+                Name = rawSet.Name,
+                Set = set,
+            };
 
-			database[setName] = shapeSet;
-		}
+            database[setName] = shapeSet;
+        }
 
 
-	}
+    }
 }

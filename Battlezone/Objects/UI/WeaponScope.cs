@@ -39,7 +39,7 @@ namespace Battlezone.Objects.UI
             {
                 reloadingAnimationCurrent += delta;
 
-                if(reloadingAnimationCurrent > reloadingAnimationMax)
+                if (reloadingAnimationCurrent > reloadingAnimationMax)
                     reloadingAnimationCurrent = 0;
             }
             else
@@ -48,17 +48,17 @@ namespace Battlezone.Objects.UI
 
         public override bool OverrideRender(Canvas canvas)
         {
-            if(!IsEnabled)
+            if (!IsEnabled)
                 return true;
 
             if (reloadingAnimationCurrent > 0.25f)
                 return true;
 
-            Point topOffset = new Point(shape.BottomRight.X/2, shape.BottomRight.Y*1.5f);
-            Point bottomOffset = new Point(shape.BottomRight.X / 2, -shape.BottomRight.Y*1.5f);
+            Point topOffset = new Point(shape.BottomRight.X / 2, shape.BottomRight.Y * 1.5f);
+            Point bottomOffset = new Point(shape.BottomRight.X / 2, -shape.BottomRight.Y * 1.5f);
 
             //górna część
-            for(int i = 0; i < shape.CompiledShape.Length-1;i++)
+            for (int i = 0; i < shape.CompiledShape.Length - 1; i++)
             {
                 var line = shape.CompiledShape[i];
 

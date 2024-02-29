@@ -1,116 +1,113 @@
 ﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using VGE.Graphics;
 
 namespace VGE.WPF
 {
-	/// <summary>
-	/// Logika interakcji dla klasy MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : System.Windows.Window
-	{
-		List<Line> linesToDraw;
+    /// <summary>
+    /// Logika interakcji dla klasy MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        List<Line> linesToDraw;
 
-		SKPaint paint, customPaint;
-		SKPaint circlePaint, customCirclePaint;
+        SKPaint paint, customPaint;
 
-		/// <summary>
-		/// Skala okienek jaka jest ustawiona w windowsie
-		/// </summary>
-		public float Scale;
+        /// <summary>
+        /// Skala okienek jaka jest ustawiona w windowsie
+        /// </summary>
+        public float Scale;
 
-		public MainWindow()
-		{
-			Scale = 1f;
+        public MainWindow(WindowConfiguration configuration)
+        {
+            Scale = 1f;
 
-			// Domyslna rozdzielczosc okna to 800x450
-			MinWidth = 800;
-			MinHeight = 450;
+            InitializeComponent();
 
-			InitializeComponent();
+            //Ustawienia okna
+            Title = configuration.Name;
+
+            Width = configuration.Size.X;
+            Height = configuration.Size.Y;
+
 
             paint = new SKPaint()
-			{
-				StrokeWidth = 1,
-				Color = SKColors.White,
-			};
+            {
+                StrokeWidth = 1,
+                Color = SKColors.White,
+            };
 
-			customPaint = new SKPaint()
-			{
-				StrokeWidth = 1,
-				Color = SKColors.White
-			};
+            customPaint = new SKPaint()
+            {
+                StrokeWidth = 1,
+                Color = SKColors.White
+            };
 
-			circlePaint = new SKPaint()
-			{
-				Style = SKPaintStyle.Stroke,
-				StrokeWidth = 1,
-				Color = SKColors.White,
-			};
+            linesToDraw = new List<Line>();
 
-			customCirclePaint = new SKPaint()
-			{
-				Style = SKPaintStyle.Stroke,
-				StrokeWidth = 1,
-				Color = SKColors.White
-			};
+            skElement.PaintSurface += OnPaintSurface;
+        }
 
-			linesToDraw = new List<Line>();
+        private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+        {
+            var canvas = e.Surface.Canvas;
 
-			skElement.PaintSurface += OnPaintSurface;
-		}
+            canvas.Clear(SKColors.Black);
 
-		private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
-		{
-			var canvas = e.Surface.Canvas;
-
-			canvas.Clear(SKColors.Black);
-
+            //czasami linesToDraw może być zmodyfikowane w trakcie wykonywania fora
+            //dlatego nic nie będzie szkodził jezeli jest tutaj try catch
             try
-			{
-				for (int i = 0; i < linesToDraw.Count; i++)
-				{
-					var line = linesToDraw[i];
+            {
+                for (int i = 0; i < linesToDraw.Count; i++)
+                {
+                    var line = linesToDraw[i];
 
-					if (line.LineColor is null)
-						canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
-					else
-					{
-						customPaint.Color = line.LineColor.Value;
-						canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
-					}
-				}
-			}
-			catch (Exception)
-			{
+                    if (line.LineColor is null)
+                        canvas.DrawLine(line.StartPosition, line.EndPosition, paint);
+                    else
+                    {
+                        customPaint.Color = line.LineColor.Value;
+                        canvas.DrawLine(line.StartPosition, line.EndPosition, customPaint);
+                    }
+                }
+            }
+            catch (Exception)
+            {
 
-			}
-		}
+            }
+        }
 
-		public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
-		public void SetLines(List<Line> lines) => linesToDraw = lines;
+        /// <summary>
+        /// Odświeżenie canvasa - renderowanie canvasa na nowo
+        /// </summary>
+        public void RefreshCanvas() => Dispatcher.Invoke(skElement.InvalidateVisual);
+        /// <summary>
+        /// Ustawienie oknu odwołanie do zbioru liń jakie ma narysować
+        /// </summary>
+        public void SetLines(List<Line> lines) => linesToDraw = lines;
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PresentationSource source = PresentationSource.FromVisual(this);
             Scale = Convert.ToSingle(source.CompositionTarget.TransformToDevice.M22);
         }
 
-		public bool GetKey(Windows.Key key)
-		{
-			bool getKey = false;
+        /// <summary>
+        /// Sprawdzenie czy dany przycisk jest wciśnięty
+        /// </summary>
+        public bool GetKey(Windows.Key key)
+        {
+            bool getKey = false;
 
-			Dispatcher.Invoke(() =>
-			{
-				getKey = Keyboard.IsKeyDown((System.Windows.Input.Key)key);
-			});
+            Dispatcher.Invoke(() =>
+            {
+                getKey = Keyboard.IsKeyDown((System.Windows.Input.Key)key);
+            });
 
-			return getKey;
-		}
-	}
+            return getKey;
+        }
+    }
 }

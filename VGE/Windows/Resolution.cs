@@ -1,9 +1,9 @@
 ﻿namespace VGE.Windows
 {
-	public struct Resolution(int width, int height)
-	{
-		public int Width { get; } = width;
-		public int Height { get; } = height;
+    public struct Resolution(int width, int height)
+    {
+        public int Width { get; } = width;
+        public int Height { get; } = height;
 
 
         public static bool operator ==(Resolution res1, Resolution res2)
@@ -12,8 +12,8 @@
         }
 
         public static bool operator !=(Resolution res1, Resolution res2)
-		{
-			return !(res1 == res2);
-		}
-	}
+        {
+            return !(res1 == res2);
+        }
+    }
 }

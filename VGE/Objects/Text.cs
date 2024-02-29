@@ -1,10 +1,11 @@
-﻿using SkiaSharp;
-using System.Diagnostics;
-using VGE.Graphics;
+﻿using VGE.Graphics;
 using VGE.Resources;
 
 namespace VGE.Objects
 {
+    /// <summary>
+    /// Obiekt pomocniczy który renderuje tekst
+    /// </summary>
     public class Text : VectorObject
     {
         public bool IsEnabled = true;
@@ -41,7 +42,7 @@ namespace VGE.Objects
         public void SetText(string text)
         {
             currentText = text.ToUpper();
-            currentTextReverse = text.ToUpper();    
+            currentTextReverse = text.ToUpper();
 
             var reverse = currentTextReverse.ToCharArray();
             Array.Reverse(reverse);
@@ -66,7 +67,7 @@ namespace VGE.Objects
 
             string tempText = textAlignment == TextAlignment.Left ? currentText : currentTextReverse;
 
-            for(int i = 0; i < tempText.Length; i++)
+            for (int i = 0; i < tempText.Length; i++)
             {
                 float maxRight = 0;
 
@@ -85,7 +86,7 @@ namespace VGE.Objects
 
                 foreach (var shape in alphabet.Set[tempText[i].ToString()])
                 {
-                    if(shape is null)
+                    if (shape is null)
                         continue;
 
                     foreach (var l in shape.CompiledShape)
@@ -93,7 +94,7 @@ namespace VGE.Objects
                         if (l.StartPosition.X > maxRight)
                             maxRight = l.StartPosition.X;
 
-                        if(l.EndPosition.X > maxRight)
+                        if (l.EndPosition.X > maxRight)
                             maxRight = l.EndPosition.X;
 
                         var start = new Point(l.StartPosition.X * fontSize + xOffset, l.StartPosition.Y * fontSize + yOffset);
@@ -103,7 +104,7 @@ namespace VGE.Objects
                     }
                 }
 
-                xOffset += ((maxRight* fontSize) + fontSize/2) * (int)textAlignment;
+                xOffset += ((maxRight * fontSize) + fontSize / 2) * (int)textAlignment;
             }
 
             return true;

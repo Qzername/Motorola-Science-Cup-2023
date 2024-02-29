@@ -1,18 +1,16 @@
-﻿using System.Diagnostics;
-using VGE;
-using VGE.Graphics.Scenes;
+﻿using VGE;
 
 namespace Battlezone
 {
-	public static class PositionCalculationTools
-	{
-		/// <summary>
-		/// Kalkulacja następnej pozycji kiedy chcielibiśmy kierować sie do gracza
-		/// </summary>
-		/// <returns>Pierwsze pozycja, drugie rotacja w jaką obiekt powinien sie obróć</returns>
-		public static (Point, float) NextPositionTowardsPoint(Transform transform, Point point, float speed)
-		{
-			/* 
+    public static class PositionCalculationTools
+    {
+        /// <summary>
+        /// Kalkulacja następnej pozycji kiedy chcielibiśmy kierować sie do gracza
+        /// </summary>
+        /// <returns>Pierwsze pozycja, drugie rotacja w jaką obiekt powinien sie obróć</returns>
+        public static (Point, float) NextPositionTowardsPoint(Transform transform, Point point, float speed)
+        {
+            /* 
              * dlaczego to nie jest w silniku?
              * bo nie miałem czasu zaimplementowac tego porządnie.
              * nie będę się niekulturalnie wyrażać.
@@ -22,32 +20,32 @@ namespace Battlezone
              * JA SIĘ PO PROSTU PODDAŁEM.
              */
 
-			//angle
-			Point offset = transform.Position - point;
+            //angle
+            Point offset = transform.Position - point;
 
-			float c = MathF.Sqrt(MathF.Pow(offset.X, 2) + MathF.Pow(offset.Z, 2));
+            float c = MathF.Sqrt(MathF.Pow(offset.X, 2) + MathF.Pow(offset.Z, 2));
 
-			float sinAngleToPlayer = offset.Z / c;
-			float angleToPlayer = (MathF.Asin(sinAngleToPlayer) * MathTools.Rad2deg);
+            float sinAngleToPlayer = offset.Z / c;
+            float angleToPlayer = (MathF.Asin(sinAngleToPlayer) * MathTools.Rad2deg);
 
-			float rotationDelta;
+            float rotationDelta;
 
             rotationDelta = angleToPlayer - transform.Rotation.Y;
             if (offset.X > 0)
-				rotationDelta = angleToPlayer - transform.Rotation.Y;
-			else
-				rotationDelta = ((angleToPlayer * -1f) - transform.Rotation.Y) - 180;
+                rotationDelta = angleToPlayer - transform.Rotation.Y;
+            else
+                rotationDelta = ((angleToPlayer * -1f) - transform.Rotation.Y) - 180;
 
-			//next position
-			float cNext = speed;
+            //next position
+            float cNext = speed;
 
-			float z = sinAngleToPlayer * cNext;
-			float x = (offset.X / c) * cNext;
+            float z = sinAngleToPlayer * cNext;
+            float x = (offset.X / c) * cNext;
 
-			transform.Position.X -= x;
-			transform.Position.Z -= z;
+            transform.Position.X -= x;
+            transform.Position.Z -= z;
 
-			return (transform.Position, rotationDelta);
-		}
-	}
+            return (transform.Position, rotationDelta);
+        }
+    }
 }

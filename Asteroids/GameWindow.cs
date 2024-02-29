@@ -1,13 +1,11 @@
 ﻿using Asteroids.Objects;
-using SkiaSharp;
-using System.Diagnostics;
-using VGE.Graphics;
-using VGE.Physics;
-using System.Timers;
-using VGE.Objects;
-using VGE.Windows;
-using VGE.Graphics.Scenes;
 using Asteroids.Objects.UI;
+using VGE;
+using VGE.Audio.Default;
+using VGE.Graphics;
+using VGE.Graphics.Scenes;
+using VGE.Physics;
+using VGE.Windows;
 
 namespace Asteroids
 {
@@ -15,7 +13,13 @@ namespace Asteroids
     {
         SoundRegistry soundRegistry;
 
-		public GameWindow() : base(new Scene2D())
+        static WindowConfiguration windowConfiguration = new WindowConfiguration()
+        {
+            Name = "Asteroids",
+            Size = new Point(1280, 720)
+        };
+
+        public GameWindow() : base(windowConfiguration, new Scene2D())
         {
             var physicsEngine = new PhysicsEngine(new PhysicsConfiguration()
             {
@@ -26,6 +30,7 @@ namespace Asteroids
                 }
             });
             RegisterPhysicsEngine(physicsEngine);
+            RegisterAudioEngine(new NAudioEngine());
 
             soundRegistry = new SoundRegistry();
             soundRegistry.InitializeSounds(this);

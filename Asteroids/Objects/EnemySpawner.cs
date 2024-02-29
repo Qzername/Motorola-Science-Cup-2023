@@ -1,13 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+﻿using SkiaSharp;
 using VGE;
 using VGE.Graphics;
 using VGE.Windows;
@@ -66,13 +57,13 @@ namespace Asteroids.Objects
                 GameManager.Instance.CurrentScreen != Screen.Highscore)
                 NextWave();
 
-            if(ufoTimer > ufoMax)
+            if (ufoTimer > ufoMax)
             {
                 ufoTimer = 0f;
                 TimerSpawnUfo();
             }
 
-            if(sinusTimer > sinusMax)
+            if (sinusTimer > sinusMax)
             {
                 sinusTimer = 0f;
                 TimerSpawnSinus();
@@ -88,21 +79,21 @@ namespace Asteroids.Objects
             this.spawningAllowed = spawningAllowed;
             ufoTimer = 0f;
 
-            for(int i = 0; i < obstacles.Count;i++)
+            for (int i = 0; i < obstacles.Count; i++)
                 if (obstacles[i] is not null)
                 {
                     window.Destroy(obstacles[i]);
                     obstacles[i] = null;
                 }
 
-            for(int i = 0; i < ufos.Count;i++)
+            for (int i = 0; i < ufos.Count; i++)
                 if (ufos[i] is not null)
                 {
                     window.Destroy(ufos[i]);
                     ufos[i] = null;
                 }
 
-            for(int i = 0; i < sinuses.Count;i++)
+            for (int i = 0; i < sinuses.Count; i++)
                 if (sinuses[i] is not null)
                 {
                     window.Destroy(sinuses[i]);

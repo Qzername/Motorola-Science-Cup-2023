@@ -22,7 +22,7 @@ namespace Asteroids.Objects
             }
         }
 
-        float speed = 150f, range= 40f;
+        float speed = 150f, range = 40f;
 
         float realPosition;
         float secondPosition;
@@ -49,7 +49,7 @@ namespace Asteroids.Objects
             {
                 Name = "Sinus",
                 Position = position,
-                Shape = new PointShape([new(-5,-5), new (-5,5), new(5,5), new(5,-5)])
+                Shape = new PointShape([new(-5, -5), new(-5, 5), new(5, 5), new(5, -5)])
             };
         }
 
@@ -57,7 +57,7 @@ namespace Asteroids.Objects
         {
             realPosition += delta * speed;
 
-            Rotate(new Point(0,0, delta * 40));
+            Rotate(new Point(0, 0, delta * 40));
 
             if (isHorizontal)
                 Horizontal();
@@ -72,7 +72,7 @@ namespace Asteroids.Objects
             if (realPosition > res.Width)
                 window.Destroy(this);
 
-            transform.Position = new Point(realPosition,secondPosition + MathF.Sin(realPosition * MathTools.Deg2rad*5) * range);
+            transform.Position = new Point(realPosition, secondPosition + MathF.Sin(realPosition * MathTools.Deg2rad * 5) * range);
         }
 
         void Vertical()

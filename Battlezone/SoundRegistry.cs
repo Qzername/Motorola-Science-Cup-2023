@@ -1,4 +1,4 @@
-﻿using VGE.Audio;
+﻿using VGE.Audio.Default;
 using VGE.Windows;
 
 namespace Battlezone
@@ -7,7 +7,7 @@ namespace Battlezone
     {
         public static SoundRegistry Instance;
 
-        public Dictionary<string, Sound> Database;
+        public Dictionary<string, NASound> Database;
 
         public SoundRegistry()
         {
@@ -16,21 +16,21 @@ namespace Battlezone
 
         public void InitializeSounds(Window window)
         {
-            Database = new Dictionary<string, Sound>();
+            Database = new Dictionary<string, NASound>();
 
-            foreach(var file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "Resources/Sounds/"))
+            foreach (var file in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "Resources/Sounds/"))
                 if (file.EndsWith(".wav"))
                 {
                     string fileName = file.Split("Resources/Sounds/").Last();
 
-                    var fire = new Sound($"Sounds/{fileName}");
+                    var fire = new NASound($"Sounds/{fileName}");
                     window.AudioEngine.RegisterSound(fire);
 
                     //z np. C://Asteroids/Resources/fire.wav zostanie samo fire
                     Database[fileName.Split(['/', '\\', '.'])[^2]] = fire;
                 }
 
-            window.AudioEngine.InitializeMixer();
+            window.AudioEngine.Initialize();
         }
     }
 }

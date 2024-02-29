@@ -1,29 +1,36 @@
 ﻿using Tempest.Objects;
 using Tempest.Objects.UI;
+using VGE;
 using VGE.Graphics;
 using VGE.Windows;
 
 namespace Tempest
 {
-	internal class GameWindow : Window
-	{
-		SoundRegistry soundRegistry;
+    internal class GameWindow : Window
+    {
+        SoundRegistry soundRegistry;
 
-		public GameWindow() : base(new TempestScene())
-		{
-			RegisterPhysicsEngine(new TempestPhysicsEngine());
+        static WindowConfiguration windowConfiguration = new WindowConfiguration()
+        {
+            Name = "Tempest",
+            Size = new Point(1280, 720)
+        };
 
-			soundRegistry = new SoundRegistry();
-			soundRegistry.InitializeSounds(this);
+        public GameWindow() : base(windowConfiguration, new TempestScene())
+        {
+            RegisterPhysicsEngine(new TempestPhysicsEngine());
 
-			Instantiate(new GameManager());
-			Instantiate(new EnemyManager());
-			Instantiate(new UIManager());
-		}
+            soundRegistry = new SoundRegistry();
+            soundRegistry.InitializeSounds(this);
 
-		public override void Update(Canvas canvas)
-		{
+            Instantiate(new GameManager());
+            Instantiate(new EnemyManager());
+            Instantiate(new UIManager());
+        }
 
-		}
-	}
+        public override void Update(Canvas canvas)
+        {
+
+        }
+    }
 }

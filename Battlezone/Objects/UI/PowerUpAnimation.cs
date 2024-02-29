@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
 using VGE.Objects;
 
@@ -19,7 +13,7 @@ namespace Battlezone.Objects.UI
 
         public override Setup Start()
         {
-            powerUpText = new Text("POWER UP", 2f, new Point(200,200));
+            powerUpText = new Text("POWER UP", 2f, new Point(200, 200));
             window.Instantiate(powerUpText);
 
             return new()
@@ -33,15 +27,15 @@ namespace Battlezone.Objects.UI
             //mryganie tekstu
             animTimer += delta;
 
-            if (animTimer > animTimerMax/2 && powerUpText.IsEnabled)
+            if (animTimer > animTimerMax / 2 && powerUpText.IsEnabled)
                 powerUpText.IsEnabled = false;
 
-            if(animTimer > animTimerMax)
+            if (animTimer > animTimerMax)
             {
                 powerUpText.IsEnabled = true;
                 animTimer = 0f;
             }
-            
+
             //śmierć animacji
             deathTimer += delta;
 
@@ -54,7 +48,7 @@ namespace Battlezone.Objects.UI
             //pozycjonowanie
             var res = window.GetResolution();
 
-            powerUpText.SetPosition(new Point(res.Width / 2-80, res.Height / 2-15));
+            powerUpText.SetPosition(new Point(res.Width / 2 - 80, res.Height / 2 - 15));
         }
 
         public override bool OverrideRender(Canvas canvas)

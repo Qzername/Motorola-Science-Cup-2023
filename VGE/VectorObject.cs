@@ -1,111 +1,126 @@
-﻿using VGE.Audio;
-using VGE.Graphics;
+﻿using VGE.Graphics;
 using VGE.Graphics.Shapes;
 using VGE.Windows;
 
 namespace VGE
 {
-	public abstract class VectorObject
-	{
-		string name;
-		public string Name
-		{
-			get => name;
-		}
+    /// <summary>
+    /// Obiekt w grze
+    /// </summary>
+    public abstract class VectorObject
+    {
+        string name;
 
-		IShape shape;
-		public IShape Shape
-		{
-			get => shape;
-			set => shape = value;
-		}
+        /// <summary>
+        /// Nazwa obiektu
+        /// </summary>
+        public string Name
+        {
+            get => name;
+        }
 
-		protected Transform transform;
-		public Transform Transform
-		{
-			get => transform;
-		}
+        IShape shape;
+        /// <summary>
+        /// Kształt obiektu
+        /// </summary>
+        public IShape Shape
+        {
+            get => shape;
+            set => shape = value;
+        }
 
-		Guid guid;
-		public Guid Guid
-		{
-			get => guid;
-		}
+        protected Transform transform;
+        /// <summary>
+        /// Pozycja wraz z rotacją obiektu
+        /// </summary>
+        public Transform Transform
+        {
+            get => transform;
+        }
 
-		protected Window window;
+        Guid guid;
+        /// <summary>
+        /// Identifikator obiektu
+        /// </summary>
+        public Guid Guid
+        {
+            get => guid;
+        }
 
-		public VectorObject()
-		{
-			guid = Guid.NewGuid();
-		}
+        protected Window window;
 
-		public void Initialize(Window window)
-		{
-			this.window = window;
+        public VectorObject()
+        {
+            guid = Guid.NewGuid();
+        }
 
-			var setup = Start();
+        public void Initialize(Window window)
+        {
+            this.window = window;
 
-			name = setup.Name;
-			shape = setup.Shape;
-			transform = new Transform()
-			{
-				Position = setup.Position,
-				Rotation = Point.Zero,
-			};
+            var setup = Start();
 
-			if (setup.Rotation.X + setup.Rotation.Y + setup.Rotation.Z != 0)
-				Rotate(setup.Rotation);
-		}
+            name = setup.Name;
+            shape = setup.Shape;
+            transform = new Transform()
+            {
+                Position = setup.Position,
+                Rotation = Point.Zero,
+            };
 
-		/// <summary>
-		/// Wywołuje się przy utworzeniu obiektu, po zarejestrowaniu go w oknie.
-		/// </summary>
-		public abstract Setup Start();
-		/// <summary>
-		/// Wywołuje się co każdą klatke
-		/// </summary>
-		public abstract void Update(float delta);
+            if (setup.Rotation.X + setup.Rotation.Y + setup.Rotation.Z != 0)
+                Rotate(setup.Rotation);
+        }
 
-		/// <summary>
-		/// Wywołuje się kiedy obiekt ma zostać zniszczony
-		/// </summary>
-		public virtual void OnDestroy()
-		{
+        /// <summary>
+        /// Wywołuje się przy utworzeniu obiektu, po zarejestrowaniu go w oknie.
+        /// </summary>
+        public abstract Setup Start();
+        /// <summary>
+        /// Wywołuje się co każdą klatke
+        /// </summary>
+        public abstract void Update(float delta);
 
-		}
+        /// <summary>
+        /// Wywołuje się kiedy obiekt ma zostać zniszczony
+        /// </summary>
+        public virtual void OnDestroy()
+        {
 
-		/// <summary>
-		/// Nadpisywanie renderu, wywołuje się co klatke kiedy obiekt się renderuje 
-		/// </summary>
-		/// <returns>Czy anulować rysowanie obiektu przez scene?</returns>
-		public virtual bool OverrideRender(Canvas canvas)
-		{
-			return false;
-		}
+        }
 
-		/// <summary>
-		/// Obrót figury wraz z obrotem kszałtu
-		/// </summary>
-		protected void Rotate(Point rotation)
-		{
-			shape.Rotate(rotation);
-			transform.Rotation += rotation;
-		}
+        /// <summary>
+        /// Nadpisywanie renderu, wywołuje się co klatke kiedy obiekt się renderuje 
+        /// </summary>
+        /// <returns>Czy anulować rysowanie obiektu przez scene?</returns>
+        public virtual bool OverrideRender(Canvas canvas)
+        {
+            return false;
+        }
 
-		public struct Setup
-		{
-			public string Name;
-			public IShape Shape;
-			public Point Position;
-			public Point Rotation;
+        /// <summary>
+        /// Obrót figury wraz z obrotem kszałtu
+        /// </summary>
+        protected void Rotate(Point rotation)
+        {
+            shape.Rotate(rotation);
+            transform.Rotation += rotation;
+        }
 
-			public Setup(string name, IShape shape, Point position, Point rotation)
-			{
-				Name = name;
-				Shape = shape;
-				Position = position;
-				Rotation = rotation;
-			}
-		}
-	}
+        public struct Setup
+        {
+            public string Name;
+            public IShape Shape;
+            public Point Position;
+            public Point Rotation;
+
+            public Setup(string name, IShape shape, Point position, Point rotation)
+            {
+                Name = name;
+                Shape = shape;
+                Position = position;
+                Rotation = rotation;
+            }
+        }
+    }
 }

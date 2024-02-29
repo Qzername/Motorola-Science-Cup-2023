@@ -1,10 +1,13 @@
 ﻿using NAudio.Wave;
-using System.IO;
 
-namespace VGE.Audio
+namespace VGE.Audio.Default
 {
     //https://markheath.net/post/mixing-and-looping-with-naudio
-    public class Sound : WaveStream
+
+    /// <summary>
+    /// Implementacja dźwięku oparta na bibliotece NAudio
+    /// </summary>
+    public class NASound : WaveStream, ISound
     {
         public bool IsLooped;
         bool isPaused;
@@ -20,7 +23,7 @@ namespace VGE.Audio
             set { sourceStream.Position = value; }
         }
 
-        public Sound(string soundName)
+        public NASound(string soundName)
         {
             sourceStream = new WaveFileReader($"./Resources/{soundName}");
 

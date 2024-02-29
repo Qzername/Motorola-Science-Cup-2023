@@ -10,7 +10,7 @@ namespace Asteroids
 {
     public class GameManager : VectorObject
     {
-		public static GameManager Instance;
+        public static GameManager Instance;
         public static Random Rand = new();
 
         Screen _currentScreen;
@@ -19,7 +19,7 @@ namespace Asteroids
             get => _currentScreen;
             set
             {
-                if(UIManager.Instance is not null)
+                if (UIManager.Instance is not null)
                     UIManager.Instance.ChangeScreen(value);
 
                 EnemySpawner.Instance.RefreshSpawner(value != Screen.GameOver);
@@ -28,20 +28,20 @@ namespace Asteroids
         }
 
         int _score = 0;
-        public int Score 
-        { 
+        public int Score
+        {
             get => _score;
-            set 
-            { 
-                _score = value; 
-                UIManager.Instance.RefreshUI(); 
-            } 
+            set
+            {
+                _score = value;
+                UIManager.Instance.RefreshUI();
+            }
         }
-		
+
         public int Lives = 3;
-		public Player Player;
-		public int ScoreToGet = 10000;
-		public int BulletsOnScreen;
+        public Player Player;
+        public int ScoreToGet = 10000;
+        public int BulletsOnScreen;
 
         NameSetter nameSetter;
 
@@ -68,9 +68,9 @@ namespace Asteroids
 
             if (Screen.MainMenu == CurrentScreen)
             {
-                if(spaceToggled)
+                if (spaceToggled)
                 {
-                    if(Player is null)
+                    if (Player is null)
                     {
                         Player = new Player();
                         window.Instantiate(Player);
@@ -82,7 +82,7 @@ namespace Asteroids
                 return;
             }
 
-            if(Screen.GameOver == CurrentScreen)
+            if (Screen.GameOver == CurrentScreen)
             {
                 gameOverTimer += delta;
 

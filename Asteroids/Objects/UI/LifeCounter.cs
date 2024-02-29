@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VGE;
+﻿using VGE;
 using VGE.Graphics;
 using VGE.Graphics.Shapes;
 
@@ -43,12 +38,12 @@ namespace Asteroids.Objects.UI
 
             Point offset = Point.Zero;
 
-            for(int i = 0; i < GameManager.Instance.Lives; i++)
+            for (int i = 0; i < GameManager.Instance.Lives; i++)
             {
                 foreach (var line in playerShape.CompiledShape)
                     canvas.DrawLine(new Line(transform.Position + offset + line.StartPosition, transform.Position + offset + line.EndPosition));
 
-                offset.X += playerShape.BottomRight.X *2;
+                offset.X += playerShape.BottomRight.X * 2;
             }
 
             return true;

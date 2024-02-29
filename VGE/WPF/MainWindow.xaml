@@ -6,7 +6,8 @@
         xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Icon="logo_vge.ico">
     <Grid>
         <skia:SKElement x:Name="skElement"/>
     </Grid>
